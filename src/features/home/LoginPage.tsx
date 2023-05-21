@@ -36,7 +36,7 @@ export default function LoginPage() {
                     <Typography component='h2' variant='h3'>
                         Iniciar sesión
                     </Typography>
-                    <Typography variant='h6' >¿No tienes cuenta? <Link href="#" variant="body2">
+                    <Typography variant='h6' >¿No tienes cuenta? <Link href="/register" variant="body2">
                         {"Registrarse"}
                     </Link></Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
