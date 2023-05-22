@@ -54,77 +54,91 @@ export default function RegisterPage() {
                                            {...field} />}
                             rules={{required: 'Campo obligatorio'}}
                         />
-                        <Controller
-                            name="firstLastName"
-                            control={control}
-                            render={({ field }) =>
-                                <TextField margin="normal"
-                                           fullWidth
-                                           label="Primer Apellido"
-                                           autoComplete="name"
-                                           error={!!errors.firstLastName}
-                                           helperText={errors?.firstLastName?.message as string}
-                                           {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
-                        />
-                        <Controller
-                            name="secondLastName"
-                            control={control}
-                            render={({ field }) =>
-                                <TextField margin="normal"
-                                           fullWidth
-                                           label="Segundo Apellido"
-                                           autoComplete="name"
-                                           error={!!errors.secondLastName}
-                                           helperText={errors?.secondLastName?.message as string}
-                                           {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
-                        />
-                        <Controller
-                            name="id"
-                            control={control}
-                            render={({ field }) =>
-                                <TextField margin="normal"
-                                           fullWidth
-                                           label="RUT/Pasaporte"
-                                           error={!!errors.id}
-                                           helperText={errors?.id?.message as string}
-                                           {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
-                        />
-                        <Controller
-                            name="gender"
-                            control={control}
-                            render={({ field }) =>
-                                <TextField margin="normal"
-                                           fullWidth
-                                           label="Género"
-                                           error={!!errors.gender}
-                                           helperText={errors?.gender?.message as string}
-                                           {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
-                        />
-                        <Controller
-                            name="phone"
-                            control={control}
-                            render={({ field }) =>
-                                <TextField margin="normal"
-                                           fullWidth
-                                           label="Número móvil"
-                                           type="tel"
-                                           error={!!errors.phone}
-                                           helperText={errors?.phone?.message as string}
-                                           InputProps={{
-                                               startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
-                                           }}
-                                           {...field} />}
-                            rules={{required: 'Campo obligatorio',
-                                pattern: {
-                                    value: /^\d{8}$/,
-                                    message: 'El número debe ser de 8 dígitos'
-                                }
-                            }}
-                        />
+                        <Grid container item spacing={2}>
+                            <Grid item xs={6}>
+                                <Controller
+                                    name="firstLastName"
+                                    control={control}
+                                    render={({ field }) =>
+                                        <TextField margin="normal"
+                                                   fullWidth
+                                                   label="Primer Apellido"
+                                                   autoComplete="name"
+                                                   error={!!errors.firstLastName}
+                                                   helperText={errors?.firstLastName?.message as string}
+                                                   {...field} />}
+                                    rules={{required: 'Campo obligatorio'}}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Controller
+                                    name="secondLastName"
+                                    control={control}
+                                    render={({ field }) =>
+                                        <TextField margin="normal"
+                                                   fullWidth
+                                                   label="Segundo Apellido"
+                                                   autoComplete="name"
+                                                   error={!!errors.secondLastName}
+                                                   helperText={errors?.secondLastName?.message as string}
+                                                   {...field} />}
+                                    rules={{required: 'Campo obligatorio'}}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container item spacing={2}>
+                            <Grid item>
+                                <Controller
+                                    name="id"
+                                    control={control}
+                                    render={({ field }) =>
+                                        <TextField margin="normal"
+                                                   fullWidth
+                                                   label="RUT/Pasaporte"
+                                                   error={!!errors.id}
+                                                   helperText={errors?.id?.message as string}
+                                                   {...field} />}
+                                    rules={{required: 'Campo obligatorio'}}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Controller
+                                    name="gender"
+                                    control={control}
+                                    render={({ field }) =>
+                                        <TextField margin="normal"
+                                                   fullWidth
+                                                   label="Género"
+                                                   error={!!errors.gender}
+                                                   helperText={errors?.gender?.message as string}
+                                                   {...field} />}
+                                    rules={{required: 'Campo obligatorio'}}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Controller
+                                    name="phone"
+                                    control={control}
+                                    render={({ field }) =>
+                                        <TextField margin="normal"
+                                                   fullWidth
+                                                   label="Número móvil"
+                                                   type="tel"
+                                                   error={!!errors.phone}
+                                                   helperText={errors?.phone?.message as string}
+                                                   InputProps={{
+                                                       startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
+                                                   }}
+                                                   {...field} />}
+                                    rules={{required: 'Campo obligatorio',
+                                        pattern: {
+                                            value: /^\d{8}$/,
+                                            message: 'El número debe ser de 8 dígitos'
+                                        }
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                         <Controller
                             name="email"
                             control={control}
