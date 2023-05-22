@@ -8,12 +8,23 @@ import Typography from '@mui/material/Typography';
 import { PurpleButton } from '../../app/models/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
+import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
+const url = "http://localhost:5000"
 export default function LoginPage() {
+    const navigate = useNavigate();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({ email: data.get('email'), password: data.get('password') });
+        const userLoginData = { email: data.get('email'), password: data.get('password') };
+        console.log(userLoginData);
+        axios.post(url+"/api/Users/login?id="+userLoginData.email+"&password="+userLoginData.password, userLoginData)
+            .then((response) => {
+                localStorage.setItem("token", response.data.token);
+                navigate("/register");
+            })
+            .catch(err => console.log(err));;
     };
 
     return (
