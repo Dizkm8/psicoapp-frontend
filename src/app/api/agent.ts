@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { idText } from "typescript";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -39,8 +40,12 @@ const requests = {
 }
 
 const Login = {
-    // do stuff needed for login
-}   
+    login: (userId: string, userPassword: string) =>
+        requests.post('users/login', {
+            id: userId,
+            password: userPassword,
+        }),
+}
 
 const agent = {
     Login,

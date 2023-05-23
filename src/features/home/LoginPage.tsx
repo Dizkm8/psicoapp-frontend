@@ -8,24 +8,36 @@ import Typography from '@mui/material/Typography';
 import { PurpleButton } from '../../app/models/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
-import axios from 'axios';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import {useNavigate} from "react-router-dom";
+import agent from '../../app/api/agent';
+import axios from 'axios';
 
-const url = "http://localhost:5000"
+type LoginFormValues = {
+    userId: string;
+    password: string;
+};
+
 export default function LoginPage() {
+
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
     const navigate = useNavigate();
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const userLoginData = { email: data.get('email'), password: data.get('password') };
-        console.log(userLoginData);
-        axios.post(url+"/api/Users/login?id="+userLoginData.email+"&password="+userLoginData.password, userLoginData)
-            .then((response) => {
-                localStorage.setItem("token", response.data.token);
+
+    const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
+        agent.Login.login(data.userId, data.password)
+            .then(response => {
+                localStorage.setItem("token", response.token);
                 navigate("/register");
             })
-            .catch(err => console.log(err));;
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                reset();
+            });
     };
+
+
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
@@ -50,28 +62,39 @@ export default function LoginPage() {
                     <Typography variant='h6' >¿No tienes cuenta? <Link href="/register" variant="body2">
                         {"Registrarse"}
                     </Link></Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Identificación"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
+                    <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitButton)} sx={{ mt: 1 }}>
+                        <Controller
+                            name="userId"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) =>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Identificación"
+                                    autoFocus
+                                    error={!!errors.userId}
+                                    helperText={errors.userId?.message as string}
+                                    {...field} />}
+                            rules={{ required: 'Campo obligatorio' }}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
+                        <Controller
                             name="password"
-                            label="Contraseña"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) =>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Contraseña"
+                                    autoComplete="current-password"
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message as string}
+                                    {...field} />}
+                            rules={{ required: 'Campo obligatorio' }}
                         />
                         <PurpleButton
+                            disabled={!isValid}
                             type="submit"
                             fullWidth
                             variant="contained"
