@@ -9,6 +9,7 @@ import { PurpleButton } from '../../app/models/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import {useNavigate} from "react-router-dom";
 import agent from '../../app/api/agent';
 import axios from 'axios';
 
@@ -17,15 +18,16 @@ type LoginFormValues = {
     password: string;
 };
 
-//TODO: [AN-133] Refactorizar Login para incoporar react hook form 
 export default function LoginPage() {
 
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
+    const navigate = useNavigate();
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
         agent.Login.login(data.userId, data.password)
             .then(response => {
-                console.log(response.Token);
+                localStorage.setItem("token", response.token);
+                navigate("/register");
             })
             .catch(error => {
                 console.log(error);
