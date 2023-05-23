@@ -8,13 +8,34 @@ import Typography from '@mui/material/Typography';
 import { PurpleButton } from '../../app/models/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import agent from '../../app/api/agent';
+import axios from 'axios';
 
+type LoginFormValues = {
+    userId: string;
+    password: string;
+};
+
+//TODO: [AN-133] Refactorizar Login para incoporar react hook form 
 export default function LoginPage() {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({ email: data.get('email'), password: data.get('password') });
+
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
+
+    const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
+        agent.Login.login(data.userId, data.password)
+            .then(response => {
+                console.log(response.Token);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                reset();
+            });
     };
+
+
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
@@ -39,28 +60,39 @@ export default function LoginPage() {
                     <Typography variant='h6' >¿No tienes cuenta? <Link href="/register" variant="body2">
                         {"Registrarse"}
                     </Link></Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Identificación"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
+                    <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitButton)} sx={{ mt: 1 }}>
+                        <Controller
+                            name="userId"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) =>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Identificación"
+                                    autoFocus
+                                    error={!!errors.userId}
+                                    helperText={errors.userId?.message as string}
+                                    {...field} />}
+                            rules={{ required: 'Campo obligatorio' }}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
+                        <Controller
                             name="password"
-                            label="Contraseña"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) =>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Contraseña"
+                                    autoComplete="current-password"
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message as string}
+                                    {...field} />}
+                            rules={{ required: 'Campo obligatorio' }}
                         />
                         <PurpleButton
+                            disabled={!isValid}
                             type="submit"
                             fullWidth
                             variant="contained"
