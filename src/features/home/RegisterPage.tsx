@@ -9,12 +9,25 @@ import { PurpleButton } from '../../app/models/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button, InputAdornment } from '@mui/material';
 import {useForm, Controller, SubmitHandler, FieldValues} from "react-hook-form";
+import User from "../../app/models/User";
+import agent from "../../app/api/agent";
+import {useNavigate} from "react-router-dom";
 
 export default function RegisterPage() {
 
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({mode: 'onTouched'});
+    const navigate = useNavigate();
+
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
-        console.log(data);
+        const completeData: User = {...data, isEnabled: true, type: 1, rut: data.id}; // Patch while the models aren't updated
+        console.log(completeData);
+        agent.Login.register(completeData)
+            .then(response => {
+                navigate("/");
+            })
+            .catch(error => {
+                console.log(error);
+            })
     };
 
     return (

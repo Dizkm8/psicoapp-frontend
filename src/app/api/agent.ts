@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
+import User from "../models/User";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -45,6 +46,8 @@ const Login = {
             id: userId,
             password: userPassword,
         }),
+    register: (userData: User) =>
+        requests.post('users/sign-up', {...userData}),
 }
 
 const agent = {
