@@ -17,6 +17,7 @@ export const router = createBrowserRouter([
             { path: '/account', element: <RequireAuth />, children:
             [
                 {path: '', element: <Profile />}
-            ]}
+            ]},
+            { path: '/feed/create', element: <FeedPostForm /> },
         ]
     }]);
