@@ -19,7 +19,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
-        const completeData: User = {...data, isEnabled: true, type: 1, rut: data.id};// Patch while the models aren't updated
+        const completeData: User = {...data, isEnabled: true, type: 1, rut: data.id}; // Patch while the models aren't updated
         console.log(completeData);
         agent.Login.register(completeData)
             .then(response => {
@@ -48,11 +48,8 @@ export default function RegisterPage() {
                         alignItems: 'flex-start',
                     }}>
                     <Typography component='h2' variant='h3'>
-                        Registrarse
+                        Editar Perfil
                     </Typography>
-                    <Typography variant='h6' >¿Ya tienes cuenta? <Link href="/" variant="body2">
-                        {"Iniciar sesión"}
-                    </Link></Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitButton)} sx={{ mt: 1 }}>
                         <Controller
                             name="name"
@@ -65,55 +62,9 @@ export default function RegisterPage() {
                                            error={!!errors.name}
                                            helperText={errors?.name?.message as string}
                                            {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
+                            
                         />
-                        <Grid container item spacing={2}>
-                            <Grid item xs={6}>
-                                <Controller
-                                    name="firstLastName"
-                                    control={control}
-                                    render={({ field }) =>
-                                        <TextField margin="normal"
-                                                   fullWidth
-                                                   label="Primer Apellido"
-                                                   autoComplete="name"
-                                                   error={!!errors.firstLastName}
-                                                   helperText={errors?.firstLastName?.message as string}
-                                                   {...field} />}
-                                    rules={{required: 'Campo obligatorio'}}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Controller
-                                    name="secondLastName"
-                                    control={control}
-                                    render={({ field }) =>
-                                        <TextField margin="normal"
-                                                   fullWidth
-                                                   label="Segundo Apellido"
-                                                   autoComplete="name"
-                                                   error={!!errors.secondLastName}
-                                                   helperText={errors?.secondLastName?.message as string}
-                                                   {...field} />}
-                                    rules={{required: 'Campo obligatorio'}}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container item spacing={2}>
-                            <Grid item>
-                                <Controller
-                                    name="id"
-                                    control={control}
-                                    render={({ field }) =>
-                                        <TextField margin="normal"
-                                                   fullWidth
-                                                   label="RUT/Pasaporte"
-                                                   error={!!errors.id}
-                                                   helperText={errors?.id?.message as string}
-                                                   {...field} />}
-                                    rules={{required: 'Campo obligatorio'}}
-                                />
-                            </Grid>
+                        <Grid container item spacing={1}>
                             <Grid item>
                                 <Controller
                                     name="gender"
@@ -125,7 +76,7 @@ export default function RegisterPage() {
                                                    error={!!errors.gender}
                                                    helperText={errors?.gender?.message as string}
                                                    {...field} />}
-                                    rules={{required: 'Campo obligatorio'}}
+                                    
                                 />
                             </Grid>
                             <Grid item>
@@ -143,8 +94,7 @@ export default function RegisterPage() {
                                                        startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
                                                    }}
                                                    {...field} />}
-                                    rules={{required: 'Campo obligatorio',
-                                        pattern: {
+                                    rules={{pattern: {
                                             value: /^\d{8}$/,
                                             message: 'El número debe ser de 8 dígitos'
                                         }
@@ -163,8 +113,7 @@ export default function RegisterPage() {
                                            error={!!errors.email}
                                            helperText={errors?.email?.message as string}
                                            {...field} />}
-                            rules={{required: 'Campo obligatorio',
-                                pattern: {
+                            rules={{pattern: {
                                     value: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/,
                                     message: 'Correo inválido'
                                 }}}
@@ -181,7 +130,7 @@ export default function RegisterPage() {
                                            error={!!errors.password}
                                            helperText={errors?.password?.message as string}
                                            {...field} />}
-                            rules={{required: 'Campo obligatorio'}}
+                            
                         />
                         <PurpleButton
                             disabled={!isValid}
@@ -190,7 +139,7 @@ export default function RegisterPage() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Registrarse
+                            Actualizar
                         </PurpleButton>
                     </Box>
                 </Box>

@@ -12,6 +12,12 @@ axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
 
+axios.interceptors.request.use(config => {
+    const token = localStorage.getItem("token");
+    if (token) config.headers.Authorization = 'Bearer ${token}';
+    return config;
+})
+
 axios.interceptors.response.use(async response => {
     // I set a timeout here to simulate a delay in the server response
     // to manage the loading indicator
@@ -42,7 +48,7 @@ const requests = {
 
 const Login = {
     login: (userId: string, userPassword: string) =>
-        requests.post('users/login', {
+        requests.post('client/login', {
             id: userId,
             password: userPassword,
         }),
