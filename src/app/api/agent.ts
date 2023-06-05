@@ -42,7 +42,7 @@ const requests = {
 
 const Login = {
     login: (userId: string, userPassword: string) =>
-        requests.post('users/login', {
+        requests.post('client/login', {
             id: userId,
             password: userPassword,
         }),
