@@ -5,7 +5,7 @@ import RegisterPage from "../../features/home/RegisterPage";
 import RequireAuth from "./RequireAuth";
 import Profile from "../../features/account/Profile";
 import FeedPostForm from "../../features/feed/FeedPostForm";
-import DefineAvailability from "../../features/DefineAvailability";
+import DefineAvailability from "../../features/specialist/DefineAvailability";
 
 export const router = createBrowserRouter([
     {
