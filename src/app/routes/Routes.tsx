@@ -1,9 +1,9 @@
-import LoginPage from "../../features/home/LoginPage";
+import LoginPage from "../../features/account/LoginPage";
 import HomePage from "../../features/home/HomePage";
-import UpdateProfile from "../../features/home/UpdateProfile";
+import UpdateProfile from "../../features/account/UpdateProfile";
 import App from "../layout/App";
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import RegisterPage from "../../features/home/RegisterPage";
+import RegisterPage from "../../features/account/RegisterPage";
 import RequireAuth from "./RequireAuth";
 import Profile from "../../features/account/Profile";
 import FeedPostForm from "../../features/feed/FeedPostForm";
@@ -19,11 +19,12 @@ export const router = createBrowserRouter([
             { path: '/register', element: <RegisterPage /> },
             { path: '/account', element: <RequireAuth />, children:
             [
-                {path: '', element: <Profile />}
+                {path: '', element: <Profile />},
+                { path: 'edit', element: <UpdateProfile /> },
             ]},
             { path: '/specialist/availability', element: <DefineAvailability />},
             { path: '/feed/create', element: <FeedPostForm /> },
             { path: '/home', element: <HomePage /> },
-            { path: '/UpdateProfile', element: <UpdateProfile /> },
+
         ]
     }]);

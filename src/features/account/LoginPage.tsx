@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { PurpleButton } from '../../app/models/PurpleButton';
+import { PurpleButton } from '../../app/components/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
