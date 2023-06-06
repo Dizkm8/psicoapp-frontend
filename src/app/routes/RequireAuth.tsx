@@ -11,7 +11,7 @@ export default function RequireAuth({role}: Props)
     const user: User = useSelector(selectUser);
     if(!user)
         return <Navigate to={"/login"}/>
-    if(role && role === user.role)
+    if(!role || (role && role === user.role))
         return <Outlet/>
     return <Navigate to={"/home"}/>
 }
