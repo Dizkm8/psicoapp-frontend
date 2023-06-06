@@ -16,7 +16,7 @@ import TitleIcon from '@mui/icons-material/Title';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import LabelIcon from '@mui/icons-material/Label';
-import { PurpleButton } from '../../app/models/PurpleButton';
+import { PurpleButton } from '../../app/components/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import {useNavigate} from "react-router-dom";
