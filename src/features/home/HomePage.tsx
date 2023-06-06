@@ -71,7 +71,7 @@ export default function ResponsiveDrawer(props: Props) {
             </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-            <ListItemButton href='/UpdateProfile'>
+            <ListItemButton href='/account/edit'>
               <ListItemIcon>
                 <AddBoxIcon/>
               </ListItemIcon>
