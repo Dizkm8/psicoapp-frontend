@@ -21,7 +21,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { purple } from '@mui/material/colors';
-import {useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 
 
@@ -55,7 +55,7 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         <ListItem disablePadding>
             
-            <ListItemButton href='/register'> 
+            <ListItemButton > 
               <ListItemIcon>
                 <NewspaperIcon />
               </ListItemIcon>
@@ -63,7 +63,7 @@ export default function ResponsiveDrawer(props: Props) {
             </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-            <ListItemButton href='/'>
+            <ListItemButton >
               <ListItemIcon>
                 <ArticleIcon />
               </ListItemIcon>
@@ -71,7 +71,7 @@ export default function ResponsiveDrawer(props: Props) {
             </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-            <ListItemButton href='/UpdateProfile'>
+            <ListItemButton component={NavLink} to="/specialist/availability">
               <ListItemIcon>
                 <AddBoxIcon/>
               </ListItemIcon>

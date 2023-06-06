@@ -27,7 +27,7 @@ import ResponsiveDrawer from '../../app/components/Layout';
 
 const drawerWidth = 240;
 
-export default function LoginPage(){
+export default function HomePage(){
 
 
   return (
