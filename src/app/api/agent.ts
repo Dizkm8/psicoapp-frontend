@@ -48,12 +48,12 @@ const requests = {
 
 const Login = {
     login: (userId: string, userPassword: string) =>
-        requests.post('client/login', {
+        requests.post('Auth/login', {
             id: userId,
             password: userPassword,
         }),
     register: (userData: User) =>
-        requests.post('users/sign-up', {...userData}),
+        requests.post('Auth/register-client', {...userData}),
 }
 
 const agent = {
