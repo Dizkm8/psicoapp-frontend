@@ -13,6 +13,7 @@ import User from "../../app/models/User";
 import agent from "../../app/api/agent";
 import {useNavigate} from "react-router-dom";
 
+
 export default function RegisterPage() {
 
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({mode: 'onTouched'});
