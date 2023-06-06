@@ -19,7 +19,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
-        const completeData: User = {...data, isEnabled: true, type: 1, rut: data.id};// Patch while the models aren't updated
+        const completeData: User = {...data, isEnabled: true, role: 1, id: data.id};// Patch while the models aren't updated
         console.log(completeData);
         agent.Login.register(completeData)
             .then(response => {

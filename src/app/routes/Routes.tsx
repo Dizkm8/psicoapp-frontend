@@ -19,12 +19,14 @@ export const router = createBrowserRouter([
             { path: '/register', element: <RegisterPage /> },
             { path: '/account', element: <RequireAuth />, children:
             [
-                {path: '', element: <Profile />},
+                { path: '', element: <Profile />},
                 { path: 'edit', element: <UpdateProfile /> },
             ]},
-            { path: '/specialist/availability', element: <DefineAvailability />},
+            { path: '/specialist', element: <RequireAuth role={3} />, children:
+                    [
+                        { path: 'availability', element: <DefineAvailability />},
+                    ]},
             { path: '/feed/create', element: <FeedPostForm /> },
             { path: '/home', element: <HomePage /> },
-
         ]
     }]);

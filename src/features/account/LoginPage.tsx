@@ -12,6 +12,9 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import {useNavigate} from "react-router-dom";
 import agent from '../../app/api/agent';
 import axios from 'axios';
+import {useDispatch} from "react-redux";
+import {login} from "./accountSlice";
+import {store} from "../../app/store/store";
 
 type LoginFormValues = {
     userId: string;
@@ -22,12 +25,13 @@ export default function LoginPage() {
 
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
     const navigate = useNavigate();
+    const dispatch = useDispatch<typeof store.dispatch>()
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
         agent.Login.login(data.userId, data.password)
             .then(response => {
-                localStorage.setItem("token", response.token);
-                navigate("/register");
+                dispatch(login(response.token));
+                navigate("/home");
             })
             .catch(error => {
                 console.log(error);

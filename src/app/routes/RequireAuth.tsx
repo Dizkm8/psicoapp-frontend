@@ -1,12 +1,17 @@
 import {Outlet, Navigate} from 'react-router-dom'
+import User from "../models/User";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../features/account/accountSlice";
 interface Props {
-    role?: string;
+    role?: number;
 }
 
 export default function RequireAuth({role}: Props)
 {
-    const token: string | null = localStorage.getItem("token");
-    if(!(!!token))
+    const user: User = useSelector(selectUser);
+    if(!user)
         return <Navigate to={"/login"}/>
-    return <Outlet/>
+    if(role && role === user.role)
+        return <Outlet/>
+    return <Navigate to={"/home"}/>
 }

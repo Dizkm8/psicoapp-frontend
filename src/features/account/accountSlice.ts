@@ -39,6 +39,6 @@ export const accountSlice = createSlice({
 });
 
 export const selectToken = (state: RootState) => state.account.token;
-export const selectRole = (state: RootState) => state.account.user.role;
+export const selectUser = (state: RootState) => state.account.user;
 
 export const {login, signOff} = accountSlice.actions;
