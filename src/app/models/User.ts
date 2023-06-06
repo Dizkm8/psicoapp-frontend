@@ -2,11 +2,11 @@ export default interface User {
     name?: string;
     firstLastName?: string;
     firstSecondName?: string;
-    rut?: string;
+    id?: string;
     email?: string;
     gender?: string;
     phone?: number;
-    isEnabled: boolean;
+    isEnabled?: boolean;
     password?: string;
-    type: number;
-}
+    role?: number;
+};
