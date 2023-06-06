@@ -3,14 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './app/layout/styles.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux'
 import { router } from './app/routes/Routes';
+import { store } from './app/store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+      <Provider store={store}>
+          <RouterProvider router={router} />
+      </Provider>
   </React.StrictMode>
 );
 
