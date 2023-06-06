@@ -1,4 +1,6 @@
 import LoginPage from "../../features/home/LoginPage";
+import HomePage from "../../features/home/HomePage";
+import UpdateProfile from "../../features/home/UpdateProfile";
 import App from "../layout/App";
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import RegisterPage from "../../features/home/RegisterPage";
@@ -21,5 +23,7 @@ export const router = createBrowserRouter([
             ]},
             { path: '/specialist/availability', element: <DefineAvailability />},
             { path: '/feed/create', element: <FeedPostForm /> },
+            { path: '/home', element: <HomePage /> },
+            { path: '/UpdateProfile', element: <UpdateProfile /> },
         ]
     }]);
