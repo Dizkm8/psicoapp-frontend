@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
 import User from "../models/User";
 import {store} from "../store/store";
+import FeedPost from "../models/FeedPost";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -65,9 +66,15 @@ const Specialist = {
             [...selection])
 }
 
+const Feed = {
+    createPost: (postData: FeedPost) =>
+        requests.post('FeedPosts/create-post', postData)
+}
+
 const agent = {
     Login,
-    Specialist
+    Specialist,
+    Feed
 }
 
 export default agent;
