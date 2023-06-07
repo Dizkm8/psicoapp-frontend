@@ -1,7 +1,7 @@
 export default interface User {
     name?: string;
     firstLastName?: string;
-    firstSecondName?: string;
+    secondLastName?: string;
     id?: string;
     email?: string;
     gender?: string;

@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
 import User from "../models/User";
+import {store} from "../store/store";
+import FeedPost from "../models/FeedPost";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -13,8 +15,8 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use(config => {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = 'Bearer ${token}';
+    const token =  store.getState().account.token;
+    if (token) config.headers.Authorization = 'Bearer ' + token;
     return config;
 })
 
@@ -54,10 +56,34 @@ const Login = {
         }),
     register: (userData: User) =>
         requests.post('Auth/register-client', {...userData}),
+    updatePassword: (passwordForm: any) =>
+        requests.put('Auth/update-password', passwordForm)
 }
 
+const Specialists = {
+    getAvailability: (date: string) =>
+        requests.get(`Specialists/availability/${date}`),
+    addAvailability: (selection: {startTime: string}[]) =>
+        requests.post('Specialists/add-availability',
+            [...selection])
+}
+
+const Feed = {
+    createPost: (postData: FeedPost) =>
+        requests.post('FeedPosts/create-post', postData)
+}
+
+const Users = {
+    getProfileInformation: () =>
+        requests.get('Users/profile-information'),
+    updateProfileInformation: (newData: User) =>
+        requests.put('Users/profile-information', newData),
+}
 const agent = {
     Login,
+    Specialists,
+    Feed,
+    Users
 }
 
 export default agent;

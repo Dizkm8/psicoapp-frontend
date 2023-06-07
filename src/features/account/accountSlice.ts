@@ -10,12 +10,12 @@ interface JwtPayload {
     "nbf": number,
     "exp": number,
     "iat": number
-};
+}
 
 export interface AccountState {
     user: User
     token: string | null
-};
+}
 
 const initialState: AccountState = {
     user: {},
@@ -30,6 +30,7 @@ export const accountSlice = createSlice({
             const payload = jwtDecode<JwtPayload>(action.payload);
             state.user.name = payload.unique_name;
             state.user.role = parseInt(payload.role);
+            state.token = action.payload;
         },
         signOff: (state) => {
             state.user = {};
