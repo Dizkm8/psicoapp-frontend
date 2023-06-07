@@ -9,7 +9,7 @@ interface Props {
 export default function RequireAuth({role}: Props)
 {
     const user: User = useSelector(selectUser);
-    if(!user)
+    if(!user.id)
         return <Navigate to={"/login"}/>
     if(!role || (role && role === user.role))
         return <Outlet/>
