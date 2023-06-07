@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
 import User from "../models/User";
+import {store} from "../store/store";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -13,8 +14,8 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use(config => {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = 'Bearer ${token}';
+    const token =  store.getState().account.token;
+    if (token) config.headers.Authorization = 'Bearer ' + token;
     return config;
 })
 
@@ -56,8 +57,17 @@ const Login = {
         requests.post('Auth/register-client', {...userData}),
 }
 
+const Specialist = {
+    getAvailability: (date: string) =>
+        requests.get(`Specialists/availability/${date}`),
+    addAvailability: (selection: {startTime: string}[]) =>
+        requests.post('Specialists/add-availability',
+            [...selection])
+}
+
 const agent = {
     Login,
+    Specialist
 }
 
 export default agent;

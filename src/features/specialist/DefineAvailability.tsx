@@ -1,15 +1,38 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AvailabilityPicker from "../../app/components/AvailabilityPicker";
 import {Box, Button, Dialog, DialogActions, DialogTitle, IconButton} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
+import {getWeekStartDay} from "../../app/utils/dateHelper";
+import agent from "../../app/api/agent";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+
+const getDefaultStartDate = () =>
+{
+    let date = new Date(Date.now());
+    return getWeekStartDay(date);
+};
+
 export default function DefineAvailability()
 {
-    const [selection, setSelection] = useState(new Array());
-    const occupiedDates: string[] = ['2023-06-04T13:00:00.000Z'];
-    const [startDate, setStartDate] = useState(new Date(2023,4,29));
+    const [selection, setSelection] = useState(new Array<string>());
+    const [startDate, setStartDate] = useState(getDefaultStartDate());
+    const [occupiedDates, setOccupiedDates ] = useState(new Array<string>());
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect( () => {
+        setLoading(true);
+        agent.Specialist.getAvailability(startDate.toDateString()).then((response) => {
+        const result = response.map((slot: {startTime: string; }) => slot.startTime);
+        setOccupiedDates(result);
+        setLoading(false)
+        }).catch((err) => console.log(err))
+    }, [startDate]);
+    console.log(occupiedDates);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
 
     const handleUpdate = (date: Date, select: boolean) =>
@@ -43,6 +66,29 @@ export default function DefineAvailability()
     {
         setOpenConfirmation(false);
         console.log(selection);
+        agent.Specialist.addAvailability(selection.map((element) => {return {startTime: element}}))
+            .then(() => navigate("/home"))
+            .catch((err) => {
+                let error: string = "Ha habido un error. Intente nuevamente.";
+                switch (err.status)
+                {
+                    case 400:
+                        error = "La fecha ya ha sido ingresada o se encuentra fuera del rango válido."
+                        break;
+                    default:
+                        break;
+                }
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+            });
     };
 
     return(
