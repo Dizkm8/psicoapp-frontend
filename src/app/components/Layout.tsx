@@ -22,44 +22,60 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { purple } from '@mui/material/colors';
 import {NavLink} from "react-router-dom";
-
-
+import { Button } from '@mui/material';
+import FeedPostForm from '../../features/feed/FeedPostForm';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const drawerWidth = 240;
+const items =[{ label: 'The Shawshank Redemption', year: 1994 },
+{ label: 'The Godfather', year: 1972 },];
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
-
-export default function ResponsiveDrawer(props: Props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+export default function PermanentDrawerLeft() {
+  return (
+    <Box sx={{ display: 'flex', bgcolor: 'white' }}>
+      <AppBar
+        
+        position="fixed"
+        sx={{ width: `calc(100% - ${drawerWidth}px)`,height: 110, ml: `${drawerWidth}px`, bgcolor: 'white' }}
+      >
 
 
-// change links to its final
-
-  const drawer = (
-    <div>
-    
-      <Toolbar />
-     
-      <List>
-        <ListItem disablePadding>
-            
-            <ListItemButton > 
+        <IconButton sx={{alignSelf: "end",mx:4, my:1}} aria-label="delete" edge = "end" size="large" component={NavLink} to="/account/edit">
+            <AccountCircleIcon fontSize="inherit" />
+          </IconButton> 
+          <Autocomplete 
+            disablePortal
+            id="combo-box-demo"
+            options={items}
+            sx={{ width: 200, height: 100, my:-4, alignSelf: "center", alignContent: "center"}}
+            renderInput={(params) => <TextField {...params} label="Busqueda" />}
+    />
+        
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Button sx={{alignSelf: "center", my:1}} size="small" variant="contained" component={NavLink} to="/home" >PsicoApp</Button>
+        <Toolbar />      
+        <Divider />
+        <List>
+        <ListItem disablePadding>           
+            <ListItemButton  component={NavLink} to="/feed/create"> 
               <ListItemIcon>
                 <NewspaperIcon />
               </ListItemIcon>
-              <ListItemText primary="Noticias" />
+              <ListItemText primary="Agregar Noticias" />
             </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -75,7 +91,7 @@ export default function ResponsiveDrawer(props: Props) {
               <ListItemIcon>
                 <AddBoxIcon/>
               </ListItemIcon>
-              <ListItemText primary="Agregar Cita" />
+              <ListItemText primary="Definir horario disponible" />
             </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -83,81 +99,17 @@ export default function ResponsiveDrawer(props: Props) {
               <ListItemIcon>
                 <CalendarMonthIcon />
               </ListItemIcon>
-              <ListItemText primary="Mis Citas" />
+              <ListItemText primary="Ver citas" />
             </ListItemButton>
         </ListItem>
         
       </List>
-     
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <AccountCircleIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="permanent"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
+      </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
-        
+        <Toolbar />
       </Box>
     </Box>
   );

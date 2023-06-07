@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
 
-import ResponsiveDrawer from "../../app/components/Layout";
+import PermanentDrawerLeft from "../../app/components/Layout";
 export default function DefineAvailability()
 {
     const [selection, setSelection] = useState(new Array());
@@ -48,7 +48,7 @@ export default function DefineAvailability()
     };
 
     return(
-        <>  <ResponsiveDrawer></ResponsiveDrawer>
+        <>  <PermanentDrawerLeft></PermanentDrawerLeft>
 
             <Dialog open={openConfirmation}
                     onClose={()=>{setOpenConfirmation(false)}}>

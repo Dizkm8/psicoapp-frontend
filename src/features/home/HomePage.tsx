@@ -22,7 +22,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { purple } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
-import ResponsiveDrawer from '../../app/components/Layout';
+import PermanentDrawerLeft from '../../app/components/Layout';
 
 
 const drawerWidth = 240;
@@ -31,7 +31,7 @@ export default function HomePage(){
 
 
   return (
-    <ResponsiveDrawer></ResponsiveDrawer>
+    <PermanentDrawerLeft></PermanentDrawerLeft>
 
     
   );
