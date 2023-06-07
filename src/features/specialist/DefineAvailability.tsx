@@ -26,7 +26,7 @@ export default function DefineAvailability()
 
     useEffect( () => {
         setLoading(true);
-        agent.Specialist.getAvailability(startDate.toDateString()).then((response) => {
+        agent.Specialists.getAvailability(startDate.toDateString()).then((response) => {
         const result = response.map((slot: {startTime: string; }) => slot.startTime);
         setOccupiedDates(result);
         setLoading(false)
@@ -66,7 +66,7 @@ export default function DefineAvailability()
     {
         setOpenConfirmation(false);
         console.log(selection);
-        agent.Specialist.addAvailability(selection.map((element) => {return {startTime: element}}))
+        agent.Specialists.addAvailability(selection.map((element) => {return {startTime: element}}))
             .then(() => navigate("/home"))
             .catch((err) => {
                 let error: string = "Ha habido un error. Intente nuevamente.";

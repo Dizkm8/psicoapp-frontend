@@ -56,9 +56,11 @@ const Login = {
         }),
     register: (userData: User) =>
         requests.post('Auth/register-client', {...userData}),
+    updatePassword: (passwordForm: any) =>
+        requests.put('Auth/update-password', passwordForm)
 }
 
-const Specialist = {
+const Specialists = {
     getAvailability: (date: string) =>
         requests.get(`Specialists/availability/${date}`),
     addAvailability: (selection: {startTime: string}[]) =>
@@ -71,10 +73,17 @@ const Feed = {
         requests.post('FeedPosts/create-post', postData)
 }
 
+const Users = {
+    getProfileInformation: () =>
+        requests.get('Users/profile-information'),
+    updateProfileInformation: (newData: User) =>
+        requests.put('Users/profile-information', newData),
+}
 const agent = {
     Login,
-    Specialist,
-    Feed
+    Specialists,
+    Feed,
+    Users
 }
 
 export default agent;
