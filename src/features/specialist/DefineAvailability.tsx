@@ -5,6 +5,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
+
+import PermanentDrawerLeft from "../../app/components/Layout";
 export default function DefineAvailability()
 {
     const [selection, setSelection] = useState(new Array());
@@ -46,7 +48,8 @@ export default function DefineAvailability()
     };
 
     return(
-        <>
+        <>  <PermanentDrawerLeft></PermanentDrawerLeft>
+
             <Dialog open={openConfirmation}
                     onClose={()=>{setOpenConfirmation(false)}}>
                 <DialogTitle id="alert-dialog-title">
