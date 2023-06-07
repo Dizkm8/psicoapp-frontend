@@ -22,6 +22,8 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import {useNavigate} from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
+import PermanentDrawerLeft from '../../app/components/Layout';
+
 
 export default function FeedPostForm()
 {
@@ -29,7 +31,7 @@ export default function FeedPostForm()
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
 
     return (
-        <>
+        <> <PermanentDrawerLeft></PermanentDrawerLeft>  
         <Dialog open={openConfirmation}
                 onClose={()=>{setOpenConfirmation(false)}}>
             <DialogTitle id="alert-dialog-title">
