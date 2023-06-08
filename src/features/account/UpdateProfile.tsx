@@ -44,7 +44,7 @@ export default function UpdateProfile({ user }: Props) {
         console.log(completeData);
         agent.Users.updateProfileInformation(completeData)
             .then(response => {
-                navigate("/");
+                navigate("/home");
             })
             .catch((err) => {
             let error: string = "Ha habido un error. Intente nuevamente.";
