@@ -79,11 +79,18 @@ const Users = {
     updateProfileInformation: (newData: User) =>
         requests.put('Users/profile-information', newData),
 }
+
+const Tags = {
+    getTags: () =>
+        requests.get('Tags')
+}
+
 const agent = {
     Login,
     Specialists,
     Feed,
-    Users
+    Users,
+    Tags
 }
 
 export default agent;
