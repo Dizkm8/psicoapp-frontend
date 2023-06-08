@@ -20,8 +20,8 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import {useSelector} from "react-redux";
-import {selectName} from "../../features/account/accountSlice";
+import { useSelector } from "react-redux";
+import { selectName } from "../../features/account/accountSlice";
 
 export default function Header({ children }: React.PropsWithChildren<{}>) {
     const [auth, setAuth] = useState(true);
@@ -161,12 +161,24 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                             >
                                 <MenuItem disabled sx={{ mb: 1 }}>
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {userName? userName : 'Invitado'}
+                                        {userName ? userName : 'Invitado'}
                                     </Typography>
                                 </MenuItem>
-                                <MenuItem component={NavLink} to="/account/edit">Perfil</MenuItem>
+                                <MenuItem
+                                    onClick={handleClose}
+                                    component={NavLink}
+                                    to="/account/edit"
+                                >
+                                    Perfil
+                                </MenuItem>
                                 <Divider />
-                                <MenuItem component={NavLink} to="/login">Cerrar sesión</MenuItem>
+                                <MenuItem
+                                    onClick={handleClose}
+                                    component={NavLink}
+                                    to="/login"
+                                >
+                                    Cerrar sesión
+                                </MenuItem>
                             </Menu>
                         </div>
                     )}
@@ -176,8 +188,8 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                 width: '100vw',
                 height: '100vh',
                 maxHeight: 'max-content',
-                }}>
-                <Grid item xs={2} sx={{backgroundColor: grey[200]}}>
+            }}>
+                <Grid item xs={2} sx={{ backgroundColor: grey[200] }}>
                     {!isLgOrLess &&
                         <Box sx={{
                             m: 0,
