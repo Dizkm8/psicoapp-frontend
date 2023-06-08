@@ -9,3 +9,8 @@ export function getWeekStartDay(date: Date): Date
     result.setDate(result.getDate() - dayOfWeek);
     return result;
 }
+export function getTimeZone(date: Date): number
+{
+    let result = - date.getTimezoneOffset() / 60;
+    return result;
+}
