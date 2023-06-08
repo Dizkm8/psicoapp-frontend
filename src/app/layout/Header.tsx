@@ -15,7 +15,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { useEffect, useState } from 'react';
 import { grey, purple } from '@mui/material/colors';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, Navigate } from 'react-router-dom';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -129,7 +129,17 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                         </React.Fragment>
                     ))}
 
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+                    <Typography
+                        variant="h6"
+                        component={Link}
+                        to="/home"
+                        sx={{
+                            flexGrow: 1,
+                            fontWeight: 'bold',
+                            textDecoration: 'none',
+                            color: 'inherit',
+                        }}
+                    >
                         PsicoApp
                     </Typography>
                     {auth && (
