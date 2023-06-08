@@ -19,18 +19,49 @@ import LabelIcon from '@mui/icons-material/Label';
 import { PurpleButton } from '../../app/components/PurpleButton';
 import { grey, purple } from '@mui/material/colors';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
 
 import { login } from "../account/accountSlice";
 import FeedPost from "../../app/models/FeedPost";
 import { toast } from "react-toastify";
+import {useEffect, useState} from "react";
+import LoadingComponent from "../../app/layout/LoadingComponent";
+import User from "../../app/models/User";
 
 export default function FeedPostForm() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
+    const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading(true);
+        agent.Tags.getTags()
+            .then((response) => {
+                setLoading(true);
+                setTags(response);
+            })
+            .catch((error) => {
+                toast.error('Ha ocurrido un problema cargando la información', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <LoadingComponent message='Cargando información...' />
 
     const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
         setOpenConfirmation(false)
@@ -42,11 +73,8 @@ export default function FeedPostForm() {
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
-                        if (err.data.message === "The Content don't follow the rules to post")
-                            setError('content', { type: 'custom', message: 'El contenido no cumple con las reglas de publicación.' });
-                        else if (err.data.message === "The Title don't follow the rules to post")
-                            setError('title', { type: 'custom', message: 'El título no cumple con las reglas de publicación.' });
-                        return;
+                        error = 'El título y/o contenido no cumple con las reglas de publicación.';
+                        break;
                     case 404:
                         setError('tagId', { type: 'custom', message: 'Se ha seleccionado una etiqueta inválida.' });
                         return;
@@ -151,9 +179,9 @@ export default function FeedPostForm() {
                                             defaultValue={1}
                                             render={({ field }) =>
                                                 <Select {...field}>
-                                                    <MenuItem value={1}>Tag 1</MenuItem>
-                                                    <MenuItem value={9}>Tag 2</MenuItem>
-                                                    <MenuItem value={3}>Tag 3</MenuItem>
+                                                    { tags.map(({id, name}) => {
+                                                    return <MenuItem value={id}>{name}</MenuItem> })
+                                                    }
                                                 </Select>
                                             }
                                             rules={{ required: 'Campo obligatorio' }}

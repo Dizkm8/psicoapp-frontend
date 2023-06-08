@@ -41,7 +41,10 @@ export default function LoginPage() {
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
-                        error = 'Las credenciales son incorrectas o su usuario esta deshabilitado.'
+                        if (err.data === 'Invalid credentials')
+                            error = 'Las credenciales son incorrectas.'
+                        else if(err.data === 'User is not enabled, please contact support')
+                            error = 'Su usuario está deshabilitado. Por favor contáctese con el administrador.'
                         break;
                     case 500:
                         error = 'Ha ocurrido un problema interno. Intente nuevamente.'

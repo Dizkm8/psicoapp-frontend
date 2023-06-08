@@ -20,12 +20,16 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import {useSelector} from "react-redux";
+import {selectName} from "../../features/account/accountSlice";
 
 export default function Header({ children }: React.PropsWithChildren<{}>) {
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isLgOrLess, setIsLgOrLess] = useState(false);
     const isLgBreakpoint = useMediaQuery('(max-width: 1200px)'); // Define your XL breakpoint here
+    const userName: string | null = useSelector(selectName);
+
 
     useEffect(() => {
         setIsLgOrLess(isLgBreakpoint);
@@ -157,7 +161,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                             >
                                 <MenuItem disabled sx={{ mb: 1 }}>
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        NombreEspecialista
+                                        {userName? userName : 'Invitado'}
                                     </Typography>
                                 </MenuItem>
                                 <MenuItem component={NavLink} to="/account/edit">Perfil</MenuItem>
