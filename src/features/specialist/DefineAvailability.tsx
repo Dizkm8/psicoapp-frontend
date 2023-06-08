@@ -38,7 +38,7 @@ export default function DefineAvailability() {
 
     }, [startDate]);
 
-    if(loading) return <LoadingComponent message='Cargando disponibilidad...' />
+    if (loading) return <LoadingComponent message='Cargando disponibilidad...' />
 
     const handleUpdate = (date: Date, select: boolean) => {
         if (select) {
@@ -98,8 +98,18 @@ export default function DefineAvailability() {
                     {"¿Está seguro que quiere realizar los cambios?"}
                 </DialogTitle>
                 <DialogActions>
-                    <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
-                    <Button onClick={handleSubmit} autoFocus>
+                    <Button
+                        onClick={() => { setOpenConfirmation(false) }}
+                        color='error'
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        onClick={handleSubmit}
+                        autoFocus
+                        variant='contained'
+                        color='success'
+                    >
                         Aceptar
                     </Button>
                 </DialogActions>
