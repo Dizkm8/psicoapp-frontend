@@ -1,6 +1,5 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -9,12 +8,13 @@ import { PurpleButton } from '../../app/components/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link } from "react-router-dom";
 import agent from '../../app/api/agent';
 import axios from 'axios';
 import {useDispatch} from "react-redux";
 import {login} from "./accountSlice";
 import {store} from "../../app/store/store";
+import {toast} from "react-toastify";
 
 type LoginFormValues = {
     userId: string;
@@ -23,7 +23,7 @@ type LoginFormValues = {
 
 export default function LoginPage() {
 
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset, setError } = useForm({ mode: 'onTouched' });
     const navigate = useNavigate();
     const dispatch = useDispatch<typeof store.dispatch>()
 
@@ -33,8 +33,29 @@ export default function LoginPage() {
                 dispatch(login(response.token));
                 navigate("/home");
             })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                let error: string = "Ha habido un error. Intente nuevamente.";
+                switch (err.status)
+                {
+                    case 400:
+                        error = 'Las credenciales son incorrectas o su usuario esta deshabilitado.'
+                        break;
+                    case 500:
+                        error = 'Ha ocurrido un problema interno. Intente nuevamente.'
+                        break;
+                    default:
+                        break;
+                }
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
             })
             .finally(() => {
                 reset();
@@ -45,7 +66,7 @@ export default function LoginPage() {
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
-            <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square
+            <Grid item md={12} lg={6} xl={6} component={Paper} elevation={6} square
                 sx={{
                     display: 'flex',
                     height: '100vh',
@@ -63,7 +84,7 @@ export default function LoginPage() {
                     <Typography component='h2' variant='h3'>
                         Iniciar sesión
                     </Typography>
-                    <Typography variant='h6' >¿No tienes cuenta? <Link href="/register" variant="body2">
+                    <Typography variant='h6' >¿No tienes cuenta? <Link to="/register">
                         {"Registrarse"}
                     </Link></Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitButton)} sx={{ mt: 1 }}>
@@ -107,14 +128,16 @@ export default function LoginPage() {
                             Iniciar sesión
                         </PurpleButton>
                     </Box>
-                    <Button variant="text" fullWidth>Ingresar como invitado</Button>
+                    <Button variant="text" onClick={() => navigate('/home')} fullWidth>Ingresar como invitado</Button>
                 </Box>
             </Grid>
             <Grid
                 item
                 xs={false}
-                sm={6}
-                md={6}
+                sm={false}
+                md={false}
+                lg={6}
+                xl={6}
                 sx={{
                     bgcolor: purple[500],
                     display: 'flex',

@@ -1,5 +1,6 @@
 import WeekPicker from "./WeekPicker";
 import {useState} from "react";
+import {getDayOfWeek} from "../utils/dateHelper";
 
 interface Props
 {
@@ -31,12 +32,12 @@ export default function AvailabilityPicker({startDate, occupiedDates, selection,
             if(endDate < date)
             {continue}
 
-            const day = date.getDay() === 0? 6: date.getDay() - 1;
+            const day = getDayOfWeek(date);
             const hour = date.getHours();
             result[hour][day] = true;
         }
         return result;
-    };
+    }
 
 
     const handleClick = (day: number, hour: number, date: Date)=>
