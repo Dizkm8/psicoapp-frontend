@@ -22,7 +22,6 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import {useNavigate} from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
-import PermanentDrawerLeft from '../../app/components/Layout';
 
 import {login} from "../account/accountSlice";
 import FeedPost from "../../app/models/FeedPost";
@@ -74,7 +73,7 @@ export default function FeedPostForm()
     };
 
     return (
-        <> <PermanentDrawerLeft></PermanentDrawerLeft>
+        <> 
         <Grid container component="main"
               spacing={0}
               flexDirection="column"
