@@ -182,8 +182,19 @@ export default function ChangePasswordForm() {
                                         {"¿Está seguro que quiere realizar el cambio?\n Tendrá que iniciar sesión nuevamente."}
                                     </DialogTitle>
                                     <DialogActions>
-                                        <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
-                                        <Button type="submit" form="password-form" autoFocus>
+                                        <Button
+                                            onClick={() => { setOpenConfirmation(false) }}
+                                            color='error'
+                                        >
+                                            Cancelar
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            form="password-form"
+                                            autoFocus
+                                            variant='contained'
+                                            color='success'
+                                        >
                                             Aceptar
                                         </Button>
                                     </DialogActions>
