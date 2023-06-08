@@ -1,40 +1,38 @@
 import * as React from 'react';
 import {
     TextField,
-    Link,
     Box,
     Card,
     Dialog,
     DialogTitle,
-    DialogContent,
     Stack,
     Typography,
     Button,
-    DialogActions, CardActions, CardHeader, CardContent, Select, FormControl, MenuItem, FormHelperText
+    DialogActions, CardActions, CardContent, Select, FormControl, MenuItem, FormHelperText
 } from '@mui/material';
 import TitleIcon from '@mui/icons-material/Title';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import LabelIcon from '@mui/icons-material/Label';
-import { PurpleButton } from '../../app/components/PurpleButton';
 import { grey, purple } from '@mui/material/colors';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import {useNavigate} from "react-router-dom";
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
 
-import { login } from "../account/accountSlice";
 import FeedPost from "../../app/models/FeedPost";
 import { toast } from "react-toastify";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
-import User from "../../app/models/User";
+import { LoadingButton } from '@mui/lab';
 
 export default function FeedPostForm() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const [loading, setLoading] = useState(false);
+    const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+    const [isFormError, setIsFormError] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,14 +60,31 @@ export default function FeedPostForm() {
     }, []);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
+    if (isSubmittingForm) return <LoadingComponent color='success' message='Agregando noticia...' />
 
     const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
-        setOpenConfirmation(false)
+        setIsSubmittingForm(true);
+        setOpenConfirmation(false);
         agent.Feed.createPost(data)
-            .then(response => {
-                navigate("/home");
+            .then((response) => {
+                toast.success('Noticia creada correctamente', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+                if (!isFormError) {
+                    setTimeout(() => {
+                        navigate('/home');
+                    }, 3000);
+                }
             })
             .catch(err => {
+                setIsFormError(true);
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
@@ -83,11 +98,10 @@ export default function FeedPostForm() {
                         break;
                     default:
                         break;
-
                 }
                 toast.error(error, {
                     position: "top-center",
-                    autoClose: 5000,
+                    autoClose: 4000,
                     hideProgressBar: false,
                     closeOnClick: false,
                     pauseOnHover: true,
@@ -95,7 +109,12 @@ export default function FeedPostForm() {
                     progress: undefined,
                     theme: "light",
                 });
+            })
+            .finally(() => {
+                setIsSubmittingForm(false);
+                setIsFormError(false);
             });
+        ;
     };
 
     return (
@@ -171,16 +190,17 @@ export default function FeedPostForm() {
                                         <LabelIcon sx={{ mr: 1, my: 0.5 }} /> <Typography variant="h6">Etiqueta</Typography>
                                     </Box>
                                     <FormControl fullWidth error={!!errors.tagId} sx={{
-                                                backgroundColor: 'white',
-                                            }}>
+                                        backgroundColor: 'white',
+                                    }}>
                                         <Controller
                                             name="tagId"
                                             control={control}
                                             defaultValue={1}
                                             render={({ field }) =>
                                                 <Select {...field}>
-                                                    { tags.map(({id, name}) => {
-                                                    return <MenuItem value={id}>{name}</MenuItem> })
+                                                    {tags.map(({ id, name }) => {
+                                                        return <MenuItem value={id}>{name}</MenuItem>
+                                                    })
                                                     }
                                                 </Select>
                                             }
@@ -195,8 +215,19 @@ export default function FeedPostForm() {
                                         {"¿Está seguro que quiere agregar la noticia?"}
                                     </DialogTitle>
                                     <DialogActions>
-                                        <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
-                                        <Button onClick={() => { setOpenConfirmation(false) }} type="submit" form="post-form" autoFocus>
+                                        <Button
+                                            color='error'
+                                            onClick={() => { setOpenConfirmation(false) }}
+                                        >Cancelar
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            form="post-form"
+                                            autoFocus
+                                            variant='contained'
+                                            color='success'
+                                            onClick={() => { setOpenConfirmation(false) }}
+                                        >
                                             Aceptar
                                         </Button>
                                     </DialogActions>
@@ -205,7 +236,17 @@ export default function FeedPostForm() {
                         </Stack>
                     </CardContent>
                     <CardActions sx={{ flexDirection: 'row-reverse', m: '2' }}>
-                        <PurpleButton variant="contained" onClick={() => { setOpenConfirmation(true) }}> <AddToPhotosIcon sx={{ mr: 1, my: 0.5 }} /> Agregar Noticia</PurpleButton>
+                        <LoadingButton
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => { setOpenConfirmation(true) }}
+                            loading={isSubmittingForm}
+                        >
+                            <AddToPhotosIcon
+                                sx={{ mr: 1, my: 0.5 }}
+                            />
+                            Agregar Noticia
+                        </LoadingButton>
                     </CardActions>
                 </Card>
             </Grid>
