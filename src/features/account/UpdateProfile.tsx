@@ -27,7 +27,6 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import BadgeIcon from '@mui/icons-material/Badge';
 import EmailIcon from '@mui/icons-material/Email';
-import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
@@ -59,7 +58,15 @@ export default function UpdateProfile() {
                         setError('phone',{type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.'});
                     if(err.data.errors.Gender)
                         setError('gender',{type: 'required', message: 'El género es obligatorio.'});
-                    //TODO: Agregar manejo de error de email
+                    if(err.data.errors.Email)
+                    {
+                        if (err.data.errors.Email.includes('Email is required'))
+                            setError('email', {type: 'required'});
+                        else if (err.data.errors.Email.includes('Invalid email format'))
+                            setError('email', { type: 'pattern'});
+                    }
+                    else if(err.data.error === "Email already exists")
+                        setError('email', {type: 'custom', message: 'El correo ingresado ya existe.'});
                     return;
                 case 500:
                     error = 'Ha ocurrido un problema interno. Intente nuevamente.'
@@ -107,6 +114,7 @@ export default function UpdateProfile() {
                                                error={!!errors.name}
                                                helperText={errors?.name?.message as string}
                                                {...field} />}
+                                rules={{required: 'Campo obligatorio'}}
                             />
                             <Grid container item spacing={2}>
                                 <Grid item xs={6}>
@@ -159,6 +167,7 @@ export default function UpdateProfile() {
                                                        helperText={errors?.gender?.message as string}
                                                        {...field}
                                             />}
+                                        rules={{required: 'Campo obligatorio'}}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -178,7 +187,8 @@ export default function UpdateProfile() {
                                                            startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
                                                        }}
                                                        {...field} />}
-                                        rules={{pattern: {
+                                        rules={{ required: 'Campo obligatorio',
+                                            pattern: {
                                                 value: /^\d{8}$/,
                                                 message: 'El número debe ser de 8 dígitos'
                                             }
@@ -200,7 +210,8 @@ export default function UpdateProfile() {
                                                helperText={errors?.email?.message as string}
                                                {...field}
                                     />}
-                                rules={{pattern: {
+                                rules={{ required: 'Campo obligatorio',
+                                    pattern: {
                                         value: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/,
                                         message: 'Correo inválido'
                                     }}}
