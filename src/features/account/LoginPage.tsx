@@ -115,6 +115,7 @@ export default function LoginPage() {
                                     margin="normal"
                                     fullWidth
                                     label="Contraseña"
+                                    type="password"
                                     autoComplete="current-password"
                                     error={!!errors.password}
                                     helperText={errors.password?.message as string}
