@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
             { path: '/account', element: <RequireAuth />, children:
             [
                 { path: '', element: <Profile />},
-                { path: 'edit', element: <UpdateProfile /> },
+                { path: 'edit', element: <Profile /> },
             ]},
             { path: '/specialist', element: <RequireAuth role={3} />, children:
                     [
