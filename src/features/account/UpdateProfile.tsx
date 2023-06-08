@@ -86,7 +86,7 @@ export default function UpdateProfile() {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              sx={{ minHeight: '100vh' }}>
+        >
             <Card sx={{width: '75%'}}>
                 <CardContent>
                     <Card sx={{color: 'white', bgcolor: 'gray', my: 2}}>
