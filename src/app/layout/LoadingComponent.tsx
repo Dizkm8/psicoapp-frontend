@@ -8,14 +8,20 @@ interface Props {
 export default function LoadingComponent({ message = 'Loading...' }: Props) {
     return (
         <Backdrop open={true} invisible={true}>
-            <Box display='flex' justifyContent='center' alignItems='center' height='100vh'>
-                <CircularProgress size={100} color='secondary' />
-                <Typography variant='h4'
-                    sx={{
-                        justifyContent: 'center',
-                        position: 'fixed',
-                        top: '60%'
-                    }}>
+            <Box display='flex'
+                flexDirection='column'
+                justifyContent='center'
+                alignItems='center'
+                height='100%'
+                width='100%'
+            >
+                <CircularProgress
+                    size={100}
+                    color='secondary'
+                />
+                <Typography
+                    variant='h4'
+                >
                     {message}
                 </Typography>
             </Box>
