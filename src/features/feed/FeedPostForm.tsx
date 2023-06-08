@@ -45,11 +45,8 @@ export default function FeedPostForm()
                 switch (err.status)
                 {
                     case 400:
-                        if(err.data.message === "The Content don't follow the rules to post")
-                            setError('content',{type: 'custom', message: 'El contenido no cumple con las reglas de publicación.'});
-                        else if(err.data.message === "The Title don't follow the rules to post")
-                            setError('title',{type: 'custom', message: 'El título no cumple con las reglas de publicación.'});
-                        return;
+                        error = 'El título y/o contenido no cumple con las reglas de publicación.';
+                        break;
                     case 404:
                         setError('tagId',{type: 'custom', message: 'Se ha seleccionado una etiqueta inválida.'});
                         return;
