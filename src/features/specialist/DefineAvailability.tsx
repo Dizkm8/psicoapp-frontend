@@ -64,6 +64,8 @@ export default function DefineAvailability() {
 
     const handleSubmit = () => {
         setOpenConfirmation(false);
+        if(selection.length === 0)
+            return;
         console.log(selection);
         agent.Specialists.addAvailability(selection.map((element) => { return { startTime: element } }))
             .then(() => navigate("/home"))

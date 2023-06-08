@@ -227,7 +227,7 @@ export default function UpdateProfile({ user }: Props) {
                                 </DialogTitle>
                                 <DialogActions>
                                     <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
-                                    <Button type="submit" form="update-profile-form" autoFocus>
+                                    <Button onClick={() => { setOpenConfirmation(false) }} type="submit" form="update-profile-form" autoFocus>
                                         Aceptar
                                     </Button>
                                 </DialogActions>

@@ -176,7 +176,7 @@ export default function ChangePasswordForm()
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button onClick={()=>{setOpenConfirmation(false)}}>Cancelar</Button>
-                                        <Button type="submit" form="password-form" autoFocus>
+                                        <Button onClick={() => { setOpenConfirmation(false) }} type="submit" form="password-form" autoFocus>
                                             Aceptar
                                         </Button>
                                     </DialogActions>

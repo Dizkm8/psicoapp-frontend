@@ -196,7 +196,7 @@ export default function FeedPostForm() {
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
-                                        <Button type="submit" form="post-form" autoFocus>
+                                        <Button onClick={() => { setOpenConfirmation(false) }} type="submit" form="post-form" autoFocus>
                                             Aceptar
                                         </Button>
                                     </DialogActions>
