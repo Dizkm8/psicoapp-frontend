@@ -83,7 +83,7 @@ export default function FeedPostForm()
               sx={{ minHeight: '100vh' }}>
             <Card sx={{width: '75%'}}>
                 <CardContent>
-                    <Card sx={{color: 'white', bgcolor: 'gray', my: 2}}>
+                    <Card sx={{color: 'white', bgcolor: purple[400], my: 2}}>
                         <Typography align="center" sx={{my: 2, fontWeight: 'bold' }} variant="h4">Nueva Noticia</Typography>
                     </Card>
                     <Stack>
