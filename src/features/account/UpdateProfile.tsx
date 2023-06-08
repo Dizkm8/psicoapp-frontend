@@ -48,17 +48,17 @@ export default function UpdateProfile() {
             switch (err.status)
             {
                 case 400:
-                    if(err.data.errors.Name)
+                    if(err.data.errors?.Name)
                         setError('name',{type: 'minLength', message: 'El nombre debe tener al menos 2 caracteres.'});
-                    if(err.data.errors.FirstLastName)
+                    if(err.data.errors?.FirstLastName)
                         setError('firstLastName',{type: 'minLength', message: 'El primer apellido debe tener al menos 2 caracteres.'});
-                    if(err.data.errors.SecondLastName)
+                    if(err.data.errors?.SecondLastName)
                         setError('secondLastName',{type: 'minLength', message: 'El segundo apellido debe tener al menos 2 caracteres.'});
-                    if(err.data.errors.Phone)
+                    if(err.data.errors?.Phone)
                         setError('phone',{type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.'});
-                    if(err.data.errors.Gender)
+                    if(err.data.errors?.Gender)
                         setError('gender',{type: 'required', message: 'El género es obligatorio.'});
-                    if(err.data.errors.Email)
+                    if(err.data.errors?.Email)
                     {
                         if (err.data.errors.Email.includes('Email is required'))
                             setError('email', {type: 'required'});
