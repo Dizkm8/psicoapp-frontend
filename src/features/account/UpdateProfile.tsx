@@ -39,6 +39,7 @@ export default function UpdateProfile({ user }: Props) {
     const navigate = useNavigate();
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
+        setOpenConfirmation(false);
         const completeData: User = { ...data }; // Patch while the models aren't updated
         console.log(completeData);
         agent.Users.updateProfileInformation(completeData)
