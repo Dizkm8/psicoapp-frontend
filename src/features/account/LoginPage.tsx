@@ -8,13 +8,15 @@ import { PurpleButton } from '../../app/components/PurpleButton';
 import { purple } from '@mui/material/colors';
 import { Button } from '@mui/material';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import {useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import agent from '../../app/api/agent';
 import axios from 'axios';
-import {useDispatch} from "react-redux";
-import {login} from "./accountSlice";
-import {store} from "../../app/store/store";
-import {toast} from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "./accountSlice";
+import { store } from "../../app/store/store";
+import { toast } from "react-toastify";
+import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
 
 type LoginFormValues = {
     userId: string;
@@ -26,8 +28,10 @@ export default function LoginPage() {
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, reset, setError } = useForm({ mode: 'onTouched' });
     const navigate = useNavigate();
     const dispatch = useDispatch<typeof store.dispatch>()
+    const [loading, setLoading] = useState(false);
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
+        setLoading(true);
         agent.Login.login(data.userId, data.password)
             .then(response => {
                 dispatch(login(response.token));
@@ -35,8 +39,7 @@ export default function LoginPage() {
             })
             .catch(err => {
                 let error: string = "Ha habido un error. Intente nuevamente.";
-                switch (err.status)
-                {
+                switch (err.status) {
                     case 400:
                         if (err.data === 'Invalid credentials')
                             error = 'Las credenciales son incorrectas.'
@@ -62,6 +65,7 @@ export default function LoginPage() {
             })
             .finally(() => {
                 reset();
+                setLoading(false);
             });
     };
 
@@ -122,15 +126,17 @@ export default function LoginPage() {
                                     {...field} />}
                             rules={{ required: 'Campo obligatorio' }}
                         />
-                        <PurpleButton
+                        <LoadingButton
                             disabled={!isValid}
                             type="submit"
                             fullWidth
                             variant="contained"
+                            color="secondary"
                             sx={{ mt: 3, mb: 2 }}
+                            loading={loading}
                         >
                             Iniciar sesión
-                        </PurpleButton>
+                        </LoadingButton>
                     </Box>
                     <Button variant="text" onClick={() => navigate('/home')} fullWidth>Ingresar como invitado</Button>
                 </Box>
