@@ -27,24 +27,32 @@ export default function RegisterPage() {
             })
             .catch(err => {
                 let error: string = "Ha habido un error. Intente nuevamente.";
+                console.log(err)
                 switch (err.status)
                 {
                     case 400:
-                        if(err.data.errors.Name)
+                        if(err.data.errors?.Name)
                             setError('name',{type: 'minLength', message: 'El nombre debe tener al menos 2 caracteres.'});
-                        if(err.data.errors.FirstLastName)
+                        if(err.data.errors?.FirstLastName)
                             setError('firstLastName',{type: 'minLength', message: 'El primer apellido debe tener al menos 2 caracteres.'});
-                        if(err.data.errors.SecondLastName)
+                        if(err.data.errors?.SecondLastName)
                             setError('secondLastName',{type: 'minLength', message: 'El segundo apellido debe tener al menos 2 caracteres.'});
-                        if(err.data.errors.Phone)
+                        if(err.data.errors?.Phone)
                             setError('phone',{type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.'});
-                        if(err.data.errors.Gender)
+                        if(err.data.errors?.Gender)
                             setError('gender',{type: 'required', message: 'El género es obligatorio.'});
-                        if(err.data.errors.Email)
-                            setError('email',{type: 'required', message: 'El correo ya está usado.'});
-                        if(err.data.errors.Id)
+                        if(err.data.errors?.Email)
+                        {
+                            if (err.data.errors.Email.includes('Email is required'))
+                                setError('email', {type: 'required'});
+                            else if (err.data.errors.Email.includes('Invalid email format'))
+                                setError('email', { type: 'pattern'});
+
+                        } else if (err.data.Email)
+                            setError('email', { type: 'custom', message: "El correo ingresado ya existe."});
+                        if(err.data.Id)
                             setError('id',{type: 'required', message: 'El número de identificación ya se encuentra registrado.'});
-                        if(err.data.errors.Password)
+                        if(err.data.errors?.Password)
                             setError('password',{type: 'maxLength', message: 'La contraseña debe tener un largo entre 10 a 15 caracteres.'});
                         return;
                     case 500:
