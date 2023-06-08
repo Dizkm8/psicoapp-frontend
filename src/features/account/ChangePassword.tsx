@@ -4,6 +4,8 @@ import {useNavigate} from "react-router-dom";
 import agent from "../../app/api/agent";
 import {toast} from "react-toastify";
 import Grid from "@mui/material/Grid";
+import { purple } from '@mui/material/colors';
+import { PurpleButton } from '../../app/components/PurpleButton';
 import {
     Box, Button,
     Card, CardActions,
@@ -108,10 +110,10 @@ export default function ChangePasswordForm()
                   flexDirection="column"
                   alignItems="center"
                   justifyContent="center"
-                  sx={{ minHeight: '100vh' }}>
+            >
                 <Card sx={{width: '75%'}}>
                     <CardContent>
-                        <Card sx={{color: 'white', bgcolor: 'gray', my: 2}}>
+                        <Card sx={{color: 'white', bgcolor: purple[400], my: 2}}>
                             <Typography align="center" sx={{my: 2, fontWeight: 'bold' }} variant="h4">Cambiar Contraseña</Typography>
                         </Card>
                         <Stack>
@@ -183,7 +185,7 @@ export default function ChangePasswordForm()
                         </Stack>
                     </CardContent>
                     <CardActions sx={{ flexDirection: 'row-reverse', m: '2' }}>
-                        <Button variant="contained" onClick={()=>{setOpenConfirmation(true)}}> <AssignmentTurnedInIcon sx={{ mr: 1, my: 0.5 }} /> Guardar cambios</Button>
+                        <PurpleButton variant="contained" onClick={()=>{setOpenConfirmation(true)}}> <AssignmentTurnedInIcon sx={{ mr: 1, my: 0.5 }} /> Guardar cambios</PurpleButton>
                     </CardActions>
                 </Card>
             </Grid>
