@@ -26,11 +26,42 @@ import Grid from "@mui/material/Grid";
 import { login } from "../account/accountSlice";
 import FeedPost from "../../app/models/FeedPost";
 import { toast } from "react-toastify";
+import {useEffect, useState} from "react";
+import LoadingComponent from "../../app/layout/LoadingComponent";
+import User from "../../app/models/User";
 
 export default function FeedPostForm() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
+    const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading(true);
+        agent.Tags.getTags()
+            .then((response) => {
+                setLoading(true);
+                setTags(response);
+            })
+            .catch((error) => {
+                toast.error('Ha ocurrido un problema cargando la información', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <LoadingComponent message='Cargando información...' />
 
     const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
         setOpenConfirmation(false)
@@ -148,9 +179,9 @@ export default function FeedPostForm() {
                                             defaultValue={1}
                                             render={({ field }) =>
                                                 <Select {...field}>
-                                                    <MenuItem value={1}>Tag 1</MenuItem>
-                                                    <MenuItem value={9}>Tag 2</MenuItem>
-                                                    <MenuItem value={3}>Tag 3</MenuItem>
+                                                    { tags.map(({id, name}) => {
+                                                    return <MenuItem value={id}>{name}</MenuItem> })
+                                                    }
                                                 </Select>
                                             }
                                             rules={{ required: 'Campo obligatorio' }}
