@@ -4,7 +4,7 @@ import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
 
-const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
+const sleep = () => new Promise(resolve => setTimeout(resolve, 2000));
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
@@ -79,11 +79,18 @@ const Users = {
     updateProfileInformation: (newData: User) =>
         requests.put('Users/profile-information', newData),
 }
+
+const Tags = {
+    getTags: () =>
+        requests.get('Tags')
+}
+
 const agent = {
     Login,
     Specialists,
     Feed,
-    Users
+    Users,
+    Tags
 }
 
 export default agent;

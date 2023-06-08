@@ -1,78 +1,75 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import AvailabilityPicker from "../../app/components/AvailabilityPicker";
-import {Box, Button, Dialog, DialogActions, DialogTitle, IconButton} from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
-import PermanentDrawerLeft from "../../app/components/Layout";
-import {getWeekStartDay} from "../../app/utils/dateHelper";
+import { getWeekStartDay } from "../../app/utils/dateHelper";
 import agent from "../../app/api/agent";
-import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { PurpleButton } from "../../app/components/PurpleButton";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
-const getDefaultStartDate = () =>
-{
+const getDefaultStartDate = () => {
     let date = new Date(Date.now());
     return getWeekStartDay(date);
 };
 
-export default function DefineAvailability()
-{
+export default function DefineAvailability() {
     const [selection, setSelection] = useState(new Array<string>());
     const [startDate, setStartDate] = useState(getDefaultStartDate());
-    const [occupiedDates, setOccupiedDates ] = useState(new Array<string>());
-    const [loading, setLoading] = useState(true);
+    const [occupiedDates, setOccupiedDates] = useState(new Array<string>());
+    const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
-    useEffect( () => {
+
+    useEffect(() => {
         setLoading(true);
         agent.Specialists.getAvailability(startDate.toDateString()).then((response) => {
-        const result = response.map((slot: {startTime: string; }) => slot.startTime);
-        setOccupiedDates(result);
-        setLoading(false)
-        }).catch((err) => console.log(err))
-    }, [startDate]);
-    console.log(occupiedDates);
-    const [openConfirmation, setOpenConfirmation] = React.useState(false);
+            const result = response.map((slot: { startTime: string; }) => slot.startTime);
+            setOccupiedDates(result);
+            setLoading(false)
+        })
+            .catch((err) => console.log(err))
+            .finally(() => setLoading(false));
 
-    const handleUpdate = (date: Date, select: boolean) =>
-    {
-        if(select)
-        {
+    }, [startDate]);
+
+    if(loading) return <LoadingComponent message='Cargando disponibilidad...' />
+
+    const handleUpdate = (date: Date, select: boolean) => {
+        if (select) {
             const newSelection = [...selection, date.toISOString()];
             setSelection(newSelection);
         }
-        else
-        {
+        else {
             const newSelection = selection.filter((selectedDate) => selectedDate !== date.toISOString());
             setSelection(newSelection);
         }
     };
 
-    const handleNextWeek = () =>
-    {
+    const handleNextWeek = () => {
         let newDate: Date = new Date(startDate);
         newDate.setDate(startDate.getDate() + 7);
         setStartDate(newDate);
     };
-    const handlePrevWeek = () =>
-    {
+    const handlePrevWeek = () => {
         let newDate: Date = new Date(startDate);
         newDate.setDate(startDate.getDate() - 7);
         setStartDate(newDate);
     };
 
-    const handleSubmit = () =>
-    {
+    const handleSubmit = () => {
         setOpenConfirmation(false);
         console.log(selection);
-        agent.Specialists.addAvailability(selection.map((element) => {return {startTime: element}}))
+        agent.Specialists.addAvailability(selection.map((element) => { return { startTime: element } }))
             .then(() => navigate("/home"))
             .catch((err) => {
                 let error: string = "Ha habido un error. Intente nuevamente.";
-                switch (err.status)
-                {
+                switch (err.status) {
                     case 400:
                         error = "La fecha ya ha sido ingresada o se encuentra fuera del rango válido."
                         break;
@@ -92,16 +89,16 @@ export default function DefineAvailability()
             });
     };
 
-    return(
-        <>  <PermanentDrawerLeft></PermanentDrawerLeft>
+    return (
+        <>
 
             <Dialog open={openConfirmation}
-                    onClose={()=>{setOpenConfirmation(false)}}>
+                onClose={() => { setOpenConfirmation(false) }}>
                 <DialogTitle id="alert-dialog-title">
                     {"¿Está seguro que quiere realizar los cambios?"}
                 </DialogTitle>
                 <DialogActions>
-                    <Button onClick={()=>{setOpenConfirmation(false)}}>Cancelar</Button>
+                    <Button onClick={() => { setOpenConfirmation(false) }}>Cancelar</Button>
                     <Button onClick={handleSubmit} autoFocus>
                         Aceptar
                     </Button>
@@ -121,7 +118,7 @@ export default function DefineAvailability()
                     selection={selection}
                     onClick={handleUpdate}
                 />
-                <Box sx={{m: 2}}>
+                <Box sx={{ m: 2 }}>
                     <IconButton onClick={handlePrevWeek}>
                         <ArrowBackIosIcon />
                     </IconButton>
@@ -129,14 +126,14 @@ export default function DefineAvailability()
                         <ArrowForwardIosIcon />
                     </IconButton>
                 </Box>
-                <Button
+                <PurpleButton
                     variant="contained"
                     startIcon={<AddCircleIcon />}
-                    sx={{ justifySelf: 'end'}}
-                    onClick={()=>{setOpenConfirmation(true)}}
+                    sx={{ justifySelf: 'end' }}
+                    onClick={() => { setOpenConfirmation(true) }}
                 >
                     Confirmar cambios
-                </Button>
+                </PurpleButton>
             </Box>
         </>
     );
