@@ -1,6 +1,5 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,11 +10,12 @@ import { Button, InputAdornment } from '@mui/material';
 import {useForm, Controller, SubmitHandler, FieldValues} from "react-hook-form";
 import User from "../../app/models/User";
 import agent from "../../app/api/agent";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link } from "react-router-dom";
+import {toast} from "react-toastify";
 
 export default function RegisterPage() {
 
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({mode: 'onTouched'});
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError } = useForm({mode: 'onTouched'});
     const navigate = useNavigate();
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
@@ -23,10 +23,46 @@ export default function RegisterPage() {
         console.log(completeData);
         agent.Login.register(completeData)
             .then(response => {
-                navigate("/");
+                navigate("/home");
             })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                let error: string = "Ha habido un error. Intente nuevamente.";
+                switch (err.status)
+                {
+                    case 400:
+                        if(err.data.errors.Name)
+                            setError('name',{type: 'minLength', message: 'El nombre debe tener al menos 2 caracteres.'});
+                        if(err.data.errors.FirstLastName)
+                            setError('firstLastName',{type: 'minLength', message: 'El primer apellido debe tener al menos 2 caracteres.'});
+                        if(err.data.errors.SecondLastName)
+                            setError('secondLastName',{type: 'minLength', message: 'El segundo apellido debe tener al menos 2 caracteres.'});
+                        if(err.data.errors.Phone)
+                            setError('phone',{type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.'});
+                        if(err.data.errors.Gender)
+                            setError('gender',{type: 'required', message: 'El género es obligatorio.'});
+                        if(err.data.errors.Email)
+                            setError('email',{type: 'required', message: 'El correo ya está usado.'});
+                        if(err.data.errors.Id)
+                            setError('id',{type: 'required', message: 'El número de identificación ya se encuentra registrado.'});
+                        if(err.data.errors.Password)
+                            setError('password',{type: 'maxLength', message: 'La contraseña debe tener un largo entre 10 a 15 caracteres.'});
+                        return;
+                    case 500:
+                        error = 'Ha ocurrido un problema interno. Intente nuevamente.'
+                        break;
+                    default:
+                        break;
+                }
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
             })
     };
 
@@ -50,7 +86,7 @@ export default function RegisterPage() {
                     <Typography component='h2' variant='h3'>
                         Registrarse
                     </Typography>
-                    <Typography variant='h6' >¿Ya tienes cuenta? <Link href="/" variant="body2">
+                    <Typography variant='h6' >¿Ya tienes cuenta? <Link to="/login" >
                         {"Iniciar sesión"}
                     </Link></Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit(handleSubmitButton)} sx={{ mt: 1 }}>

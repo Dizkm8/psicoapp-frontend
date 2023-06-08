@@ -10,7 +10,7 @@ import {
     Stack,
     Typography,
     Button,
-    DialogActions, CardActions, CardHeader, CardContent
+    DialogActions, CardActions, CardHeader, CardContent, Select, FormControl, MenuItem, FormHelperText
 } from '@mui/material';
 import TitleIcon from '@mui/icons-material/Title';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -24,26 +24,57 @@ import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
 import PermanentDrawerLeft from '../../app/components/Layout';
 
+import {login} from "../account/accountSlice";
+import FeedPost from "../../app/models/FeedPost";
+import {toast} from "react-toastify";
 
 export default function FeedPostForm()
 {
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({mode: 'onTouched'});
+    const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset} = useForm<FeedPost>({mode: 'onTouched'});
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
+        setOpenConfirmation(false)
+        agent.Feed.createPost(data)
+            .then(response => {
+                navigate("/home");
+            })
+            .catch(err => {
+                let error: string = "Ha habido un error. Intente nuevamente.";
+                switch (err.status)
+                {
+                    case 400:
+                        if(err.data.message === "The Content don't follow the rules to post")
+                            setError('content',{type: 'custom', message: 'El contenido no cumple con las reglas de publicación.'});
+                        else if(err.data.message === "The Title don't follow the rules to post")
+                            setError('title',{type: 'custom', message: 'El título no cumple con las reglas de publicación.'});
+                        return;
+                    case 404:
+                        setError('tagId',{type: 'custom', message: 'Se ha seleccionado una etiqueta inválida.'});
+                        return;
+                    case 500:
+                        error = 'Ha ocurrido un problema interno. Intente nuevamente.'
+                        break;
+                    default:
+                        break;
+
+                }
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+            });
+    };
 
     return (
-        <> <PermanentDrawerLeft></PermanentDrawerLeft>  
-        <Dialog open={openConfirmation}
-                onClose={()=>{setOpenConfirmation(false)}}>
-            <DialogTitle id="alert-dialog-title">
-                {"¿Está seguro que quiere agregar la noticia?"}
-            </DialogTitle>
-            <DialogActions>
-                <Button onClick={()=>{setOpenConfirmation(false)}}>Cancelar</Button>
-                <Button onClick={()=>{setOpenConfirmation(false)}} autoFocus>
-                    Aceptar
-                </Button>
-            </DialogActions>
-        </Dialog>
+        <> <PermanentDrawerLeft></PermanentDrawerLeft>
         <Grid container component="main"
               spacing={0}
               flexDirection="column"
@@ -56,7 +87,7 @@ export default function FeedPostForm()
                         <Typography align="center" sx={{my: 2, fontWeight: 'bold' }} variant="h4">Nueva Noticia</Typography>
                     </Card>
                     <Stack>
-                        <Box>
+                        <Box component="form" id="post-form" noValidate onSubmit={handleSubmit(handleSubmitButton)} >
                             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                 <TitleIcon sx={{ mr: 1, my: 0.5 }} /> <Typography variant="h6">Título</Typography>
                             </Box>
@@ -98,19 +129,35 @@ export default function FeedPostForm()
                                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                     <LabelIcon sx={{ mr: 1, my: 0.5 }} /> <Typography variant="h6">Etiqueta</Typography>
                                 </Box>
-                                <Controller
-                                    name="tags"
-                                    control={control}
-                                    render={({ field }) =>
-                                        <TextField margin="dense"
-                                                   fullWidth
-                                                   autoComplete="tags"
-                                                   error={!!errors.tags}
-                                                   helperText={errors?.tags?.message as string}
-                                                   {...field} />}
-                                    rules={{required: 'Campo obligatorio'}}
-                                />
+                                <FormControl fullWidth error={!!errors.tagId}>
+                                    <Controller
+                                        name="tagId"
+                                        control={control}
+                                        defaultValue={1}
+                                        render={({ field }) =>
+                                            <Select {...field}>
+                                                <MenuItem value={1}>Tag 1</MenuItem>
+                                                <MenuItem value={9}>Tag 2</MenuItem>
+                                                <MenuItem value={3}>Tag 3</MenuItem>
+                                            </Select>
+                                        }
+                                        rules={{required: 'Campo obligatorio'}}
+                                    />
+                                    <FormHelperText>{errors?.tagId?.message as string}</FormHelperText>
+                                </FormControl>
                             </Box>
+                            <Dialog open={openConfirmation}
+                                    onClose={()=>{setOpenConfirmation(false)}}>
+                                <DialogTitle id="alert-dialog-title">
+                                    {"¿Está seguro que quiere agregar la noticia?"}
+                                </DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={()=>{setOpenConfirmation(false)}}>Cancelar</Button>
+                                    <Button type="submit" form="post-form" autoFocus>
+                                        Aceptar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </Box>
                     </Stack>
                 </CardContent>

@@ -70,7 +70,7 @@ export default function WeekPicker({startDate, occupiedDates, selectedDates, onC
                                         <TableCell align="center" key={cellDate.toISOString()}>
                                             <Button
                                                 onClick={() => onClick(day, hour, cellDate)}
-                                                disabled={occupiedDates.includes(cellDate.toISOString()) ||
+                                                disabled={occupiedDates.includes(cellDate.toISOString().split('.')[0]) ||
                                                     isOnRange}
                                                 variant="contained"
                                                 color={selectedDates[hour][day]? 'success': 'primary'}
