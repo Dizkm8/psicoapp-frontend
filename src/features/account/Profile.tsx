@@ -2,7 +2,6 @@ import Typography from "@mui/material/Typography";
 import {Box, Grid, Tab, Tabs} from '@mui/material';
 import * as React from "react";
 import ChangePassword from "./ChangePassword";
-import PermanentDrawerLeft from "../../app/components/Layout";
 import UpdateProfile from "./UpdateProfile";
 
 export default function Profile()

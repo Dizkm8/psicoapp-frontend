@@ -5,7 +5,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
-import PermanentDrawerLeft from "../../app/components/Layout";
 import {getWeekStartDay} from "../../app/utils/dateHelper";
 import agent from "../../app/api/agent";
 import {useNavigate} from "react-router-dom";
@@ -93,7 +92,7 @@ export default function DefineAvailability()
     };
 
     return(
-        <>  <PermanentDrawerLeft></PermanentDrawerLeft>
+        <> 
 
             <Dialog open={openConfirmation}
                     onClose={()=>{setOpenConfirmation(false)}}>
