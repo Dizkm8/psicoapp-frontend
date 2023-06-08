@@ -26,7 +26,11 @@ export const router = createBrowserRouter([
                     [
                         { path: 'availability', element: <DefineAvailability />},
                     ]},
-            { path: '/feed/create', element: <FeedPostForm /> },
+            { path: '/feed', element: <RequireAuth role={3} />, children:
+                    [
+                        {path: 'create', element: <FeedPostForm />}
+                    ]
+                    },
             { path: '/home', element: <HomePage /> },
         ]
     }]);
