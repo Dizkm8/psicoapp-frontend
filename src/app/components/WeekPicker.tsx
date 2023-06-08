@@ -1,6 +1,7 @@
 import {Box, Button, Card, Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import CheckIcon from '@mui/icons-material/Check';
+import {getTimeZone} from "../utils/dateHelper";
 
 const weekDays = Array.from(Array(7).keys());
 const dayHours = Array.from(Array(12).keys()).map((hour) => hour+8);
@@ -64,13 +65,17 @@ export default function WeekPicker({startDate, occupiedDates, selectedDates, onC
                                     cellDate.setDate(startDate.getDate() + day);
                                     cellDate.setHours(hour,0,0,0);
 
+                                    let dateOnTimeZone: Date = new Date(cellDate);
+                                    const dateTimeZone = getTimeZone(cellDate);
+                                    dateOnTimeZone.setHours(cellDate.getHours() + dateTimeZone);
+
                                     let isOnRange: boolean = (new Date(cellDate).setHours(0,0,0) <= Date.now()
                                         || maximumDate.getTime() <= new Date(cellDate).setHours(0,0,0));
                                     return (
                                         <TableCell align="center" key={cellDate.toISOString()}>
                                             <Button
                                                 onClick={() => onClick(day, hour, cellDate)}
-                                                disabled={occupiedDates.includes(cellDate.toISOString().split('.')[0]) ||
+                                                disabled={occupiedDates.includes(dateOnTimeZone.toISOString().split('.')[0]) ||
                                                     isOnRange}
                                                 variant="contained"
                                                 color={selectedDates[hour][day]? 'success': 'primary'}
