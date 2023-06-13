@@ -138,7 +138,7 @@ export default function LoginPage() {
                             Iniciar sesión
                         </LoadingButton>
                     </Box>
-                    <Button variant="text" onClick={() => navigate('/home')} fullWidth>Ingresar como invitado</Button>
+                    <Button variant="text" onClick={() => navigate('/home?guest=true')} fullWidth>Ingresar como invitado</Button>
                 </Box>
             </Grid>
             <Grid

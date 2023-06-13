@@ -22,14 +22,16 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useSelector } from "react-redux";
 import { selectName } from "../../features/account/accountSlice";
+import { useLocation } from 'react-router-dom';
 
 export default function Header({ children }: React.PropsWithChildren<{}>) {
+    const location = useLocation();
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isLgOrLess, setIsLgOrLess] = useState(false);
     const isLgBreakpoint = useMediaQuery('(max-width: 1200px)'); // Define your XL breakpoint here
     const userName: string | null = useSelector(selectName);
-
+    const isGuest = new URLSearchParams(location.search).get('guest') === 'true';
 
     useEffect(() => {
         setIsLgOrLess(isLgBreakpoint);
@@ -171,23 +173,25 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                             >
                                 <MenuItem disabled sx={{ mb: 1 }}>
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {userName ? userName : 'Invitado'}
+                                        {!isGuest ? userName : 'Invitado'}
                                     </Typography>
                                 </MenuItem>
-                                <MenuItem
-                                    onClick={handleClose}
-                                    component={NavLink}
-                                    to="/account/edit"
-                                >
-                                    Perfil
-                                </MenuItem>
+                                {!isGuest && (
+                                    <MenuItem
+                                        onClick={handleClose}
+                                        component={NavLink}
+                                        to="/account/edit"
+                                    >
+                                        Perfil
+                                    </MenuItem>
+                                )}
                                 <Divider />
                                 <MenuItem
                                     onClick={handleClose}
                                     component={NavLink}
                                     to="/login"
                                 >
-                                    Cerrar sesión
+                                    {isGuest ? "Iniciar sesión" : "Cerrar sesión"}
                                 </MenuItem>
                             </Menu>
                         </div>
