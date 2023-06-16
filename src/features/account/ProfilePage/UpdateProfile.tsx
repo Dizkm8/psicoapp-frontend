@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { PurpleButton } from '../../app/components/PurpleButton';
+import { PurpleButton } from '../../../app/components/PurpleButton';
 import { purple } from '@mui/material/colors';
 import {
     Button,
@@ -17,8 +17,8 @@ import {
     Stack
 } from '@mui/material';
 import { useForm, Controller, SubmitHandler, FieldValues } from "react-hook-form";
-import User from "../../app/models/User";
-import agent from "../../app/api/agent";
+import User from "../../../app/models/User";
+import agent from "../../../app/api/agent";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";

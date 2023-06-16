@@ -1,6 +1,6 @@
-import WeekPicker from "./WeekPicker";
+import WeekPicker from "../../../app/components/WeekPicker";
 import {useState} from "react";
-import {getDayOfWeek} from "../utils/dateHelper";
+import {getDayOfWeek} from "../../../app/utils/dateHelper";
 
 interface Props
 {

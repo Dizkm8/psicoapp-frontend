@@ -1,11 +1,11 @@
 import { Controller, FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import agent from "../../app/api/agent";
+import agent from "../../../app/api/agent";
 import { toast } from "react-toastify";
 import Grid from "@mui/material/Grid";
 import { purple } from '@mui/material/colors';
-import { PurpleButton } from '../../app/components/PurpleButton';
+import { PurpleButton } from '../../../app/components/PurpleButton';
 import {
     Box, Button,
     Card, CardActions,
@@ -18,7 +18,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import KeyIcon from '@mui/icons-material/Key';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { useDispatch } from "react-redux";
-import { signOff } from "./accountSlice";
+import { signOff } from "../accountSlice";
 
 interface PasswordForm {
     currentPassword?: string,
@@ -33,7 +33,7 @@ const passwordRules =
     maxLength: { value: 15, message: 'La contraseña no ouede tener más 15 caracteres.' }
 };
 
-export default function ChangePasswordForm() {
+export default function ChangePassword() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm({ mode: 'onTouched' });
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
