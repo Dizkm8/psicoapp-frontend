@@ -4,7 +4,7 @@ import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
 
-const sleep = () => new Promise(resolve => setTimeout(resolve, 2000));
+const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
