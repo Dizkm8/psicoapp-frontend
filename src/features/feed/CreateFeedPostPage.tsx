@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { LoadingButton } from '@mui/lab';
 
-export default function FeedPostForm() {
+export default function CreateFeedPostPage() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
@@ -226,6 +226,7 @@ export default function FeedPostForm() {
                                             autoFocus
                                             variant='contained'
                                             color='success'
+                                            onClick={() => { setOpenConfirmation(false) }}
                                         >
                                             Aceptar
                                         </Button>

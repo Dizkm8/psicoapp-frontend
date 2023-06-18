@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import AvailabilityPicker from "../../app/components/AvailabilityPicker";
+import AvailabilityPicker from "./AvailabilityPicker";
 import { Box, Button, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
-import { getWeekStartDay } from "../../app/utils/dateHelper";
-import agent from "../../app/api/agent";
+import { getWeekStartDay } from "../../../app/utils/dateHelper";
+import agent from "../../../app/api/agent";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { PurpleButton } from "../../app/components/PurpleButton";
-import LoadingComponent from "../../app/layout/LoadingComponent";
+import { PurpleButton } from "../../../app/components/PurpleButton";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 const getDefaultStartDate = () => {
     let date = new Date(Date.now());
     return getWeekStartDay(date);
 };
 
-export default function DefineAvailability() {
+export default function DefineAvailabilityPage() {
     const [selection, setSelection] = useState(new Array<string>());
     const [startDate, setStartDate] = useState(getDefaultStartDate());
     const [occupiedDates, setOccupiedDates] = useState(new Array<string>());
@@ -64,6 +64,8 @@ export default function DefineAvailability() {
 
     const handleSubmit = () => {
         setOpenConfirmation(false);
+        if(selection.length === 0)
+            return;
         console.log(selection);
         agent.Specialists.addAvailability(selection.map((element) => { return { startTime: element } }))
             .then(() => navigate("/home"))
