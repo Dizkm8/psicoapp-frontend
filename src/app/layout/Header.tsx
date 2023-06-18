@@ -21,17 +21,16 @@ import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useSelector } from "react-redux";
-import { selectName } from "../../features/account/accountSlice";
-import { useLocation } from 'react-router-dom';
+import { selectName, selectRole } from "../../features/account/accountSlice";
 
 export default function Header({ children }: React.PropsWithChildren<{}>) {
-    const location = useLocation();
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isLgOrLess, setIsLgOrLess] = useState(false);
     const isLgBreakpoint = useMediaQuery('(max-width: 1200px)'); // Define your XL breakpoint here
     const userName: string | null = useSelector(selectName);
-    const isGuest = new URLSearchParams(location.search).get('guest') === 'true';
+    const userRole: Number | null = useSelector(selectRole);
+
 
     useEffect(() => {
         setIsLgOrLess(isLgBreakpoint);
@@ -70,11 +69,14 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
         >
             <List>
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to="/feed/create">
+                
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/feed/create" : "/post/create"}>
                         <ListItemIcon>
                             <NewspaperIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Agregar Noticias" />
+                        <ListItemText>
+                            {userRole === 3 ? 'Agregar noticia' : 'Agregar Post'}
+                        </ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -86,11 +88,22 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to="/specialist/availability">
+                    <ListItemButton >
+                        <ListItemIcon>
+                            <ArticleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Noticias" />
+                    </ListItemButton>
+                </ListItem>
+                
+                <ListItem disablePadding>
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/specialist/availability" : "/user/availability"}>
                         <ListItemIcon>
                             <AddBoxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Definir horario disponible" />
+                        <ListItemText>
+                            {userRole === 3 ? 'Definir disponibilidad' : 'Agendar cita'}
+                        </ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -173,25 +186,23 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                             >
                                 <MenuItem disabled sx={{ mb: 1 }}>
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {!isGuest ? userName : 'Invitado'}
+                                        {userName ? userName : 'Invitado'}
                                     </Typography>
                                 </MenuItem>
-                                {!isGuest && (
-                                    <MenuItem
-                                        onClick={handleClose}
-                                        component={NavLink}
-                                        to="/account/edit"
-                                    >
-                                        Perfil
-                                    </MenuItem>
-                                )}
+                                <MenuItem
+                                    onClick={handleClose}
+                                    component={NavLink}
+                                    to="/account/edit"
+                                >
+                                    Perfil
+                                </MenuItem>
                                 <Divider />
                                 <MenuItem
                                     onClick={handleClose}
                                     component={NavLink}
                                     to="/login"
                                 >
-                                    {isGuest ? "Iniciar sesión" : "Cerrar sesión"}
+                                    Cerrar sesión
                                 </MenuItem>
                             </Menu>
                         </div>
