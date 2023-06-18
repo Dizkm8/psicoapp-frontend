@@ -94,7 +94,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton component={NavLink} to="/account/appointments">
                         <ListItemIcon>
                             <CalendarMonthIcon />
                         </ListItemIcon>

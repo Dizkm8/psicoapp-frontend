@@ -8,6 +8,7 @@ import RequireAuth from "./RequireAuth";
 import Profile from "../../features/account/Profile";
 import FeedPostForm from "../../features/feed/FeedPostForm";
 import DefineAvailability from "../../features/specialist/DefineAvailability";
+import Appointments from "../../features/account/Appointments";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
             [
                 { path: '', element: <Profile />},
                 { path: 'edit', element: <Profile /> },
+                { path: 'appointments', element: <Appointments /> },
             ]},
             { path: '/specialist', element: <RequireAuth role={3} />, children:
                     [
