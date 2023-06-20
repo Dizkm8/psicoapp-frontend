@@ -5,7 +5,7 @@ import App from "../layout/App";
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import RegisterPage from "../../features/account/RegisterPage";
 import RequireAuth from "./RequireAuth";
-import Profile from "../../features/account/Profile";
+import Profile from "../../features/account/ProfilePage/ProfilePage";
 import CreateFeedPostPage from "../../features/feed/CreateFeedPostPage";
 import DefineAvailabilityPage from "../../features/specialist/DefineAvailabilityPage/DefineAvailabilityPage";
 import Appointments from "../../features/account/Appointments";
