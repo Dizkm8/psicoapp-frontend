@@ -50,7 +50,7 @@ export default function Appointments() {
   }
 
   const getAppointmentStatusName = (appointment: Appointment) => {
-    console.log(appointment.appointmentStatusId);
+    console.log(appointment.appointmentStatusId)
     switch(appointment.appointmentStatusId)
     {
       case 1:
@@ -87,8 +87,8 @@ export default function Appointments() {
               {appointments.map((appointment) => (
                 <TableRow key={appointment.id}>
                   <TableCell>{appointment.id}</TableCell>
-                  <TableCell>{appointment.requestedUser?.name}</TableCell>
-                  <TableCell>{moment(appointment.bookedDate).format('YYYY-MM-DD')}</TableCell>
+                  <TableCell>{appointment.requestedUser?.name} {appointment.requestedUser?.firstLastName}</TableCell>
+                  <TableCell>{moment(appointment.bookedDate).format('HH:mm')}</TableCell>
                   <TableCell>{new Date(appointment.bookedDate).toLocaleDateString()}</TableCell>
                   <TableCell>{getAppointmentStatusName(appointment)}</TableCell>
                 </TableRow>
