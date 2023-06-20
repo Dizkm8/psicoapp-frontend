@@ -12,9 +12,10 @@ import User from "../../app/models/User";
 import agent from "../../app/api/agent";
 import {useNavigate, Link } from "react-router-dom";
 import {toast} from "react-toastify";
+import { setGlobalUserId } from './UserContext';
 
 export default function RegisterPage() {
-
+    
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError, reset } = useForm({mode: 'onTouched'});
     const navigate = useNavigate();
     const [passwordMismatch, setPasswordMismatch] = React.useState(false);
@@ -31,6 +32,7 @@ export default function RegisterPage() {
         console.log(completeData);
         agent.Login.register(completeData)
             .then(response => {
+                setGlobalUserId(data.userId); // Set userId globally
                 navigate("/home");
             })
             .catch(err => {
