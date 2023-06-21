@@ -8,7 +8,7 @@ import axios from 'axios';
 import { current } from '@reduxjs/toolkit';
 import BentoItem from './BentoItem';
 
-export default function PaginationOutlined({
+export default function PaginationBar({
   children,
   data, // Recibir los datos paginados como prop
 }: React.PropsWithChildren<{

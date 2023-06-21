@@ -1,8 +1,9 @@
 import Specialist from "../../app/models/Specialist";
 import BentoItemProperties from "../../app/interfaces/BentoItemProperties";
 import BentoGrid from "../../app/components/BentoGrid";
-import * as React from "react";
 import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import PaginationBar from "../../app/components/PaginationBar";
 
 export default function SelectSpecialistPage(){
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ export default function SelectSpecialistPage(){
         return result;
     };
 
+    
+
     const rawData = [
         {id: '29', fullName: 'José Manuel Alcayaga Marín', speciality: 'Clínica'},
         {id: '20', fullName: 'David Nahum Araya Cádiz', speciality: 'Judicial'},
@@ -26,7 +29,13 @@ export default function SelectSpecialistPage(){
         {id: '22', fullName: 'David Zeballos', speciality: 'Judicial'},
     ];
 
+    
+    //convert the raw data into the correct format
     const data = rawData.map(entry => convertSpecialistData(entry));
 
-    return(<BentoGrid bentoItems={data} />);
+    return(
+        <PaginationBar data={data}>
+            
+        </PaginationBar>
+    );
 }
