@@ -5,9 +5,10 @@ import App from "../layout/App";
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import RegisterPage from "../../features/account/RegisterPage";
 import RequireAuth from "./RequireAuth";
-import ProfilePage from "../../features/account/ProfilePage/ProfilePage";
+import Profile from "../../features/account/ProfilePage/ProfilePage";
 import CreateFeedPostPage from "../../features/feed/CreateFeedPostPage";
 import DefineAvailabilityPage from "../../features/specialist/DefineAvailabilityPage/DefineAvailabilityPage";
+import Appointments from "../../features/account/Appointments";
 
 export const router = createBrowserRouter([
     {
@@ -19,8 +20,9 @@ export const router = createBrowserRouter([
             { path: '/register', element: <RegisterPage /> },
             { path: '/account', element: <RequireAuth />, children:
             [
-                { path: '', element: <ProfilePage />},
-                { path: 'edit', element: <ProfilePage /> },
+                { path: '', element: <Profile />},
+                { path: 'edit', element: <Profile /> },
+                { path: 'appointments', element: <Appointments /> },
             ]},
             { path: '/specialist', element: <RequireAuth role={3} />, children:
                     [
