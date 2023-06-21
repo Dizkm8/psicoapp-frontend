@@ -12,17 +12,27 @@ import User from "../../app/models/User";
 import agent from "../../app/api/agent";
 import {useNavigate, Link } from "react-router-dom";
 import {toast} from "react-toastify";
+import { setGlobalUserId } from './UserContext';
 
 export default function RegisterPage() {
-
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError } = useForm({mode: 'onTouched'});
+    
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError, reset } = useForm({mode: 'onTouched'});
     const navigate = useNavigate();
+    const [passwordMismatch, setPasswordMismatch] = React.useState(false);
 
     const handleSubmitButton: SubmitHandler<FieldValues> = (data: FieldValues) => {
+        if (data.password !== data.confirmPassword) {
+            setError('confirmPassword', { type: 'validate', message: 'Las contraseñas no coinciden' });
+            reset({ ...data, password: '', confirmPassword: '' });
+            setPasswordMismatch(true);
+            return;
+        }
+        
         const completeData: User = {...data, isEnabled: true, role: 1, id: data.id};// Patch while the models aren't updated
         console.log(completeData);
         agent.Login.register(completeData)
             .then(response => {
+                setGlobalUserId(data.userId); // Set userId globally
                 navigate("/home");
             })
             .catch(err => {
@@ -227,6 +237,25 @@ export default function RegisterPage() {
                                            {...field} />}
                             rules={{required: 'Campo obligatorio'}}
                         />
+                        <Controller
+                            name="confirmPassword"
+                            control={control}
+                            render={({ field }) =>
+                                <TextField margin="normal"
+                                            fullWidth
+                                            label="Confirmar Contraseña"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            error={!!errors.confirmPassword}
+                                            helperText={errors?.confirmPassword?.message as string}
+                                            {...field} />}
+                            rules={{ required: 'Campo obligatorio' }}
+                        />
+                        {passwordMismatch && (
+                            <Typography color="error" variant="body2">
+                                Las contraseñas no coinciden
+                            </Typography>
+                        )}
                         <PurpleButton
                             disabled={!isValid}
                             type="submit"
