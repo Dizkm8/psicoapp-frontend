@@ -58,7 +58,7 @@ export default function WeekPicker({startDate, occupiedDates, selectedDates, onC
                 <TableBody>
                     {dayHours.map((hour) => {
                         return (
-                            <TableRow>
+                            <TableRow key={startDate.toISOString()+hour}>
                                 <TableCell align="center"> {`${hour}:00`} </TableCell>
                                 {weekDays.map((day) => {
                                     let cellDate: Date = new Date(startDate);
