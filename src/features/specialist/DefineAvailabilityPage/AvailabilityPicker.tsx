@@ -1,6 +1,6 @@
 import WeekPicker from "../../../app/components/WeekPicker";
 import {useState} from "react";
-import {getDayOfWeek} from "../../../app/utils/dateHelper";
+import {getDayOfWeek, getTimeZone} from "../../../app/utils/dateHelper";
 
 interface Props
 {
@@ -39,6 +39,12 @@ export default function AvailabilityPicker({startDate, occupiedDates, selection,
         return result;
     }
 
+    const isAble = (date: Date) : boolean => {
+        let dateOnTimeZone: Date = new Date(date);
+        const dateTimeZone = getTimeZone(date);
+        dateOnTimeZone.setHours(date.getHours() + dateTimeZone);
+        return occupiedDates.includes(dateOnTimeZone.toISOString().split('.')[0]);
+    };
 
     const handleClick = (day: number, hour: number, date: Date)=>
     {
@@ -62,7 +68,7 @@ export default function AvailabilityPicker({startDate, occupiedDates, selection,
     return (
         <WeekPicker
             startDate={startDate}
-            occupiedDates={occupiedDates}
+            isAble={isAble}
             selectedDates={selectedDates}
             onClick={handleClick}
         />
