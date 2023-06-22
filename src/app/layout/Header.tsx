@@ -20,10 +20,10 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import {useDispatch, useSelector} from "react-redux";
-import {selectName, signOff} from "../../features/account/accountSlice";
 import { useLocation } from 'react-router-dom';
 import {store} from "../store/store";
+import {useDispatch, useSelector}  from "react-redux";
+import {selectName, selectRole, signOff} from "../../features/account/accountSlice";
 
 export default function Header({ children }: React.PropsWithChildren<{}>) {
     const location = useLocation();
@@ -34,6 +34,8 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
     const userName: string | null = useSelector(selectName);
     const dispatch = useDispatch<typeof store.dispatch>();
     const isGuest = new URLSearchParams(location.search).get('guest') === 'true' || !userName;
+    const userRole: Number | null = useSelector(selectRole);
+
 
     useEffect(() => {
         setIsLgOrLess(isLgBreakpoint);
@@ -79,11 +81,14 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
         >
             <List>
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to="/feed/create">
+
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/feed/create" : "/post/create"}>
                         <ListItemIcon>
                             <NewspaperIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Agregar Noticias" />
+                        <ListItemText>
+                            {userRole === 3 ? 'Agregar noticia' : 'Agregar Post'}
+                        </ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -95,15 +100,26 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to="/specialist/availability">
+                    <ListItemButton >
+                        <ListItemIcon>
+                            <ArticleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Noticias" />
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding>
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/specialist/availability" : "/client/select"}>
                         <ListItemIcon>
                             <AddBoxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Definir horario disponible" />
+                        <ListItemText>
+                            {userRole === 3 ? 'Definir disponibilidad' : 'Agendar cita'}
+                        </ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton component={NavLink} to="/account/appointments">
                         <ListItemIcon>
                             <CalendarMonthIcon />
                         </ListItemIcon>

@@ -3,6 +3,7 @@ import { idText } from "typescript";
 import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
+import Appointment from "../models/Appointment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -18,7 +19,7 @@ axios.interceptors.request.use(config => {
     const token =  store.getState().account.token;
     if (token) config.headers.Authorization = 'Bearer ' + token;
     return config;
-})
+});
 
 axios.interceptors.response.use(async response => {
     // I set a timeout here to simulate a delay in the server response
@@ -38,15 +39,14 @@ axios.interceptors.response.use(async response => {
             break;
     }
     return Promise.reject(error.response);
-}
-);
+});
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
     post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
-}
+};
 
 const Login = {
     login: (userId: string, userPassword: string) =>
@@ -57,40 +57,45 @@ const Login = {
     register: (userData: User) =>
         requests.post('Auth/register-client', {...userData}),
     updatePassword: (passwordForm: any) =>
-        requests.put('Auth/update-password', passwordForm)
-}
+        requests.put('Auth/update-password', passwordForm),
+};
 
 const Specialists = {
     getAvailability: (date: string) =>
         requests.get(`Specialists/availability/${date}`),
     addAvailability: (selection: {startTime: string}[]) =>
-        requests.post('Specialists/add-availability',
-            [...selection])
-}
+        requests.post('Specialists/add-availability', [...selection]),
+};
 
 const Feed = {
     createPost: (postData: FeedPost) =>
-        requests.post('FeedPosts/create-post', postData)
-}
+        requests.post('FeedPosts/create-post', postData),
+};
 
 const Users = {
     getProfileInformation: () =>
         requests.get('Users/profile-information'),
     updateProfileInformation: (newData: User) =>
         requests.put('Users/profile-information', newData),
-}
+};
 
 const Tags = {
     getTags: () =>
-        requests.get('Tags')
-}
+        requests.get('Tags'),
+};
+
+const Appointments = {
+    listByUser: (userId: string) =>
+        requests.get(`Appointments/user/${userId}`),
+};
 
 const agent = {
     Login,
     Specialists,
     Feed,
     Users,
-    Tags
-}
+    Tags,
+    Appointments,
+};
 
 export default agent;

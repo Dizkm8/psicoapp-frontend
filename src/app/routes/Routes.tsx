@@ -8,6 +8,8 @@ import RequireAuth from "./RequireAuth";
 import ProfilePage from "../../features/account/ProfilePage/ProfilePage";
 import CreateFeedPostPage from "../../features/feed/CreateFeedPostPage";
 import DefineAvailabilityPage from "../../features/specialist/DefineAvailabilityPage/DefineAvailabilityPage";
+import Appointments from "../../features/account/Appointments";
+import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +23,7 @@ export const router = createBrowserRouter([
             [
                 { path: '', element: <ProfilePage />},
                 { path: 'edit', element: <ProfilePage /> },
+                { path: 'appointments', element: <Appointments /> },
             ]},
             { path: '/specialist', element: <RequireAuth role={3} />, children:
                     [
@@ -29,8 +32,11 @@ export const router = createBrowserRouter([
             { path: '/feed', element: <RequireAuth role={3} />, children:
                     [
                         {path: 'create', element: <CreateFeedPostPage />}
-                    ]
-                    },
+                    ]},
+            { path: '/client', element: <RequireAuth role={2} />, children:
+                    [
+                        {path: 'select', element: <SelectSpecialistPage />},
+                    ]},
             { path: '/home', element: <HomePage /> },
         ]
     }]);
