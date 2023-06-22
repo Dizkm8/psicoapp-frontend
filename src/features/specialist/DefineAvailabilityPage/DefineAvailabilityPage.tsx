@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PurpleButton } from "../../../app/components/PurpleButton";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import {useSelector} from "react-redux";
+import {selectId} from "../../account/accountSlice";
 
 const getDefaultStartDate = () => {
     let date = new Date(Date.now());
@@ -24,11 +26,12 @@ export default function DefineAvailabilityPage() {
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const userIdValue: string | null = useSelector(selectId);
+    const userId: string = userIdValue ? userIdValue : '';
 
     useEffect(() => {
         setLoading(true);
-        agent.Specialists.getAvailability(startDate.toDateString()).then((response) => {
+        agent.Specialists.getAvailability(userId).then((response) => {
             const result = response.map((slot: { startTime: string; }) => slot.startTime);
             setOccupiedDates(result);
             setLoading(false)
@@ -95,13 +98,13 @@ export default function DefineAvailabilityPage() {
         <>
 
             <Dialog open={openConfirmation}
-                onClose={() => { setOpenConfirmation(false) }}>
+                onClose={() => {setOpenConfirmation(false)}}>
                 <DialogTitle id="alert-dialog-title">
                     {"¿Está seguro que quiere realizar los cambios?"}
                 </DialogTitle>
                 <DialogActions>
                     <Button
-                        onClick={() => { setOpenConfirmation(false) }}
+                        onClick={() => {setOpenConfirmation(false)}}
                         color='error'
                     >
                         Cancelar
@@ -142,7 +145,7 @@ export default function DefineAvailabilityPage() {
                     variant="contained"
                     startIcon={<AddCircleIcon />}
                     sx={{ justifySelf: 'end' }}
-                    onClick={() => { setOpenConfirmation(true) }}
+                    onClick={() => {setOpenConfirmation(true)}}
                 >
                     Confirmar cambios
                 </PurpleButton>

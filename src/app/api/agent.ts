@@ -61,8 +61,8 @@ const Login = {
 };
 
 const Specialists = {
-    getAvailability: (date: string) =>
-        requests.get(`Specialists/availability/${date}`),
+    getAvailability: (id: string) =>
+        requests.get(`Specialists/availability/${id}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
 };
