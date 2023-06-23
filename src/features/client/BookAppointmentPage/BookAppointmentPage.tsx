@@ -1,56 +1,65 @@
 import { useEffect, useState } from "react";
-import AvailabilityPicker from "./AvailabilityPicker";
-import { Box, Button, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
+import AppointmentPicker from "./AppointmentPicker";
+import {Box, Button, Card, Dialog, DialogActions, DialogTitle, IconButton, Paper} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
 import { getWeekStartDay } from "../../../app/utils/dateHelper";
 import agent from "../../../app/api/agent";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { toast } from "react-toastify";
 import { PurpleButton } from "../../../app/components/PurpleButton";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import {useSelector} from "react-redux";
-import {selectId} from "../../account/accountSlice";
+import Typography from "@mui/material/Typography";
+import AvailabilitySlot from "../../../app/models/AvailabilitySlot";
+import {purple} from "@mui/material/colors";
 
 const getDefaultStartDate = () => {
     let date = new Date(Date.now());
     return getWeekStartDay(date);
 };
 
-export default function DefineAvailabilityPage() {
+const getAvailableSlots = (availabilitySlots: AvailabilitySlot[]) => {
+    let result = new Array<string>();
+    for (const slot of availabilitySlots) {
+        if(slot.isAvailable)
+            result = [...result, slot.startTime];
+    }
+    return result;
+};
+
+export default function BookAppointmentPage() {
     const [selection, setSelection] = useState(new Array<string>());
     const [startDate, setStartDate] = useState(getDefaultStartDate());
-    const [occupiedDates, setOccupiedDates] = useState(new Array<string>());
+    const [availableDates, setAvailableDates] = useState(new Array<string>());
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const userIdValue: string | null = useSelector(selectId);
-    const userId: string = userIdValue ? userIdValue : '';
+    const {id} = useParams();
+    const specialistId: string = id ? id : '';
 
     useEffect(() => {
         setLoading(true);
-        agent.Specialists.getAvailability(userId).then((response) => {
-            const result = response.map((slot: { startTime: string; }) => slot.startTime);
-            setOccupiedDates(result);
+        agent.Specialists.getAvailability(specialistId).then((response) => {
+            const result = getAvailableSlots(response);
+            setAvailableDates(result);
             setLoading(false)
         })
             .catch((err) => console.log(err))
             .finally(() => setLoading(false));
 
-    }, [userId]);
+    }, [specialistId]);
 
     if (loading) return <LoadingComponent message='Cargando disponibilidad...' />
 
     const handleUpdate = (date: Date, select: boolean) => {
         if (select) {
-            const newSelection = [...selection, date.toISOString()];
+            const newSelection = [date.toISOString()];
             setSelection(newSelection);
         }
         else {
-            const newSelection = selection.filter((selectedDate) => selectedDate !== date.toISOString());
-            setSelection(newSelection);
+            setSelection(new Array<string>());
         }
     };
 
@@ -70,13 +79,13 @@ export default function DefineAvailabilityPage() {
         if(selection.length === 0)
             return;
         console.log(selection);
-        agent.Specialists.addAvailability(selection.map((element) => { return { startTime: element } }))
+        agent.Clients.addAppointment(specialistId, selection[0])
             .then(() => navigate("/home"))
             .catch((err) => {
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
-                        error = "La fecha ya ha sido ingresada o se encuentra fuera del rango válido."
+                        error = "La hora ya ha sido agendada o se encuentra fuera del rango válido."
                         break;
                     default:
                         break;
@@ -99,7 +108,7 @@ export default function DefineAvailabilityPage() {
             <Dialog open={openConfirmation}
                 onClose={() => {setOpenConfirmation(false)}}>
                 <DialogTitle id="alert-dialog-title">
-                    {"¿Está seguro que quiere realizar los cambios?"}
+                    {"¿Está seguro que quiere realizar la agendar?"}
                 </DialogTitle>
                 <DialogActions>
                     <Button
@@ -126,10 +135,25 @@ export default function DefineAvailabilityPage() {
                     m: 4
                 }}
             >
-                <AvailabilityPicker
+                <Paper sx={{width: '50%', height: '10em', mb: 2}}>
+                    <Card sx={{color: 'white', bgcolor: purple[400], m: 3}}>
+                        <Typography
+                            align="center"
+                            sx={{m: 2}}
+                            variant="h6"
+                            noWrap
+                        >
+                            {specialistId}
+                        </Typography>
+                    </Card>
+                    <Typography sx={{m: 3}} align="right">
+                        Especialidad: {specialistId}
+                    </Typography>
+                </Paper>
+                <AppointmentPicker
                     key={startDate.toISOString()}
                     startDate={startDate}
-                    occupiedDates={occupiedDates}
+                    availableDates={availableDates}
                     selection={selection}
                     onClick={handleUpdate}
                 />

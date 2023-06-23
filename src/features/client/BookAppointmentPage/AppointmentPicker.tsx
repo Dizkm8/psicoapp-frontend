@@ -2,27 +2,23 @@ import WeekPicker from "../../../app/components/WeekPicker";
 import {useState} from "react";
 import {getDayOfWeek, getTimeZone} from "../../../app/utils/dateHelper";
 
-interface Props
-{
+interface Props {
     startDate: Date,
-    occupiedDates: string[],
+    availableDates: string[],
     selection: string[],
     onClick: (date: Date, select: boolean) => void
 }
 
-export default function AvailabilityPicker({startDate, occupiedDates, selection, onClick}: Props)
-{
-    const [selectedDates, setSelectedDates] = useState(defaultSelectedDate())
+export default function AppointmentPicker({startDate, availableDates, selection, onClick}: Props) {
+    const [selectedDate, setSelectedDate] = useState(defaultSelectedDate())
 
-    function defaultSelectedDate(): boolean[][]  {
+    function defaultSelectedDate(): boolean[][] {
         let result: boolean[][] = new Array(24);
-        for(let i=1; i<24; i++)
-        {
+        for(let i=1; i<24; i++){
             result[i] = new Array(7).fill(false);
         }
 
-        for (const selectedDate of selection)
-        {
+        for (const selectedDate of selection) {
             const date = new Date(selectedDate);
             if(date < startDate)
             {continue}
@@ -43,33 +39,33 @@ export default function AvailabilityPicker({startDate, occupiedDates, selection,
         let dateOnTimeZone: Date = new Date(date);
         const dateTimeZone = getTimeZone(date);
         dateOnTimeZone.setHours(date.getHours() + dateTimeZone);
-        return occupiedDates.includes(dateOnTimeZone.toISOString().split('.')[0]);
+        return !availableDates.includes(dateOnTimeZone.toISOString().split('.')[0]);
     };
 
-    const handleClick = (day: number, hour: number, date: Date)=>
-    {
-        let newSelection: boolean[][] = [...selectedDates.slice(0,day),
-            [...selectedDates[hour]],
-            ...selectedDates.slice(day+1)
-        ]
-        if(selectedDates[hour][day] )
-        {
+    const handleClick = (day: number, hour: number, date: Date)=> {
+        let newSelection: boolean[][] = [...selectedDate.slice(0,day),
+            [...selectedDate[hour]],
+            ...selectedDate.slice(day+1)
+        ];
+
+        if(selection[0] === date.toISOString()){
             newSelection[hour][day] = false;
             onClick(date, false);
         }
-        else
+        else if(selection.length===0)
         {
             newSelection[hour][day] = true;
             onClick(date, true);
         }
-        setSelectedDates(newSelection);
+
+        setSelectedDate(newSelection);
     };
 
     return (
         <WeekPicker
             startDate={startDate}
             isAble={isAble}
-            selectedDates={selectedDates}
+            selectedDates={selectedDate}
             onClick={handleClick}
         />
     );
