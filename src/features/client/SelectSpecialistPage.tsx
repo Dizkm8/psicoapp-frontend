@@ -14,14 +14,14 @@ export default function SelectSpecialistPage(){
             children: undefined,
             title: specialist.fullName,
             subtitle: specialist.speciality,
-            onClick: ()=>{console.log(result.title); navigate('/home');}
+            onClick: ()=>{navigate(`/client/select/${specialist.id}`);},
         };
         return result;
     };
 
     const rawData = [
         {id: '29', fullName: 'José Manuel Alcayaga Marín', speciality: 'Clínica'},
-        {id: '20', fullName: 'David Nahum Araya Cádiz', speciality: 'Judicial'},
+        {id: '207676918', fullName: 'David Nahum Araya Cádiz', speciality: 'Judicial'},
         {id: '21', fullName: 'Manuel Vera', speciality: 'Judicial'},
         {id: '22', fullName: 'David Zeballos', speciality: 'Judicial'},
     ];

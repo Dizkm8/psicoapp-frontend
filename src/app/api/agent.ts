@@ -42,8 +42,8 @@ axios.interceptors.response.use(async response => {
 });
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+    get: (url: string, config?: {}) => axios.get(url, config).then(responseBody),
+    post: (url: string, body: {}, config?: {}) => axios.post(url, body, config).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
 };
@@ -65,6 +65,11 @@ const Specialists = {
         requests.get(`Specialists/availability/${id}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
+};
+
+const Clients = {
+    addAppointment: (specialistId: string, startTime: string) =>
+        requests.post(`Clients/add-appointment/${specialistId}`, {}, {params: {dateTime: startTime}}),
 };
 
 const Feed = {
@@ -92,6 +97,7 @@ const Appointments = {
 const agent = {
     Login,
     Specialists,
+    Clients,
     Feed,
     Users,
     Tags,
