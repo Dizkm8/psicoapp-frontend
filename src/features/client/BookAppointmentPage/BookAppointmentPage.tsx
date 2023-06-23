@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AppointmentPicker from "./AppointmentPicker";
-import { Box, Button, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
+import {Box, Button, Card, Dialog, DialogActions, DialogTitle, IconButton, Paper} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -13,6 +13,7 @@ import { PurpleButton } from "../../../app/components/PurpleButton";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import Typography from "@mui/material/Typography";
 import AvailabilitySlot from "../../../app/models/AvailabilitySlot";
+import {purple} from "@mui/material/colors";
 
 const getDefaultStartDate = () => {
     let date = new Date(Date.now());
@@ -134,9 +135,21 @@ export default function BookAppointmentPage() {
                     m: 4
                 }}
             >
-                <Typography variant="h4">
-                    {specialistId}
-                </Typography>
+                <Paper sx={{width: '50%', height: '10em', mb: 2}}>
+                    <Card sx={{color: 'white', bgcolor: purple[400], m: 3}}>
+                        <Typography
+                            align="center"
+                            sx={{m: 2}}
+                            variant="h6"
+                            noWrap
+                        >
+                            {specialistId}
+                        </Typography>
+                    </Card>
+                    <Typography sx={{m: 3}} align="right">
+                        Especialidad: {specialistId}
+                    </Typography>
+                </Paper>
                 <AppointmentPicker
                     key={startDate.toISOString()}
                     startDate={startDate}
