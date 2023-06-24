@@ -109,7 +109,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                 </ListItem>
 
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to={userRole === 3 ? "/specialist/availability" : "/user/availability"}>
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/specialist/availability" : "/client/select"}>
                         <ListItemIcon>
                             <AddBoxIcon />
                         </ListItemIcon>
