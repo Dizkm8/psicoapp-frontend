@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getGlobalUserId, setGlobalUserId } from './UserContext';
 import agent from '../../app/api/agent';
 import moment from 'moment';
+import Skeleton from '@mui/material/Skeleton';
 import Appointment from '../../app/models/Appointment';
 import User from '../../app/models/User';
 
@@ -46,7 +47,51 @@ export default function Appointments() {
   }, [appointments]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Appointments
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Código</TableCell>
+                  <TableCell>Especialista</TableCell>
+                  <TableCell>Hora</TableCell>
+                  <TableCell>Fecha</TableCell>
+                  <TableCell>Estado</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {[...Array(5)].map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton animation="wave" height={20} width="80%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton animation="wave" height={20} width="60%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton animation="wave" height={20} width="40%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton animation="wave" height={20} width="60%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton animation="wave" height={20} width="40%" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
+    );
   }
 
   const getAppointmentStatusName = (appointment: Appointment) => {
@@ -72,15 +117,15 @@ export default function Appointments() {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto' }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Código</TableCell>
-                <TableCell>Especialista</TableCell>
-                <TableCell>Hora</TableCell>
-                <TableCell>Fecha</TableCell>
-                <TableCell>Estado</TableCell>
+                <TableCell sx={{ backgroundColor: 'purple', color: 'white' }}>Código</TableCell>
+                <TableCell sx={{ backgroundColor: 'purple', color: 'white' }}>Especialista</TableCell>
+                <TableCell sx={{ backgroundColor: 'purple', color: 'white' }}>Hora</TableCell>
+                <TableCell sx={{ backgroundColor: 'purple', color: 'white' }}>Fecha</TableCell>
+                <TableCell sx={{ backgroundColor: 'purple', color: 'white' }}>Estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
