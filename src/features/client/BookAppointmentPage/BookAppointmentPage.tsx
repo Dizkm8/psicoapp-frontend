@@ -13,6 +13,7 @@ import { PurpleButton } from "../../../app/components/PurpleButton";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import Typography from "@mui/material/Typography";
 import AvailabilitySlot from "../../../app/models/AvailabilitySlot";
+import SpecialistInfo from "../../../app/models/SpecialistInfo";
 import {purple} from "@mui/material/colors";
 
 const getDefaultStartDate = () => {
@@ -35,20 +36,64 @@ export default function BookAppointmentPage() {
     const [availableDates, setAvailableDates] = useState(new Array<string>());
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const {id} = useParams();
     const specialistId: string = id ? id : '';
+    const [specialistInfo, setSpecialistInfo] = useState<SpecialistInfo>({
+        specialityName: "",
+        userFullName: "",
+        userIsEnabled: false
+    });
 
     useEffect(() => {
         setLoading(true);
+        agent.Users.getSpecialist(specialistId).then((response) => {
+            if(!response.userIsEnabled){
+                toast.error('El especialista no está disponible', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+                navigate('/home');
+            }
+            setSpecialistInfo(response);
+        })
+            .catch((err) =>{
+                toast.error('Ha ocurrido un problema cargando la información', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+            });
+            navigate('/home');
+        }).then( () =>
         agent.Specialists.getAvailability(specialistId).then((response) => {
             const result = getAvailableSlots(response);
             setAvailableDates(result);
-            setLoading(false)
-        })
-            .catch((err) => console.log(err))
-            .finally(() => setLoading(false));
-
+            })
+            .catch((err) =>{
+                toast.error('Ha ocurrido un problema cargando la información', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                });
+                navigate('/home');
+            })
+    ).finally(() => setLoading(false));
     }, [specialistId]);
 
     if (loading) return <LoadingComponent message='Cargando disponibilidad...' />
@@ -143,11 +188,11 @@ export default function BookAppointmentPage() {
                             variant="h6"
                             noWrap
                         >
-                            {specialistId}
+                            {specialistInfo.userFullName}
                         </Typography>
                     </Card>
                     <Typography sx={{m: 3}} align="right">
-                        Especialidad: {specialistId}
+                        Especialidad: {specialistInfo.specialityName}
                     </Typography>
                 </Paper>
                 <AppointmentPicker

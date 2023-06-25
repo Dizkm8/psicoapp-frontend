@@ -1,4 +1,4 @@
-export default interface Spedcialist {
+export default interface Specialist {
     name: string;
     firstLastName: string;
     secondLastName: string;

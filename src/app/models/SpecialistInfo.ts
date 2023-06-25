@@ -1,5 +1,13 @@
 export default interface SpecialistInfo {
-    id: string,
-    fullName: string;
-    speciality: string;
+    specialityName: string;
+    userId?: string;
+    userName?: string;
+    userFirstLastName?: string;
+    userSecondLastName?: string;
+    userFullName: string;
+    userEmail?: string;
+    userGender?: string;
+    userIsEnabled: boolean;
+    userPhone?: number;
+    roleName?: string;
 }
