@@ -4,6 +4,7 @@ import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
+import ForumPost from "../models/ForumPost";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -65,11 +66,25 @@ const Specialists = {
         requests.get(`Specialists/availability/${date}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
+    getSpecialists: () =>
+        requests.get('Specialists/get-all-specialists'),
 };
 
 const Feed = {
     createPost: (postData: FeedPost) =>
         requests.post('FeedPosts/create-post', postData),
+    getPosts: () =>
+        requests.get('FeedPosts/'),
+};
+
+const Forum = {
+    createPost: (postData: ForumPost) =>
+        requests.post('ForumPosts/create-post', postData),
+    getPosts: () =>
+        requests.get('ForumPosts/'),
+    
+    
+    
 };
 
 const Users = {
@@ -96,6 +111,7 @@ const agent = {
     Users,
     Tags,
     Appointments,
+    Forum,
 };
 
 export default agent;
