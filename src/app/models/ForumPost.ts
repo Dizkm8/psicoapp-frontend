@@ -1,3 +1,4 @@
+import Comment from "./Comment";
 export default interface ForumPost {
     id?: number,
     title: string;
@@ -10,6 +11,8 @@ export default interface ForumPost {
     userSecondLastName: string,
     fullName: string,
     tagName: string,
+    comments: Comment[]
+
     
     
 

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 
 
-export default function PostDisplayPage(){
+export default function ForumDisplayPage(){
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState<ForumPost[]>([]);
@@ -18,13 +18,13 @@ export default function PostDisplayPage(){
     const [currentPage, setCurrentPage] = useState(1);
 
     function convertData(forumPost: ForumPost){
-
+        
         let result: BentoItemProperties = {
             key: forumPost.id,
             children: undefined,
             title: forumPost.title,
             subtitle: forumPost.content,
-            onClick: ()=>{console.log(result.title); navigate('/home');}
+            onClick: ()=>{console.log(result.title); navigate('/forum/post/');}
         };
         return result;
     };

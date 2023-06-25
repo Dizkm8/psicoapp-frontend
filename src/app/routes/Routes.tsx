@@ -11,8 +11,10 @@ import DefineAvailabilityPage from "../../features/specialist/DefineAvailability
 import Appointments from "../../features/account/Appointments";
 import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 import CreateForumPostPage from "../../features/forum/CreateForumPostPage";
-import PostDisplayPage from "../../features/forum/PostDisplayPage";
 import FeedDisplayPage from "../../features/feed/FeedDisplaypage";
+import ForumDisplayPage from "../../features/forum/ForumDisplayPage";
+import PostPage from "../../features/forum/PostDisplayer";
+import Post from "../../features/forum/Post";
 
 export const router = createBrowserRouter([
     {
@@ -37,10 +39,11 @@ export const router = createBrowserRouter([
                         {path: 'create', element: <CreateFeedPostPage />},
                         {path: '', element: <FeedDisplayPage/>}
                     ]},
-            { path: '/forum', element: <RequireAuth role={2} />, children:
+            { path: '/forum', element: <RequireAuth role={3} />, children:
                     [
                         {path: 'create', element: <CreateForumPostPage />},
-                        {path: '', element: <PostDisplayPage />}
+                        {path: '', element: <ForumDisplayPage />},
+                        {path: 'post', element: <Post />}
                     ]},
             { path: '/client', element: <RequireAuth role={2} />, children:
                     [

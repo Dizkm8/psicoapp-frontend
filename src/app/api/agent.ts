@@ -82,6 +82,8 @@ const Forum = {
         requests.post('ForumPosts/create-post', postData),
     getPosts: () =>
         requests.get('ForumPosts/'),
+    getPost: (postId: number) =>
+        requests.get(`ForumPosts/get-post/${postId}`),
     
     
     
