@@ -1,4 +1,4 @@
-import Specialist from "../../app/models/Specialist";
+import SpecialistInfo from "../../app/models/SpecialistInfo";
 import BentoItemProperties from "../../app/interfaces/BentoItemProperties";
 import BentoGrid from "../../app/components/BentoGrid";
 import * as React from "react";
@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 export default function SelectSpecialistPage(){
     const navigate = useNavigate();
 
-    function convertSpecialistData(specialist: Specialist){
+    function convertSpecialistData(specialist: SpecialistInfo){
 
         let result: BentoItemProperties = {
             key: specialist.id,

@@ -11,6 +11,9 @@ import DefineAvailabilityPage from "../../features/specialist/DefineAvailability
 import Appointments from "../../features/account/Appointments";
 import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 import BookAppointmentPage from "../../features/client/BookAppointmentPage/BookAppointmentPage";
+import UserAdministrationPage from "../../features/administrator/UserAdministrationPage/UserAdministrationPage";
+import AddSpecialistPage from "../../features/administrator/UserAdministrationPage/AddSpecialistPage";
+import AdministratorPage from "../../features/administrator/AdministratorPage";
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +41,12 @@ export const router = createBrowserRouter([
                     [
                         {path: 'select', element: <SelectSpecialistPage />},
                         {path: 'select/:id', element: <BookAppointmentPage />},
+                    ]},
+            { path: '/administrator', element: <RequireAuth role={1} />, children:
+                    [
+                        {path: '', element: <AdministratorPage />},
+                        {path: 'manage-users', element: <UserAdministrationPage />},
+                        {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
                     ]},
             { path: '/home', element: <HomePage /> },
         ]
