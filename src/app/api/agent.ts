@@ -68,8 +68,6 @@ const Specialists = {
         requests.get(`Specialists/availability/${id}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
-    getSpecialists: () =>
-        requests.get('Specialists/get-all-specialists'),
     getSpecialities: () =>
         requests.get('Specialists/get-specialities'),
 };
@@ -101,6 +99,10 @@ const Users = {
         requests.get('Users/profile-information'),
     updateProfileInformation: (newData: User) =>
         requests.put('Users/profile-information', newData),
+    getSpecialists: () =>
+        requests.get('Users/get-all-specialists'),
+    getSpecialist: (userId: string) =>
+        requests.get(`Users/get-specialist/${userId}`),
 };
 
 const Tags = {
