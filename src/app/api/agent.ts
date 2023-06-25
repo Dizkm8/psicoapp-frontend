@@ -6,6 +6,7 @@ import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
 import SpecialistInfo from "../models/SpecialistInfo";
 import Specialist from "../models/Specialist";
+import ForumPost from "../models/ForumPost";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -67,6 +68,8 @@ const Specialists = {
         requests.get(`Specialists/availability/${id}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
+    getSpecialists: () =>
+        requests.get('Specialists/get-all-specialists'),
     getSpecialities: () =>
         requests.get('Specialists/get-specialities'),
 };
@@ -79,6 +82,18 @@ const Clients = {
 const Feed = {
     createPost: (postData: FeedPost) =>
         requests.post('FeedPosts/create-post', postData),
+    getPosts: () =>
+        requests.get('FeedPosts/'),
+};
+
+const Forum = {
+    createPost: (postData: ForumPost) =>
+        requests.post('ForumPosts/create-post', postData),
+    getPosts: () =>
+        requests.get('ForumPosts/'),
+
+
+
 };
 
 const Users = {
@@ -111,6 +126,7 @@ const agent = {
     Users,
     Tags,
     Appointments,
+    Forum,
     Admin,
 };
 
