@@ -1,0 +1,47 @@
+import * as React from 'react';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import BentoGrid from './BentoGrid';
+
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { current } from '@reduxjs/toolkit';
+import BentoItem from './BentoItem';
+
+export default function PaginationBar({
+  children,
+  itemsPerPage,
+  TotalPages, // Recibir los datos paginados como prop
+  onPageChange,
+}: React.PropsWithChildren<{
+  onPageChange: (page: number) => void;
+  itemsPerPage: number
+  TotalPages: number; // Definir el tipo de datos paginados
+}>) {
+  
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    onPageChange(page);
+  };
+   //set the default page as 1
+  
+   //set the default page as the number of post you would like to see in the screen( for testing purpose we will set the number of items per page at 2)
+   
+ 
+  
+  
+
+
+
+  return (
+    <Stack spacing={2}>
+      <Pagination
+      //set the number of pages based in the number of items
+        count={TotalPages}
+        variant="outlined"
+        color="primary"
+        onChange={handleChange}
+        
+      />
+    </Stack>
+  );
+}
