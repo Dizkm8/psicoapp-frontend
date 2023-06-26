@@ -113,6 +113,10 @@ const Tags = {
 const Appointments = {
     listByUser: (userId: string) =>
         requests.get(`Appointments/user/${userId}`),
+    getSpecialistAppointments: (specialistId: string) =>
+        requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
+    cancelAppointment: (appointmentId: number) =>
+        requests.delete(`Appointments/cancel-appointment/${appointmentId}`),
 };
 
 const Admin = {

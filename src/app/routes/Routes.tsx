@@ -18,6 +18,8 @@ import UserAdministrationPage from "../../features/administrator/UserAdministrat
 import AddSpecialistPage from "../../features/administrator/UserAdministrationPage/AddSpecialistPage";
 import AdministratorPage from "../../features/administrator/AdministratorPage";
 import UpdateRulesPage from "../../features/administrator/UpdateRulesPage";
+import AppointmentManagementPage from "../../features/administrator/AppointmentManagementPage";
+import SpecialistAppointmentManagementPage from "../../features/administrator/SpecialistAppointmentManagementPage";
 
 export const router = createBrowserRouter([
     {
@@ -58,6 +60,8 @@ export const router = createBrowserRouter([
                         {path: 'update-rules', element: <UpdateRulesPage />},
                         {path: 'manage-users', element: <UserAdministrationPage />},
                         {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
+                        {path: 'manage-appointments', element: <AppointmentManagementPage />},
+                        {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
                     ]},
             { path: '/home', element: <HomePage /> },
         ]
