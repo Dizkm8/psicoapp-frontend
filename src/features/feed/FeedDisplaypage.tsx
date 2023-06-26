@@ -8,6 +8,9 @@ import PaginationBar from "../../app/components/PaginationBar";
 import agent from "../../app/api/agent";
 import { toast } from "react-toastify";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { Button } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Link, NavLink, Navigate } from 'react-router-dom';
 
 
 export default function FeedDisplayPage(){
@@ -16,6 +19,7 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
+    const [postId, setPostId] = useState("");
 
     function convertData(feedPost: FeedPost){
 
@@ -24,7 +28,7 @@ export default function FeedDisplayPage(){
             children: undefined,
             title: feedPost.title,
             subtitle: feedPost.content,
-            onClick: ()=>{console.log(result.title); navigate('/home');}
+            onClick: ()=>{console.log(result.title); setPostId(result.key); navigate('post');}
         };
         return result;
     };
@@ -68,15 +72,21 @@ export default function FeedDisplayPage(){
         setCurrentPage(currentPage);
       };
 
-      return(
-        <div>
-        <BentoGrid bentoItems={data} />
-        <PaginationBar
-          itemsPerPage={itemsPerPage}
-          TotalPages={Math.ceil(data.length / itemsPerPage)}
-          onPageChange={handlePageChange}
-        />
-        
-      </div>
-    );
+      return (
+        <div style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', top: -15, right: 100}}>
+            <NavLink to="/feed/create">
+                <Button variant="contained"  startIcon={<AddCircleIcon />} >
+                    Agregar post
+                </Button>
+            </NavLink>
+          </div>
+          <BentoGrid bentoItems={data} />
+          <PaginationBar
+            itemsPerPage={itemsPerPage}
+            TotalPages={Math.ceil(data.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      );
 }

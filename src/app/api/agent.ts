@@ -76,6 +76,8 @@ const Feed = {
         requests.post('FeedPosts/create-post', postData),
     getPosts: () =>
         requests.get('FeedPosts/'),
+    getPost: (postId: number) =>
+        requests.get(`FeedPosts/get-post/${postId}`),
 };
 
 const Forum = {
@@ -84,8 +86,10 @@ const Forum = {
 
     addComment: (commentData: string, postId: number) =>
         requests.post(`ForumPosts/add-comment/${postId}`,commentData),
+
     getPosts: () =>
         requests.get('ForumPosts/'),
+
     getPost: (postId: number) =>
         requests.get(`ForumPosts/get-post/${postId}`),
     

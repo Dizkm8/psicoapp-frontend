@@ -13,8 +13,10 @@ import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 import CreateForumPostPage from "../../features/forum/CreateForumPostPage";
 import FeedDisplayPage from "../../features/feed/FeedDisplaypage";
 import ForumDisplayPage from "../../features/forum/ForumDisplayPage";
-import PostPage from "../../features/forum/PostDisplayer";
-import Post from "../../features/forum/Post";
+import ForumPostPage from "../../features/forum/ForumPostPage";
+import Post from "../../features/forum/ForumPostPage";
+import PostDisplayer from "../../features/forum/ForumPostDisplayer";
+import FeedPostPage from "../../features/feed/FeedPostPage";
 
 export const router = createBrowserRouter([
     {
@@ -34,16 +36,17 @@ export const router = createBrowserRouter([
                     [
                         { path: 'availability', element: <DefineAvailabilityPage />},
                     ]},
-            { path: '/feed', element: <RequireAuth role={2} />, children:
+            { path: '/feed', element: <RequireAuth role={3} />, children:
                     [
                         {path: 'create', element: <CreateFeedPostPage />},
-                        {path: '', element: <FeedDisplayPage/>}
+                        {path: '', element: <FeedDisplayPage/>},
+                        {path: 'post', element: <FeedPostPage/>}
                     ]},
             { path: '/forum', element: <RequireAuth role={3} />, children:
                     [
                         {path: 'create', element: <CreateForumPostPage />},
                         {path: '', element: <ForumDisplayPage />},
-                        {path: 'post', element: <Post />}
+                        {path: 'post', element: <ForumPostPage/>}
                     ]},
             { path: '/client', element: <RequireAuth role={2} />, children:
                     [

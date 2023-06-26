@@ -12,7 +12,7 @@ import CommentsDisplayer from "./CommentsDisplay";
 
 
 
-export default function PostDisplayer({
+export default function ForumPostDisplayer({
     postId,
   }: React.PropsWithChildren<{
     postId: number; // Definir el tipo de datos paginados
@@ -72,7 +72,7 @@ export default function PostDisplayer({
       }
 
       setLoading(true);
-      agent.Forum.addComment(newComment, postId)
+      agent.Forum.addComment(newComment, 1)
         .then((response) => {
           // Actualiza los comentarios locales con el nuevo comentario
           setComments([...comments, response]);

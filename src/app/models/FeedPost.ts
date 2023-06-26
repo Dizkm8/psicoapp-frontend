@@ -1,3 +1,4 @@
+
 export default interface FeedPost {
     id?: number,
     title: string;
@@ -5,4 +6,14 @@ export default interface FeedPost {
     publishedOn?: Date;
     userId?: string;
     tagId?: number;
+    userName: string,
+    userFirstLastName: string,
+    userSecondLastName: string,
+    fullName: string,
+    tagName: string,
+
+
+    
+    
+
 };
