@@ -87,7 +87,7 @@ export default function Appointments() {
               {appointments.map((appointment) => (
                 <TableRow key={appointment.id}>
                   <TableCell>{appointment.id}</TableCell>
-                  <TableCell>{appointment.requestedUser?.name} {appointment.requestedUser?.firstLastName}</TableCell>
+                  <TableCell>{appointment.requestedUserFullName}</TableCell>
                   <TableCell>{moment(appointment.bookedDate).format('HH:mm')}</TableCell>
                   <TableCell>{new Date(appointment.bookedDate).toLocaleDateString()}</TableCell>
                   <TableCell>{getAppointmentStatusName(appointment)}</TableCell>

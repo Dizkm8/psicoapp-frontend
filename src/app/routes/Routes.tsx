@@ -17,6 +17,9 @@ import BookAppointmentPage from "../../features/client/BookAppointmentPage/BookA
 import UserAdministrationPage from "../../features/administrator/UserAdministrationPage/UserAdministrationPage";
 import AddSpecialistPage from "../../features/administrator/UserAdministrationPage/AddSpecialistPage";
 import AdministratorPage from "../../features/administrator/AdministratorPage";
+import UpdateRulesPage from "../../features/administrator/UpdateRulesPage";
+import AppointmentManagementPage from "../../features/administrator/AppointmentManagementPage";
+import SpecialistAppointmentManagementPage from "../../features/administrator/SpecialistAppointmentManagementPage";
 
 export const router = createBrowserRouter([
     {
@@ -54,8 +57,11 @@ export const router = createBrowserRouter([
             { path: '/administrator', element: <RequireAuth role={1} />, children:
                     [
                         {path: '', element: <AdministratorPage />},
+                        {path: 'update-rules', element: <UpdateRulesPage />},
                         {path: 'manage-users', element: <UserAdministrationPage />},
                         {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
+                        {path: 'manage-appointments', element: <AppointmentManagementPage />},
+                        {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
                     ]},
             { path: '/home', element: <HomePage /> },
         ]
