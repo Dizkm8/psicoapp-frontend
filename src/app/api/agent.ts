@@ -103,6 +103,8 @@ const Users = {
         requests.get('Users/get-all-specialists'),
     getSpecialist: (userId: string) =>
         requests.get(`Users/get-specialist/${userId}`),
+    getUsers: () =>
+        requests.get('Users'),
 };
 
 const Tags = {
@@ -126,6 +128,8 @@ const Admin = {
         requests.post('Admin/update-rules', {}, {params: {rules: newRule}}),
     addSpecialist: (specialist: Specialist) =>
         requests.post(`Admin/create-specialist`,specialist),
+    updateUserAvailability: (userId: string, isEnabled: boolean) =>
+        requests.post(`Admin/update-user-availability/${userId}`, {}, {params: {isEnabled: isEnabled}}),
 };
 
 const agent = {
