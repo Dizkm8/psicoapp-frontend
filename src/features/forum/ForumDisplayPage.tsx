@@ -11,6 +11,10 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Button } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link, NavLink, Navigate } from 'react-router-dom';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import ForumPostDisplayer from "./ForumPostDisplayer";
 
 
 export default function ForumDisplayPage(){
@@ -19,7 +23,23 @@ export default function ForumDisplayPage(){
     const [posts, setPosts] = useState<ForumPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    const [postId, setPostId] = useState<number | null>(null);
+    const [postId, setPostId] = useState(0);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    
+        width: 800,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
    
 
     function convertData(forumPost: ForumPost){
@@ -31,7 +51,7 @@ export default function ForumDisplayPage(){
             subtitle: forumPost.content,
             onClick: () => {
                 console.log(result.title);
-                navigate("post");
+                handleOpen();
                 setPostId(Number(result.key));
               },
         };
@@ -92,6 +112,18 @@ export default function ForumDisplayPage(){
             TotalPages={Math.ceil(data.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <ForumPostDisplayer postId={postId}></ForumPostDisplayer>
+            </Box>
+          </Modal>
+          
+          
         </div>
       );
 }

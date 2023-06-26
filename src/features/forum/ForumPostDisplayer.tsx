@@ -8,7 +8,7 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Comment from "../../app/models/Comment";
-import CommentsDisplayer from "./CommentsDisplay";
+import CommentAdder from "./CommentsAdder";
 
 
 
@@ -72,7 +72,7 @@ export default function ForumPostDisplayer({
       }
 
       setLoading(true);
-      agent.Forum.addComment(newComment, 1)
+      agent.Forum.addComment(newComment, postId)
         .then((response) => {
           // Actualiza los comentarios locales con el nuevo comentario
           setComments([...comments, response]);
@@ -143,7 +143,7 @@ export default function ForumPostDisplayer({
   
           
         </Box>
-        <CommentsDisplayer postId={postId}> </CommentsDisplayer>
+        <CommentAdder postId={postId}> </CommentAdder>
       </Box>
     );
   }

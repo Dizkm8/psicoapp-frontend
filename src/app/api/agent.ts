@@ -84,8 +84,8 @@ const Forum = {
     createPost: (postData: ForumPost) =>
         requests.post('ForumPosts/create-post', postData),
 
-    addComment: (commentData: string, postId: number) =>
-        requests.post(`ForumPosts/add-comment/${postId}`,commentData),
+    addComment: (postData: string, postId: number) =>
+        requests.post(`ForumPosts/add-comment/${postId}`,postData),
 
     getPosts: () =>
         requests.get('ForumPosts/'),

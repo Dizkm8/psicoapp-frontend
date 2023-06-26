@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { userInfo } from "os";
+import TextField from '@mui/material/TextField';
+import { Button } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-
-export default function CommentsDisplayer({
+export default function CommentAdder({
     postId,
   
   }: React.PropsWithChildren<{
@@ -19,6 +20,11 @@ export default function CommentsDisplayer({
   }>) {
     const navigate = useNavigate();
     const [newComment, setNewComment] = useState("")
+
+    const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewComment(event.target.value);
+    };
+  
 
 
     const handleAddComment = () => {
@@ -36,7 +42,8 @@ export default function CommentsDisplayer({
         });
         return;
       }
-
+     
+    
       
       agent.Forum.addComment(newComment, postId)
         .then((response) => {
@@ -59,32 +66,23 @@ export default function CommentsDisplayer({
         
     };
 
-    
-    
-  
-
-
-
-
     return (
         <Box
           sx={{
             width: '80%',
             margin: '20px auto',
             marginLeft: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-        <div>
-            <input
-              type="text"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <button onClick={handleAddComment}>Agregar comentario</button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange}/>
+            <Button variant="contained" onClick={handleAddComment} startIcon={<AddCircleIcon />} style={{ marginLeft: '10px' }}>
+              Agregar comentario
+            </Button>
           </div>
-         
-          
-          
 
         </Box>
       );}

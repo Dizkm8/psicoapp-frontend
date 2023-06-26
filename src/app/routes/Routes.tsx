@@ -13,10 +13,7 @@ import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 import CreateForumPostPage from "../../features/forum/CreateForumPostPage";
 import FeedDisplayPage from "../../features/feed/FeedDisplaypage";
 import ForumDisplayPage from "../../features/forum/ForumDisplayPage";
-import ForumPostPage from "../../features/forum/ForumPostPage";
-import Post from "../../features/forum/ForumPostPage";
-import PostDisplayer from "../../features/forum/ForumPostDisplayer";
-import FeedPostPage from "../../features/feed/FeedPostPage";
+
 
 export const router = createBrowserRouter([
     {
@@ -40,14 +37,13 @@ export const router = createBrowserRouter([
                     [
                         {path: 'create', element: <CreateFeedPostPage />},
                         {path: '', element: <FeedDisplayPage/>},
-                        {path: 'post', element: <FeedPostPage/>}
                     ]},
             { path: '/forum', element: <RequireAuth role={3} />, children:
                     [
                         {path: 'create', element: <CreateForumPostPage />},
                         {path: '', element: <ForumDisplayPage />},
-                        {path: 'post', element: <ForumPostPage/>}
                     ]},
+                        
             { path: '/client', element: <RequireAuth role={2} />, children:
                     [
                         {path: 'select', element: <SelectSpecialistPage />},

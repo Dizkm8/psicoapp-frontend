@@ -11,6 +11,11 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Button } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link, NavLink, Navigate } from 'react-router-dom';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import FeedPostDisplayer from "./FeedPostDisplayer";
+
 
 
 export default function FeedDisplayPage(){
@@ -19,7 +24,24 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    const [postId, setPostId] = useState("");
+    const [postId, setPostId] = useState(0);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
+      
+
 
     function convertData(feedPost: FeedPost){
 
@@ -28,7 +50,7 @@ export default function FeedDisplayPage(){
             children: undefined,
             title: feedPost.title,
             subtitle: feedPost.content,
-            onClick: ()=>{console.log(result.title); setPostId(result.key); navigate('post');}
+            onClick: ()=>{handleOpen(); console.log(result.title); setPostId(result.key);}
         };
         return result;
     };
@@ -87,6 +109,18 @@ export default function FeedDisplayPage(){
             TotalPages={Math.ceil(data.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
+          <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+            <FeedPostDisplayer postId={postId}></FeedPostDisplayer>
+        </Box>
+      </Modal>
         </div>
+        
+        
       );
 }
