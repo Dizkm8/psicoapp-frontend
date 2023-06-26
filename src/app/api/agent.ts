@@ -116,6 +116,10 @@ const Appointments = {
 };
 
 const Admin = {
+    getRule: () =>
+        requests.get('Admin/'),
+    updateRule: (newRule: string) =>
+        requests.post('Admin/update-rules', {}, {params: {rules: newRule}}),
     addSpecialist: (specialist: Specialist) =>
         requests.post(`Admin/create-specialist`,specialist),
 };

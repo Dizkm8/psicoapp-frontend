@@ -17,6 +17,7 @@ import BookAppointmentPage from "../../features/client/BookAppointmentPage/BookA
 import UserAdministrationPage from "../../features/administrator/UserAdministrationPage/UserAdministrationPage";
 import AddSpecialistPage from "../../features/administrator/UserAdministrationPage/AddSpecialistPage";
 import AdministratorPage from "../../features/administrator/AdministratorPage";
+import UpdateRulesPage from "../../features/administrator/UpdateRulesPage";
 
 export const router = createBrowserRouter([
     {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
             { path: '/administrator', element: <RequireAuth role={1} />, children:
                     [
                         {path: '', element: <AdministratorPage />},
+                        {path: 'update-rules', element: <UpdateRulesPage />},
                         {path: 'manage-users', element: <UserAdministrationPage />},
                         {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
                     ]},
