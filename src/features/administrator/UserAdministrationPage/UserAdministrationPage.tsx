@@ -37,7 +37,7 @@ export default function UserAdministrationPage(){
     const handleUpdate = () => {
         if(!dialogState)
             return;
-        agent.Admin.updateUserAvailability(dialogState.id, dialogState.isEnabled)
+        agent.Admin.updateUserAvailability(dialogState.id, !dialogState.isEnabled)
             .then(() => {
                 const newUsers = users.map((user) => {
                     return (user.id !== dialogState.id) ? user :
