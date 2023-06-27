@@ -8,7 +8,10 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Comment from "../../app/models/Comment";
-import CommentAdder from "./CommentsAdder";
+
+import TextField from '@mui/material/TextField';
+import { Button } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 
@@ -22,6 +25,14 @@ export default function ForumPostDisplayer({
     const [post, setPost] = useState<ForumPost>();
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
+    const [commentAdded, setCommentAdded] = useState(false);
+   
+
+    const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewComment(event.target.value);
+    };
+
+    
 
     
      useEffect(() => {
@@ -46,14 +57,18 @@ export default function ForumPostDisplayer({
              })
              .finally(() => {
                  setLoading(false);
+                 setCommentAdded(false);
              });
-     }, []);
+     }, [commentAdded]);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
 
 
     if (!post) return null; // Añade un caso para cuando el estado post sea null
     
+    const handleCommentAdded = () => {
+      setCommentAdded(false);
+    };
 
     const handleAddComment = () => {
       if (newComment.trim() === '') {
@@ -71,12 +86,16 @@ export default function ForumPostDisplayer({
         return;
       }
 
+      
+      
       setLoading(true);
-      agent.Forum.addComment(newComment, postId)
+      
+      agent.Forum.addComment({content:newComment}, postId)
         .then((response) => {
           // Actualiza los comentarios locales con el nuevo comentario
           setComments([...comments, response]);
           setNewComment(''); // Limpia el campo de nuevo comentario
+          setCommentAdded(true);
         })
         .catch((error) => {
           toast.error('Ha ocurrido un problema al agregar el comentario', {
@@ -92,7 +111,8 @@ export default function ForumPostDisplayer({
         })
         .finally(() => {
           setLoading(false);
-        });
+          
+        },);
     };
 
 
@@ -116,7 +136,7 @@ export default function ForumPostDisplayer({
           </Typography>
         </div>
   
-        <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
+        <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }} onAnimationEnd={handleCommentAdded}>
           {comments.length === 0 ? (
             <Typography variant="body1" gutterBottom>
               No hay comentarios disponibles.
@@ -143,7 +163,24 @@ export default function ForumPostDisplayer({
   
           
         </Box>
-        <CommentAdder postId={postId}> </CommentAdder>
+        <Box
+          sx={{
+            width: '80%',
+            margin: '20px auto',
+            marginLeft: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange}/>
+            <Button variant="contained" onClick={handleAddComment} startIcon={<AddCircleIcon />} style={{ marginLeft: '10px' }}>
+              Agregar comentario
+            </Button>
+          </div>
+
+        </Box>
       </Box>
     );
   }

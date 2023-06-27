@@ -6,6 +6,7 @@ import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
 import ForumPost from "../models/ForumPost";
 import Comment from "../models/Comment";
+import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -84,7 +85,7 @@ const Forum = {
     createPost: (postData: ForumPost) =>
         requests.post('ForumPosts/create-post', postData),
 
-    addComment: (postData: string, postId: number) =>
+    addComment: (postData: AddComment, postId: number) =>
         requests.post(`ForumPosts/add-comment/${postId}`,postData),
 
     getPosts: () =>

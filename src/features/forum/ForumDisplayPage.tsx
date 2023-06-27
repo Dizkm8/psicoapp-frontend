@@ -1,4 +1,4 @@
-import Specialist from "../../app/models/Specialist";
+
 import ForumPost from "../../app/models/ForumPost";
 import BentoItemProperties from "../../app/interfaces/BentoItemProperties";
 import BentoGrid from "../../app/components/BentoGrid";
