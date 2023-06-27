@@ -4,12 +4,16 @@ import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import * as React from "react";
 import {Link} from "react-router-dom";
+import {Stack} from "@mui/material";
+import AppointmentStatisticsGraph from "./AppointmentsStatistics/AppointmentStatisticsGraph";
 
 export default function AdministratorPage(){
     return(
-        <>
+        <Stack spacing={2} m={3}>
+            <AppointmentStatisticsGraph/>
             <Link to={'/administrator/update-rules'}>
                 <PurpleButton
+                    fullWidth
                     variant="contained"
                     startIcon={<StraightenIcon />}
                     sx={{justifySelf: 'end'}}
@@ -19,6 +23,7 @@ export default function AdministratorPage(){
             </Link>
             <Link to={'/administrator/manage-users'}>
                 <PurpleButton
+                    fullWidth
                     variant="contained"
                     startIcon={<GroupIcon />}
                     sx={{justifySelf: 'end'}}
@@ -28,6 +33,7 @@ export default function AdministratorPage(){
             </Link>
             <Link to={'/administrator/manage-appointments'}>
                 <PurpleButton
+                    fullWidth
                     variant="contained"
                     startIcon={<CalendarMonthIcon />}
                     sx={{justifySelf: 'end'}}
@@ -35,6 +41,6 @@ export default function AdministratorPage(){
                     Administrar citas
                 </PurpleButton>
             </Link>
-        </>
+        </Stack>
     );
 }
