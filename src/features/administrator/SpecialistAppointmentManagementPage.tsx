@@ -61,13 +61,7 @@ export default function SpecialistAppointmentManagementPage(){
                 navigate('/home');
             }).then( () =>
             agent.Appointments.getSpecialistAppointments(specialistId)
-                .then((response: Appointment[]) => {
-                    let result = response.filter((appointment) =>{
-                        const appointmentDate = new Date(appointment.bookedDate)
-                        console.log(appointmentDate)
-                        return appointment.appointmentStatusId === 2 && limitDate < appointmentDate})
-                    setAppointments(result);
-                })
+                .then((response: Appointment[]) => setAppointments(response))
                 .catch((error) => {
                     toast.error('Ha ocurrido un problema cargando la información', {
                         position: "top-center",
@@ -88,7 +82,12 @@ export default function SpecialistAppointmentManagementPage(){
     const handleCancel = (appointmentId: number) => {
         agent.Appointments.cancelAppointment(appointmentId)
             .then(() => {
-                setAppointments(appointments.filter((appointment) => appointment.id !== appointmentId));
+                // Este valor no debería estar quemado. Hay que buscar una mejor forma en el futuro.
+                const newAppointments = appointments.map((appointment) => {
+                    return (appointment.id !== appointmentId) ? appointment :
+                        {...appointment, appointmentStatusId: 3, appointmentStatusName: 'Canceled'};
+                });
+                setAppointments(newAppointments);
                 toast.success('La cita se ha cancelado con éxito.', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 3000,
@@ -143,26 +142,33 @@ export default function SpecialistAppointmentManagementPage(){
                                 <TableCell>Cliente</TableCell>
                                 <TableCell>Hora</TableCell>
                                 <TableCell>Fecha</TableCell>
+                                <TableCell>Estado</TableCell>
                                 <TableCell>Cancelar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {appointments.map((appointment) => (
-                                <TableRow key={appointment.id} hover>
-                                    <TableCell>{appointment.id}</TableCell>
-                                    <TableCell>{appointment.requestedUserFullName}</TableCell>
-                                    <TableCell>{moment(appointment.bookedDate).format('HH:mm')}</TableCell>
-                                    <TableCell>{new Date(appointment.bookedDate).toLocaleDateString()}</TableCell>
-                                    <TableCell>
-                                        <IconButton
-                                            onClick={() => handleCancel(appointment.id)}
-                                            color="error"
-                                        >
-                                            <CancelIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {appointments.map((appointment) => {
+                                const appointmentDate = new Date(appointment.bookedDate);
+                                return (
+                                    <TableRow key={appointment.id} hover>
+                                        <TableCell>{appointment.id}</TableCell>
+                                        <TableCell>{appointment.requestingUserFullName}</TableCell>
+                                        <TableCell>{moment(appointment.bookedDate).format('HH:mm')}</TableCell>
+                                        <TableCell>{new Date(appointment.bookedDate).toLocaleDateString()}</TableCell>
+                                        <TableCell>{appointment.appointmentStatusName}</TableCell>
+                                        <TableCell>
+                                            <IconButton
+                                                disabled={!(appointment.appointmentStatusId === 2
+                                                    && limitDate < appointmentDate)}
+                                                onClick={() => handleCancel(appointment.id)}
+                                                color="error"
+                                            >
+                                                <CancelIcon/>
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>
