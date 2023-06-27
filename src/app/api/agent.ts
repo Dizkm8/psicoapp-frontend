@@ -7,6 +7,8 @@ import Appointment from "../models/Appointment";
 import SpecialistInfo from "../models/SpecialistInfo";
 import Specialist from "../models/Specialist";
 import ForumPost from "../models/ForumPost";
+import Comment from "../models/Comment";
+import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -82,16 +84,25 @@ const Feed = {
         requests.post('FeedPosts/create-post', postData),
     getPosts: () =>
         requests.get('FeedPosts/'),
+    getPost: (postId: number) =>
+        requests.get(`FeedPosts/get-post/${postId}`),
 };
 
 const Forum = {
     createPost: (postData: ForumPost) =>
         requests.post('ForumPosts/create-post', postData),
+
+    addComment: (postData: AddComment, postId: number) =>
+        requests.post(`ForumPosts/add-comment/${postId}`,postData),
+
     getPosts: () =>
         requests.get('ForumPosts/'),
 
+    getPost: (postId: number) =>
+        requests.get(`ForumPosts/get-post/${postId}`),
 
-
+    
+    
 };
 
 const Users = {

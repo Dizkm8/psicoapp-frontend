@@ -236,17 +236,29 @@ export default function CreateFeedPostPage() {
                         </Stack>
                     </CardContent>
                     <CardActions sx={{ flexDirection: 'row-reverse', m: '2' }}>
-                        <LoadingButton
-                            color="secondary"
-                            variant="contained"
-                            onClick={() => { setOpenConfirmation(true) }}
-                            loading={isSubmittingForm}
-                        >
-                            <AddToPhotosIcon
-                                sx={{ mr: 1, my: 0.5 }}
-                            />
-                            Agregar Noticia
-                        </LoadingButton>
+                        
+
+                    <LoadingButton
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => { setOpenConfirmation(true) }}
+                        loading={isSubmittingForm}
+                    >
+                        <AddToPhotosIcon
+                            sx={{ mr: 1, my: 0.5 }}
+                        />
+                        Agregar Noticia
+                    </LoadingButton>
+
+                    <Button
+                        color='error'
+                        variant="contained"
+                        onClick={() => { navigate('/feed');}}
+                        sx={{ marginRight: 'auto' }} // Agrega esta línea
+                    >
+                        Volver
+                    </Button>
+
                     </CardActions>
                 </Card>
             </Grid>

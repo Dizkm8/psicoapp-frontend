@@ -245,8 +245,17 @@ export default function CreateForumPostPage() {
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Agregar Post
+                            Agregar Noticia
                         </LoadingButton>
+
+                        <Button
+                            color='error'
+                            variant="contained"
+                            onClick={() => { navigate('/forum');}}
+                            sx={{ marginRight: 'auto' }} // Agrega esta línea
+                        >
+                            Volver
+                        </Button>
                     </CardActions>
                 </Card>
             </Grid>

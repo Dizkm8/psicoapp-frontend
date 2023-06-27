@@ -82,17 +82,6 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
         >
             <List>
                 <ListItem disablePadding>
-
-                    <ListItemButton component={NavLink} to={userRole === 3 ? "/feed/create" : "/forum/create"}>
-                        <ListItemIcon>
-                            <NewspaperIcon />
-                        </ListItemIcon>
-                        <ListItemText>
-                            {userRole === 3 ? 'Agregar noticia' : 'Agregar Post'}
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
                     <ListItemButton component={NavLink} to="/forum"  >
                         <ListItemIcon>
                             <ArticleIcon />
@@ -103,7 +92,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                 <ListItem disablePadding>
                     <ListItemButton component={NavLink} to="/feed">
                         <ListItemIcon>
-                            <ArticleIcon />
+                            <NewspaperIcon />
                         </ListItemIcon>
                         <ListItemText primary="Noticias" />
                     </ListItemButton>
