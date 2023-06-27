@@ -119,6 +119,8 @@ const Appointments = {
         requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>
         requests.delete(`Appointments/cancel-appointment/${appointmentId}`),
+    getStatistics: () =>
+        requests.get('Appointments/get-statistics'),
 };
 
 const Admin = {
