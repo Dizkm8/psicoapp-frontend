@@ -7,6 +7,7 @@ export default interface Comment {
     userFirstLastName: string,
     userSecondLastName: string,
     fullName: string,
+    
 
     
 };
