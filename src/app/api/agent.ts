@@ -4,6 +4,8 @@ import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
+import SpecialistInfo from "../models/SpecialistInfo";
+import Specialist from "../models/Specialist";
 import ForumPost from "../models/ForumPost";
 import Comment from "../models/Comment";
 import AddComment from "../models/AddComment";
@@ -45,8 +47,8 @@ axios.interceptors.response.use(async response => {
 });
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+    get: (url: string, config?: {}) => axios.get(url, config).then(responseBody),
+    post: (url: string, body: {}, config?: {}) => axios.post(url, body, config).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
 };
@@ -64,12 +66,17 @@ const Login = {
 };
 
 const Specialists = {
-    getAvailability: (date: string) =>
-        requests.get(`Specialists/availability/${date}`),
+    getAvailability: (id: string) =>
+        requests.get(`Specialists/availability/${id}`),
     addAvailability: (selection: {startTime: string}[]) =>
         requests.post('Specialists/add-availability', [...selection]),
-    getSpecialists: () =>
-        requests.get('Specialists/get-all-specialists'),
+    getSpecialities: () =>
+        requests.get('Specialists/get-specialities'),
+};
+
+const Clients = {
+    addAppointment: (specialistId: string, startTime: string) =>
+        requests.post(`Clients/add-appointment/${specialistId}`, {}, {params: {dateTime: startTime}}),
 };
 
 const Feed = {
@@ -93,7 +100,7 @@ const Forum = {
 
     getPost: (postId: number) =>
         requests.get(`ForumPosts/get-post/${postId}`),
-    
+
     
     
 };
@@ -103,6 +110,12 @@ const Users = {
         requests.get('Users/profile-information'),
     updateProfileInformation: (newData: User) =>
         requests.put('Users/profile-information', newData),
+    getSpecialists: () =>
+        requests.get('Users/get-all-specialists'),
+    getSpecialist: (userId: string) =>
+        requests.get(`Users/get-specialist/${userId}`),
+    getUsers: () =>
+        requests.get('Users'),
 };
 
 const Tags = {
@@ -113,16 +126,35 @@ const Tags = {
 const Appointments = {
     listByUser: (userId: string) =>
         requests.get(`Appointments/user/${userId}`),
+    getSpecialistAppointments: (specialistId: string) =>
+        requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
+    cancelAppointment: (appointmentId: number) =>
+        requests.delete(`Appointments/cancel-appointment/${appointmentId}`),
+    getStatistics: () =>
+        requests.get('Appointments/get-statistics'),
+};
+
+const Admin = {
+    getRule: () =>
+        requests.get('Admin/'),
+    updateRule: (newRule: string) =>
+        requests.post('Admin/update-rules', {}, {params: {rules: newRule}}),
+    addSpecialist: (specialist: Specialist) =>
+        requests.post(`Admin/create-specialist`,specialist),
+    updateUserAvailability: (userId: string, isEnabled: boolean) =>
+        requests.post(`Admin/update-user-availability/${userId}`, {}, {params: {isEnabled: isEnabled}}),
 };
 
 const agent = {
     Login,
     Specialists,
+    Clients,
     Feed,
     Users,
     Tags,
     Appointments,
     Forum,
+    Admin,
 };
 
 export default agent;

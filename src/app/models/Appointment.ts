@@ -2,12 +2,12 @@ import User from './User';
 import AppointmentStatus from './AppointmentStatus';
 
 export default interface Appointment {
-  id?: number;
+  id: number;
   bookedDate: string;
-  requestingUserId: string;
-  requestingUser: User;
-  requestedUserId: string;
-  requestedUser: User;
+  requestingUserId?: string;
+  requestingUserFullName?: string;
+  requestedUserId?: string;
+  requestedUserFullName?: string;
   appointmentStatusId: number;
-  appointmentStatus: AppointmentStatus;
+  appointmentStatusName: string;
 }

@@ -13,7 +13,13 @@ import SelectSpecialistPage from "../../features/client/SelectSpecialistPage";
 import CreateForumPostPage from "../../features/forum/CreateForumPostPage";
 import FeedDisplayPage from "../../features/feed/FeedDisplaypage";
 import ForumDisplayPage from "../../features/forum/ForumDisplayPage";
-
+import BookAppointmentPage from "../../features/client/BookAppointmentPage/BookAppointmentPage";
+import UserAdministrationPage from "../../features/administrator/UserAdministrationPage/UserAdministrationPage";
+import AddSpecialistPage from "../../features/administrator/UserAdministrationPage/AddSpecialistPage";
+import AdministratorPage from "../../features/administrator/AdministratorPage";
+import UpdateRulesPage from "../../features/administrator/UpdateRulesPage";
+import AppointmentManagementPage from "../../features/administrator/AppointmentManagementPage";
+import SpecialistAppointmentManagementPage from "../../features/administrator/SpecialistAppointmentManagementPage";
 
 export const router = createBrowserRouter([
     {
@@ -43,13 +49,20 @@ export const router = createBrowserRouter([
                         {path: 'create', element: <CreateForumPostPage />},
                         {path: '', element: <ForumDisplayPage />},
                     ]},
-                        
             { path: '/client', element: <RequireAuth role={2} />, children:
                     [
                         {path: 'select', element: <SelectSpecialistPage />},
+                        {path: 'select/:id', element: <BookAppointmentPage />},
+                    ]},
+            { path: '/administrator', element: <RequireAuth role={1} />, children:
+                    [
+                        {path: '', element: <AdministratorPage />},
+                        {path: 'update-rules', element: <UpdateRulesPage />},
+                        {path: 'manage-users', element: <UserAdministrationPage />},
+                        {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
+                        {path: 'manage-appointments', element: <AppointmentManagementPage />},
+                        {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
                     ]},
             { path: '/home', element: <HomePage /> },
-
-            
         ]
     }]);
