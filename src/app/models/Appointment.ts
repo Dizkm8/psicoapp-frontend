@@ -9,5 +9,5 @@ export default interface Appointment {
   requestedUserId?: string;
   requestedUserFullName?: string;
   appointmentStatusId: number;
-  appointmentStatus: string;
+  appointmentStatusName: string;
 }
