@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ForumPostDisplayer from "./ForumPostDisplayer";
+import { grey, purple } from '@mui/material/colors';
 
 
 export default function ForumDisplayPage(){
@@ -101,7 +102,7 @@ export default function ForumDisplayPage(){
         <div style={{ position: 'relative' }}>
           <div style={{ position: 'absolute', top: -15, right: 100}}>
           <NavLink to="/forum/create">
-            <Button variant="contained"  startIcon={<AddCircleIcon />} >
+            <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
               Agregar post
             </Button>
             </NavLink>

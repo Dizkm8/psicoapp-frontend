@@ -98,7 +98,7 @@ export default function FeedDisplayPage(){
         <div style={{ position: 'relative' }}>
           <div style={{ position: 'absolute', top: -15, right: 100}}>
             <NavLink to="/feed/create">
-                <Button variant="contained"  startIcon={<AddCircleIcon />} >
+                <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
                     Agregar post
                 </Button>
             </NavLink>

@@ -31,17 +31,16 @@ export default function PaginationBar({
   
 
 
-
-  return (
-    <Stack spacing={2}>
-      <Pagination
-      //set the number of pages based in the number of items
-        count={TotalPages}
-        variant="outlined"
-        color="primary"
-        onChange={handleChange}
-        
-      />
-    </Stack>
+   return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Stack spacing={2}>
+        <Pagination
+          count={TotalPages}
+          variant="outlined"
+          color="primary"
+          onChange={handleChange}
+        />
+      </Stack>
+    </div>
   );
 }

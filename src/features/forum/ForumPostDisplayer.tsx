@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import Comment from "../../app/models/Comment";
 
 import TextField from '@mui/material/TextField';
-import { Button } from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { IconButton } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
 
 
 
@@ -175,9 +175,9 @@ export default function ForumPostDisplayer({
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <TextField id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange}/>
-            <Button variant="contained" onClick={handleAddComment} startIcon={<AddCircleIcon />} style={{ marginLeft: '10px' }}>
-              Agregar comentario
-            </Button>
+            <IconButton onClick={handleAddComment} >
+              <SendIcon/>
+            </IconButton>
           </div>
 
         </Box>
