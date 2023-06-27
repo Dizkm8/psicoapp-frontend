@@ -102,7 +102,7 @@ const Forum = {
         requests.get(`ForumPosts/get-post/${postId}`),
 
     
-    
+
 };
 
 const Users = {

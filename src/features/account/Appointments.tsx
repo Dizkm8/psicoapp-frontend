@@ -63,33 +63,43 @@ export default function Appointments() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Código</TableCell>
-                  <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Especialista</TableCell>
-                  <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Hora</TableCell>
-                  <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Fecha</TableCell>
-                  <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Estado</TableCell>
+                  <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Código</TableCell>
+                  <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Especialista</TableCell>
+                  <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Hora</TableCell>
+                  <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Fecha</TableCell>
+                  <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Estado</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {[...Array(5)].map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+              {[...Array(5)].map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Skeleton animation="wave" height={20} width="80%" />
-                    </TableCell>
-                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Skeleton animation="wave" height={20} width="60%" />
-                    </TableCell>
-                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Skeleton animation="wave" height={20} width="40%" />
-                    </TableCell>
-                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Skeleton animation="wave" height={20} width="60%" />
-                    </TableCell>
-                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Skeleton animation="wave" height={20} width="40%" />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -105,29 +115,29 @@ export default function Appointments() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Código</TableCell>
-                <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Especialista</TableCell>
-                <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Hora</TableCell>
-                <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Fecha</TableCell>
-                <TableCell sx={{ backgroundColor: purple[500], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center' }}>Estado</TableCell>
+                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Código</TableCell>
+                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Especialista</TableCell>
+                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Hora</TableCell>
+                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Fecha</TableCell>
+                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {appointments.map((appointment) => (
                 <TableRow key={appointment.id}>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
                     <Typography variant="body1">{`#${appointment.id}`}</Typography>
                   </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
                     <Typography variant="body1">{`${appointment.requestedUserFullName}`}</Typography>
                   </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
                     <Typography variant="body1">{moment(appointment.bookedDate).format('HH:mm')}</Typography>
                   </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
                     <Typography variant="body1">{new Date(appointment.bookedDate).toLocaleDateString()}</Typography>
                   </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center' }}>
+                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
                     <Button
                       variant="contained"
                       sx={{
