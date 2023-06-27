@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
 import User from "../models/User";
-import {store} from "../store/store";
+import { store } from "../store/store";
 import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
 
@@ -16,7 +16,7 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use(config => {
-    const token =  store.getState().account.token;
+    const token = store.getState().account.token;
     if (token) config.headers.Authorization = 'Bearer ' + token;
     return config;
 });
@@ -42,51 +42,53 @@ axios.interceptors.response.use(async response => {
 });
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-    put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
-    delete: (url: string) => axios.delete(url).then(responseBody),
+    get: <T>(url: string): Promise<T> => axios.get<T>(url).then(responseBody),
+    post: <T>(url: string, body: {}): Promise<T> => axios.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: {}): Promise<T> => axios.put<T>(url, body).then(responseBody),
+    delete: <T>(url: string): Promise<T> => axios.delete<T>(url).then(responseBody),
 };
 
 const Login = {
     login: (userId: string, userPassword: string) =>
-        requests.post('Auth/login', {
+        requests.post<any>('Auth/login', {
             id: userId,
             password: userPassword,
         }),
     register: (userData: User) =>
-        requests.post('Auth/register-client', {...userData}),
+        requests.post<any>('Auth/register-client', {...userData}),
     updatePassword: (passwordForm: any) =>
-        requests.put('Auth/update-password', passwordForm),
+        requests.put<any>('Auth/update-password', passwordForm),
 };
 
 const Specialists = {
     getAvailability: (date: string) =>
-        requests.get(`Specialists/availability/${date}`),
-    addAvailability: (selection: {startTime: string}[]) =>
-        requests.post('Specialists/add-availability', [...selection]),
+        requests.get<any>(`Specialists/availability/${date}`),
+    addAvailability: (selection: { startTime: string }[]) =>
+        requests.post<any>('Specialists/add-availability', [...selection]),
 };
 
 const Feed = {
     createPost: (postData: FeedPost) =>
-        requests.post('FeedPosts/create-post', postData),
+        requests.post<any>('FeedPosts/create-post', postData),
 };
 
 const Users = {
     getProfileInformation: () =>
-        requests.get('Users/profile-information'),
+        requests.get<User>('Users/profile-information'),
     updateProfileInformation: (newData: User) =>
-        requests.put('Users/profile-information', newData),
+        requests.put<any>('Users/profile-information', newData),
 };
 
 const Tags = {
     getTags: () =>
-        requests.get('Tags'),
+        requests.get<any>('Tags'),
 };
 
 const Appointments = {
-    listByUser: (userId: string) =>
-        requests.get(`Appointments/user/${userId}`),
+    getAppointmentsByClient: () =>
+        requests.get<Appointment[]>(`Appointments/get-appointments-client`),
+    cancelAppointment: (appointmentId: number) =>
+        requests.delete(`Appointments/cancel-appointment/${appointmentId}`),
 };
 
 const agent = {

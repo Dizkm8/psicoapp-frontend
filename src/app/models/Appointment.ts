@@ -8,6 +8,7 @@ export default interface Appointment {
   requestingUser: User;
   requestedUserId: string;
   requestedUser: User;
+  requestedUserFullName: string;
   appointmentStatusId: number;
-  appointmentStatus: AppointmentStatus;
+  appointmentStatusName: string;
 }

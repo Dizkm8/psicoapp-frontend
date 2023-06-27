@@ -2,6 +2,7 @@ export default interface User {
     name?: string;
     firstLastName?: string;
     secondLastName?: string;
+    fullName?: string;
     id?: string;
     email?: string;
     gender?: string;
