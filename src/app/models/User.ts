@@ -10,4 +10,5 @@ export default interface User {
     isEnabled?: boolean;
     password?: string;
     role?: number;
+    roleName?: string;
 };

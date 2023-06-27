@@ -1,5 +1,5 @@
-
-export default interface FeedPost {
+import Comment from "./Comment";
+export default interface ForumPost {
     id?: number,
     title: string;
     content: string;
@@ -11,7 +11,7 @@ export default interface FeedPost {
     userSecondLastName: string,
     fullName: string,
     tagName: string,
-
+    comments: Comment[]
 
     
     

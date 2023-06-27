@@ -20,6 +20,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useLocation } from 'react-router-dom';
 import {store} from "../store/store";
 import {useDispatch, useSelector}  from "react-redux";
@@ -81,18 +82,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
         >
             <List>
                 <ListItem disablePadding>
-
-                    <ListItemButton component={NavLink} to={userRole === 3 ? "/feed/create" : "/post/create"}>
-                        <ListItemIcon>
-                            <NewspaperIcon />
-                        </ListItemIcon>
-                        <ListItemText>
-                            {userRole === 3 ? 'Agregar noticia' : 'Agregar Post'}
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton >
+                    <ListItemButton component={NavLink} to="/forum"  >
                         <ListItemIcon>
                             <ArticleIcon />
                         </ListItemIcon>
@@ -100,9 +90,9 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton >
+                    <ListItemButton component={NavLink} to="/feed">
                         <ListItemIcon>
-                            <ArticleIcon />
+                            <NewspaperIcon />
                         </ListItemIcon>
                         <ListItemText primary="Noticias" />
                     </ListItemButton>
@@ -126,6 +116,18 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                         <ListItemText primary="Ver citas" />
                     </ListItemButton>
                 </ListItem>
+                { userRole === 1 && (
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to={'/administrator'}>
+                            <ListItemIcon>
+                                <AdminPanelSettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText>
+                                Panel de administración
+                            </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                )}
             </List>
         </Box >
     );

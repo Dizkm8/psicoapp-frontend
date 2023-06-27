@@ -20,14 +20,14 @@ import { useNavigate } from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
 
-import FeedPost from "../../app/models/FeedPost";
+import ForumPost from '../../app/models/ForumPost';
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { LoadingButton } from '@mui/lab';
 
-export default function CreateFeedPostPage() {
-    const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
+export default function CreateForumPostPage() {
+    const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<ForumPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const [loading, setLoading] = useState(false);
@@ -60,14 +60,14 @@ export default function CreateFeedPostPage() {
     }, []);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
-    if (isSubmittingForm) return <LoadingComponent color='success' message='Agregando noticia...' />
+    if (isSubmittingForm) return <LoadingComponent color='success' message='Agregando publicacion...' />
 
-    const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
+    const handleSubmitButton: SubmitHandler<ForumPost> = (data: ForumPost) => {
         setIsSubmittingForm(true);
         setOpenConfirmation(false);
-        agent.Feed.createPost(data)
+        agent.Forum.createPost(data)
             .then((response) => {
-                toast.success('Noticia creada correctamente', {
+                toast.success('Post creado correctamente', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -130,7 +130,7 @@ export default function CreateFeedPostPage() {
                 <Card sx={{ width: '75%', backgroundColor: grey[50], }}>
                     <CardContent>
                         <Card sx={{ color: 'white', bgcolor: purple[400], my: 2 }}>
-                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nueva Noticia</Typography>
+                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nuevo Post</Typography>
                         </Card>
                         <Stack>
                             <Box component="form"
@@ -212,7 +212,7 @@ export default function CreateFeedPostPage() {
                                 <Dialog open={openConfirmation}
                                     onClose={() => { setOpenConfirmation(false) }}>
                                     <DialogTitle id="alert-dialog-title">
-                                        {"¿Está seguro que quiere agregar la noticia?"}
+                                        {"¿Está seguro que quiere agregar el post?"}
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button
@@ -236,29 +236,26 @@ export default function CreateFeedPostPage() {
                         </Stack>
                     </CardContent>
                     <CardActions sx={{ flexDirection: 'row-reverse', m: '2' }}>
-                        
+                        <LoadingButton
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => { setOpenConfirmation(true) }}
+                            loading={isSubmittingForm}
+                        >
+                            <AddToPhotosIcon
+                                sx={{ mr: 1, my: 0.5 }}
+                            />
+                            Agregar Noticia
+                        </LoadingButton>
 
-                    <LoadingButton
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => { setOpenConfirmation(true) }}
-                        loading={isSubmittingForm}
-                    >
-                        <AddToPhotosIcon
-                            sx={{ mr: 1, my: 0.5 }}
-                        />
-                        Agregar Noticia
-                    </LoadingButton>
-
-                    <Button
-                        color='error'
-                        variant="contained"
-                        onClick={() => { navigate('/feed');}}
-                        sx={{ marginRight: 'auto' }} // Agrega esta línea
-                    >
-                        Volver
-                    </Button>
-
+                        <Button
+                            color='error'
+                            variant="contained"
+                            onClick={() => { navigate('/forum');}}
+                            sx={{ marginRight: 'auto' }} // Agrega esta línea
+                        >
+                            Volver
+                        </Button>
                     </CardActions>
                 </Card>
             </Grid>

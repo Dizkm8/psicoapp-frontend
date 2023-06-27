@@ -1,9 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { idText } from "typescript";
 import User from "../models/User";
-import { store } from "../store/store";
+import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
 import Appointment from "../models/Appointment";
+import SpecialistInfo from "../models/SpecialistInfo";
+import Specialist from "../models/Specialist";
+import ForumPost from "../models/ForumPost";
+import Comment from "../models/Comment";
+import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -42,62 +47,116 @@ axios.interceptors.response.use(async response => {
 });
 
 const requests = {
-    get: <T>(url: string): Promise<T> => axios.get<T>(url).then(responseBody),
-    post: <T>(url: string, body: {}): Promise<T> => axios.post<T>(url, body).then(responseBody),
-    put: <T>(url: string, body: {}): Promise<T> => axios.put<T>(url, body).then(responseBody),
-    delete: <T>(url: string): Promise<T> => axios.delete<T>(url).then(responseBody),
+    get: (url: string, config?: {}) => axios.get(url, config).then(responseBody),
+    post: (url: string, body: {}, config?: {}) => axios.post(url, body, config).then(responseBody),
+    put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
+    delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const Login = {
     login: (userId: string, userPassword: string) =>
-        requests.post<any>('Auth/login', {
+        requests.post('Auth/login', {
             id: userId,
             password: userPassword,
         }),
     register: (userData: User) =>
-        requests.post<any>('Auth/register-client', {...userData}),
+        requests.post('Auth/register-client', {...userData}),
     updatePassword: (passwordForm: any) =>
-        requests.put<any>('Auth/update-password', passwordForm),
+        requests.put('Auth/update-password', passwordForm),
 };
 
 const Specialists = {
-    getAvailability: (date: string) =>
-        requests.get<any>(`Specialists/availability/${date}`),
-    addAvailability: (selection: { startTime: string }[]) =>
-        requests.post<any>('Specialists/add-availability', [...selection]),
+    getAvailability: (id: string) =>
+        requests.get(`Specialists/availability/${id}`),
+    addAvailability: (selection: {startTime: string}[]) =>
+        requests.post('Specialists/add-availability', [...selection]),
+    getSpecialities: () =>
+        requests.get('Specialists/get-specialities'),
+};
+
+const Clients = {
+    addAppointment: (specialistId: string, startTime: string) =>
+        requests.post(`Clients/add-appointment/${specialistId}`, {}, {params: {dateTime: startTime}}),
 };
 
 const Feed = {
     createPost: (postData: FeedPost) =>
-        requests.post<any>('FeedPosts/create-post', postData),
+        requests.post('FeedPosts/create-post', postData),
+    getPosts: () =>
+        requests.get('FeedPosts/'),
+    getPost: (postId: number) =>
+        requests.get(`FeedPosts/get-post/${postId}`),
+};
+
+const Forum = {
+    createPost: (postData: ForumPost) =>
+        requests.post('ForumPosts/create-post', postData),
+
+    addComment: (postData: AddComment, postId: number) =>
+        requests.post(`ForumPosts/add-comment/${postId}`,postData),
+
+    getPosts: () =>
+        requests.get('ForumPosts/'),
+
+    getPost: (postId: number) =>
+        requests.get(`ForumPosts/get-post/${postId}`),
+
+    
+    
 };
 
 const Users = {
     getProfileInformation: () =>
-        requests.get<User>('Users/profile-information'),
+        requests.get('Users/profile-information'),
     updateProfileInformation: (newData: User) =>
-        requests.put<any>('Users/profile-information', newData),
+        requests.put('Users/profile-information', newData),
+    getSpecialists: () =>
+        requests.get('Users/get-all-specialists'),
+    getSpecialist: (userId: string) =>
+        requests.get(`Users/get-specialist/${userId}`),
+    getUsers: () =>
+        requests.get('Users'),
 };
 
 const Tags = {
     getTags: () =>
-        requests.get<any>('Tags'),
+        requests.get('Tags'),
 };
 
 const Appointments = {
+    listByUser: (userId: string) =>
+        requests.get(`Appointments/user/${userId}`),
     getAppointmentsByClient: () =>
-        requests.get<Appointment[]>(`Appointments/get-appointments-client`),
+        requests.get(`Appointments/get-appointments-client`),
+    getSpecialistAppointments: (specialistId: string) =>
+        requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>
         requests.delete(`Appointments/cancel-appointment/${appointmentId}`),
+    getStatistics: () =>
+        requests.get('Appointments/get-statistics'),
+};
+
+const Admin = {
+    getRule: () =>
+        requests.get('Admin/'),
+    updateRule: (newRule: string) =>
+        requests.post('Admin/update-rules', {}, {params: {rules: newRule}}),
+    addSpecialist: (specialist: Specialist) =>
+        requests.post(`Admin/create-specialist`,specialist),
+    updateUserAvailability: (userId: string, isEnabled: boolean) =>
+        requests.post(`Admin/update-user-availability/${userId}`, {}, {params: {isEnabled: isEnabled}}),
 };
 
 const agent = {
     Login,
     Specialists,
+    Clients,
     Feed,
     Users,
     Tags,
     Appointments,
+    Forum,
+    Admin,
 };
 
 export default agent;
