@@ -27,6 +27,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import EmailIcon from '@mui/icons-material/Email';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 
 interface Props {
     user: User | undefined;
@@ -34,7 +35,7 @@ interface Props {
 
 
 export default function UpdateProfile({ user }: Props) {
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError, reset } = useForm({ mode: 'onTouched', defaultValues: user });
+    const { control, handleSubmit, formState: { isSubmitting, errors, isValid }, setError, reset, getValues, setValue } = useForm({ mode: 'onTouched', defaultValues: user });
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
 
@@ -56,8 +57,6 @@ export default function UpdateProfile({ user }: Props) {
                             setError('firstLastName', { type: 'minLength', message: 'El primer apellido debe tener al menos 2 caracteres.' });
                         if (err.data.errors?.SecondLastName)
                             setError('secondLastName', { type: 'minLength', message: 'El segundo apellido debe tener al menos 2 caracteres.' });
-                        if (err.data.errors?.Phone)
-                            setError('phone', { type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.' });
                         if (err.data.errors?.Gender)
                             setError('gender', { type: 'required', message: 'El género es obligatorio.' });
                         if (err.data.errors?.Email) {
@@ -179,21 +178,20 @@ export default function UpdateProfile({ user }: Props) {
                                         name="phone"
                                         control={control}
                                         render={({ field }) =>
-                                            <TextField margin="normal"
+                                            <MuiTelInput margin="normal"
+                                                {...field}
                                                 fullWidth
-                                                type="tel"
+                                                label="Número móvil"
+                                                defaultCountry="CL"
+                                                forceCallingCode
+                                                value={field.value ? String(field.value) : ''}
+                                                onChange={(value) => { field.onChange(value) }}
                                                 error={!!errors.phone}
                                                 helperText={errors?.phone?.message as string}
-                                                InputProps={{
-                                                    startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
-                                                }}
-                                                {...field} />}
+                                            />}
                                         rules={{
                                             required: 'Campo obligatorio',
-                                            pattern: {
-                                                value: /^\d{8}$/,
-                                                message: 'El número debe ser de 8 dígitos'
-                                            }
+                                            validate: (value) => value && matchIsValidTel(value) ? true : 'Número de teléfono inválido',
                                         }}
                                     />
                                 </Grid>

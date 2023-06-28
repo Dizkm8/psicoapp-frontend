@@ -29,6 +29,7 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import {useEffect, useState} from "react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import Specialist from "../../../app/models/Specialist";
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 
 export default function AddSpecialistPage(){
     const {
@@ -85,8 +86,6 @@ export default function AddSpecialistPage(){
                             setError('firstLastName', { type: 'minLength', message: 'El primer apellido debe tener al menos 2 caracteres.' });
                         if (err.data.errors?.SecondLastName)
                             setError('secondLastName', { type: 'minLength', message: 'El segundo apellido debe tener al menos 2 caracteres.' });
-                        if (err.data.errors?.Phone)
-                            setError('phone', { type: 'maxLength', message: 'El número de telefono debe tener 8 dígitos.' });
                         if (err.data.errors?.Gender)
                             setError('gender', { type: 'required', message: 'El género es obligatorio.' });
                         if (err.data.SpecialityId)
@@ -215,22 +214,21 @@ export default function AddSpecialistPage(){
                                     <Controller
                                         name="phone"
                                         control={control}
-                                        render={({field}) =>
-                                            <TextField margin="normal"
-                                                       fullWidth
-                                                       type="tel"
-                                                       error={!!errors.phone}
-                                                       helperText={errors?.phone?.message as string}
-                                                       InputProps={{
-                                                           startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
-                                                       }}
-                                                       {...field} />}
+                                        render={({ field }) =>
+                                            <MuiTelInput margin="normal"
+                                                {...field}
+                                                fullWidth
+                                                label="Número móvil"
+                                                defaultCountry="CL"
+                                                forceCallingCode
+                                                value={field.value ? String(field.value) : ''}
+                                                onChange={(value) => { field.onChange(value) }}
+                                                error={!!errors.phone}
+                                                helperText={errors?.phone?.message as string}
+                                            />}
                                         rules={{
                                             required: 'Campo obligatorio',
-                                            pattern: {
-                                                value: /^\d{8}$/,
-                                                message: 'El número debe ser de 8 dígitos'
-                                            }
+                                            validate: (value) => value && matchIsValidTel(value) ? true : 'Número de teléfono inválido',
                                         }}
                                     />
                                 </Grid>

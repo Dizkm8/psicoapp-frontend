@@ -6,7 +6,7 @@ export default interface User {
     id?: string;
     email?: string;
     gender?: string;
-    phone?: number;
+    phone?: string;
     isEnabled?: boolean;
     password?: string;
     role?: number;
