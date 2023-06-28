@@ -21,7 +21,7 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use(config => {
-    const token =  store.getState().account.token;
+    const token = store.getState().account.token;
     if (token) config.headers.Authorization = 'Bearer ' + token;
     return config;
 });
@@ -102,7 +102,7 @@ const Forum = {
         requests.get(`ForumPosts/get-post/${postId}`),
 
     
-    
+
 };
 
 const Users = {
@@ -126,6 +126,8 @@ const Tags = {
 const Appointments = {
     listByUser: (userId: string) =>
         requests.get(`Appointments/user/${userId}`),
+    getAppointmentsByClient: () =>
+        requests.get(`Appointments/get-appointments-client`),
     getSpecialistAppointments: (specialistId: string) =>
         requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>
