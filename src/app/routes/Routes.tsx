@@ -36,33 +36,37 @@ export const router = createBrowserRouter([
                 { path: 'appointments', element: <Appointments /> },
             ]},
             { path: '/specialist', element: <RequireAuth role={3} />, children:
-                    [
-                        { path: 'availability', element: <DefineAvailabilityPage />},
-                    ]},
-            { path: '/feed', element: <RequireAuth role={3} />, children:
-                    [
-                        {path: 'create', element: <CreateFeedPostPage />},
-                        {path: '', element: <FeedDisplayPage/>},
-                    ]},
-            { path: '/forum', element: <RequireAuth role={3} />, children:
-                    [
-                        {path: 'create', element: <CreateForumPostPage />},
-                        {path: '', element: <ForumDisplayPage />},
-                    ]},
+                [
+                    { path: 'availability', element: <DefineAvailabilityPage />},
+                ]},
+            { path: '/feed', element: <RequireAuth/>, children:
+                [
+                    { path: 'create', element: <RequireAuth role={[1,3]} />, children:
+                        [
+                            {path: '', element: <CreateForumPostPage />},
+                        ]},
+                    
+                    {path: '', element: <FeedDisplayPage/>},
+                ]},
+            { path: '/forum', element: <RequireAuth />, children:
+                [
+                    {path: 'create', element: <CreateForumPostPage />},
+                    {path: '', element: <ForumDisplayPage />},
+                ]},
             { path: '/client', element: <RequireAuth role={2} />, children:
-                    [
-                        {path: 'select', element: <SelectSpecialistPage />},
-                        {path: 'select/:id', element: <BookAppointmentPage />},
-                    ]},
+                [
+                    {path: 'select', element: <SelectSpecialistPage />},
+                    {path: 'select/:id', element: <BookAppointmentPage />},
+                ]},
             { path: '/administrator', element: <RequireAuth role={1} />, children:
-                    [
-                        {path: '', element: <AdministratorPage />},
-                        {path: 'update-rules', element: <UpdateRulesPage />},
-                        {path: 'manage-users', element: <UserAdministrationPage />},
-                        {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
-                        {path: 'manage-appointments', element: <AppointmentManagementPage />},
-                        {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
-                    ]},
+                [
+                    {path: '', element: <AdministratorPage />},
+                    {path: 'update-rules', element: <UpdateRulesPage />},
+                    {path: 'manage-users', element: <UserAdministrationPage />},
+                    {path: 'manage-users/add-specialist', element: <AddSpecialistPage />},
+                    {path: 'manage-appointments', element: <AppointmentManagementPage />},
+                    {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
+                ]},
             { path: '/home', element: <HomePage /> },
         ]
     }]);
