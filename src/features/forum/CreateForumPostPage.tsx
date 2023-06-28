@@ -245,7 +245,7 @@ export default function CreateForumPostPage() {
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Agregar Noticia
+                            Crear Post
                         </LoadingButton>
 
                         <Button
