@@ -17,6 +17,9 @@ export default function Appointments() {
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
   const userId = getGlobalUserId();
 
+  let limitDate = new Date(Date.now());
+    limitDate.setHours(+24);
+  
   const fetchAppointments = async () => {
     setLoading(true);
     try {
@@ -123,37 +126,40 @@ export default function Appointments() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {appointments.map((appointment) => (
-                <TableRow key={appointment.id}>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Typography variant="body1">{`#${appointment.id}`}</Typography>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Typography variant="body1">{`${appointment.requestedUserFullName}`}</Typography>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Typography variant="body1">{moment(appointment.bookedDate).format('HH:mm')}</Typography>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Typography variant="body1">{new Date(appointment.bookedDate).toLocaleDateString()}</Typography>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: '#681b80',
-                        color: 'white',
-                      }}
-                      onClick={() =>
-                        appointment.appointmentStatusId === 2 && handleCancelAppointment(appointment.id!)
-                      }
-                      disabled={appointment.appointmentStatusId !== 2}
-                    >
-                      {appointment.appointmentStatusName}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {appointments.map((appointment) => {
+                const appointmentDate = new Date(appointment.bookedDate);
+                return (
+                  <TableRow key={appointment.id}>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Typography variant="body1">{`#${appointment.id}`}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Typography variant="body1">{`${appointment.requestedUserFullName}`}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Typography variant="body1">{moment(appointmentDate).format('HH:mm')}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Typography variant="body1">{new Date(appointmentDate).toLocaleDateString()}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#681b80',
+                          color: 'white',
+                        }}
+                        onClick={() =>
+                          appointment.appointmentStatusId === 2 && limitDate < appointmentDate && handleCancelAppointment(appointment.id!)
+                        }
+                        disabled={appointment.appointmentStatusId !== 2 || limitDate >= appointmentDate}
+                      >
+                        {appointment.appointmentStatusName}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -161,10 +167,10 @@ export default function Appointments() {
 
       <Dialog open={confirmationOpen} onClose={handleConfirmationClose}>
         <Box>
-          <DialogTitle>Cancel Appointment</DialogTitle>
+          <DialogTitle>Cancelar cita</DialogTitle>
           <Divider sx={{ backgroundColor: 'lightgrey', height: '3px' }} />
           <DialogContent sx={{ backgroundColor: 'white' }}>
-            <Typography variant="body1">Are you sure you want to cancel this appointment?</Typography>
+            <Typography variant="body1">Estás seguro de que deseas cancelar esta cita?</Typography>
           </DialogContent>
           <Divider sx={{ backgroundColor: 'lightgrey', height: '3px' }} />
           <DialogActions sx={{ backgroundColor: 'white' }}>
@@ -172,7 +178,7 @@ export default function Appointments() {
               No
             </Button>
             <Button onClick={handleConfirmationProceed} autoFocus color="primary" variant="outlined">
-              Yes
+              Sí
             </Button>
           </DialogActions>
         </Box>
