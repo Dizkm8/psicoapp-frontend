@@ -16,6 +16,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ForumPostDisplayer from "./ForumPostDisplayer";
 import { grey, purple } from '@mui/material/colors';
+import Badge from '@mui/material/Badge';
+import CommentIcon from '@mui/icons-material/Comment';
 
 
 export default function ForumDisplayPage(){
@@ -47,9 +49,9 @@ export default function ForumDisplayPage(){
         
         let result: BentoItemProperties = {
             key: forumPost.id,
-            children: undefined,
+            children: (<Badge badgeContent={forumPost.comments.length} color="primary"><CommentIcon color="action" /></Badge>),
             title: forumPost.title,
-            subtitle: forumPost.content,
+            subtitle: forumPost.tagName,
             onClick: () => {
                 console.log(result.title);
                 handleOpen();
@@ -110,7 +112,7 @@ export default function ForumDisplayPage(){
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
-            TotalPages={Math.ceil(data.length / itemsPerPage)}
+            TotalPages={Math.ceil(posts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
           <Modal

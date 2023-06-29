@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import FeedPostDisplayer from "./FeedPostDisplayer";
+import Chip from '@mui/material/Chip';
 
 
 
@@ -47,9 +48,9 @@ export default function FeedDisplayPage(){
 
         let result: BentoItemProperties = {
             key: feedPost.id,
-            children: undefined,
+            children: (<Chip label={feedPost.tagName} />),
             title: feedPost.title,
-            subtitle: feedPost.content,
+            subtitle: feedPost.fullName,
             onClick: ()=>{handleOpen(); console.log(result.title); setPostId(result.key);}
         };
         return result;
@@ -106,7 +107,7 @@ export default function FeedDisplayPage(){
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
-            TotalPages={Math.ceil(data.length / itemsPerPage)}
+            TotalPages={Math.ceil(posts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
           <Modal

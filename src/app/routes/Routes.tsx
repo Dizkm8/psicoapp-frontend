@@ -67,6 +67,6 @@ export const router = createBrowserRouter([
                     {path: 'manage-appointments', element: <AppointmentManagementPage />},
                     {path: 'manage-appointments/:id', element: <SpecialistAppointmentManagementPage />},
                 ]},
-            { path: '/home', element: <HomePage /> },
+            { path: '/home', element: <FeedDisplayPage /> },
         ]
     }]);
