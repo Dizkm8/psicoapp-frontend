@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import FeedPostDisplayer from "./FeedPostDisplayer";
+import Chip from '@mui/material/Chip';
 
 
 
@@ -24,10 +25,8 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    const [postId, setPostId] = useState(0);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    
+    
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -47,10 +46,10 @@ export default function FeedDisplayPage(){
 
         let result: BentoItemProperties = {
             key: feedPost.id,
-            children: undefined,
+            children: (<Chip label={feedPost.tagName} />),
             title: feedPost.title,
-            subtitle: feedPost.content,
-            onClick: ()=>{handleOpen(); console.log(result.title); setPostId(result.key);}
+            subtitle: feedPost.fullName,
+            onClick: ()=>{console.log(result.title); navigate(`post/${result.key}`);}
         };
         return result;
     };
@@ -106,19 +105,10 @@ export default function FeedDisplayPage(){
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
-            TotalPages={Math.ceil(data.length / itemsPerPage)}
+            TotalPages={Math.ceil(posts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-          <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-            <FeedPostDisplayer postId={postId}></FeedPostDisplayer>
-        </Box>
-      </Modal>
+          
         </div>
         
         

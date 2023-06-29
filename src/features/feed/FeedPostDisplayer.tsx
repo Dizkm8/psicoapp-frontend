@@ -7,20 +7,18 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Comment from "../../app/models/Comment";
+import { Navigate, useParams } from "react-router-dom";
 
 
 
 
-export default function FeedPostDisplayer({
-    postId,
-  }: React.PropsWithChildren<{
-    postId: number; // Definir el tipo de datos paginados
-  }>) {
+export default function FeedPostDisplayer() {
     const navigate = useNavigate();
+    const {id} = useParams();
+    const postId: number = id ? parseInt(id) : 1;
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState<FeedPost>();
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [newComment, setNewComment] = useState('');
+
 
     
      useEffect(() => {
