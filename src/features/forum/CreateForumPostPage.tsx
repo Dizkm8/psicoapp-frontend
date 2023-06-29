@@ -155,7 +155,13 @@ export default function CreateForumPostPage() {
                                             error={!!errors.title}
                                             helperText={errors?.title?.message as string}
                                             {...field} />}
-                                    rules={{ required: 'Campo obligatorio' }}
+                                    rules={{
+                                        required: 'Campo obligatorio',
+                                        maxLength: {
+                                            value: 200,
+                                            message: 'El largo del título no puede exceder los 200 caractéres'
+                                        }
+                                    }}
                                 />
                                 <Box>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -179,8 +185,8 @@ export default function CreateForumPostPage() {
                                         rules={{
                                             required: 'Campo obligatorio',
                                             maxLength: {
-                                                value: 255,
-                                                message: 'El largo del contenido no puede exceder los 255 caractéres'
+                                                value: 2500,
+                                                message: 'El largo del contenido no puede exceder los 2500 caractéres'
                                             }
                                         }}
                                     />
