@@ -25,10 +25,8 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    const [postId, setPostId] = useState(0);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    
+    
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -51,7 +49,7 @@ export default function FeedDisplayPage(){
             children: (<Chip label={feedPost.tagName} />),
             title: feedPost.title,
             subtitle: feedPost.fullName,
-            onClick: ()=>{handleOpen(); console.log(result.title); setPostId(result.key);}
+            onClick: ()=>{console.log(result.title); navigate(`post/${result.key}`);}
         };
         return result;
     };
@@ -110,16 +108,7 @@ export default function FeedDisplayPage(){
             TotalPages={Math.ceil(posts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-          <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-            <FeedPostDisplayer postId={postId}></FeedPostDisplayer>
-        </Box>
-      </Modal>
+          
         </div>
         
         

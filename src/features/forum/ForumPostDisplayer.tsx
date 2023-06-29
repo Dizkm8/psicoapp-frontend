@@ -8,18 +8,17 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Comment from "../../app/models/Comment";
-
+import { useParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
+import { parse } from "path";
 
 
 
-export default function ForumPostDisplayer({
-    postId,
-  }: React.PropsWithChildren<{
-    postId: number; // Definir el tipo de datos paginados
-  }>) {
+export default function ForumPostDisplayer() {
+    const {id} = useParams();
+    const postId: number = id ? parseInt(id) : 1;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState<ForumPost>();

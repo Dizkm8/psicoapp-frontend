@@ -20,6 +20,9 @@ import AdministratorPage from "../../features/administrator/AdministratorPage";
 import UpdateRulesPage from "../../features/administrator/UpdateRulesPage";
 import AppointmentManagementPage from "../../features/administrator/AppointmentManagementPage";
 import SpecialistAppointmentManagementPage from "../../features/administrator/SpecialistAppointmentManagementPage";
+import ForumPostDisplayer from "../../features/forum/ForumPostDisplayer";
+import FeedPostDisplayer from "../../features/feed/FeedPostDisplayer";
+import { idText } from "typescript";
 
 export const router = createBrowserRouter([
     {
@@ -47,11 +50,13 @@ export const router = createBrowserRouter([
                         ]},
                     
                     {path: '', element: <FeedDisplayPage/>},
+                    {path: 'post/:id', element: <FeedPostDisplayer/>}
                 ]},
             { path: '/forum', element: <RequireAuth />, children:
                 [
                     {path: 'create', element: <CreateForumPostPage />},
                     {path: '', element: <ForumDisplayPage />},
+                    {path: 'post/:id', element: <ForumPostDisplayer/>}
                 ]},
             { path: '/client', element: <RequireAuth role={2} />, children:
                 [
