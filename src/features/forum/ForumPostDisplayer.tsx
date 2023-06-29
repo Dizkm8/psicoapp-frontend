@@ -12,8 +12,8 @@ import { useParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import { parse } from "path";
-
+import {selectRole} from "../../features/account/accountSlice";
+import {useSelector}  from "react-redux";
 
 
 export default function ForumPostDisplayer() {
@@ -25,6 +25,7 @@ export default function ForumPostDisplayer() {
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
     const [commentAdded, setCommentAdded] = useState(false);
+    const userRole: Number | null = useSelector(selectRole);
    
 
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,12 +173,13 @@ export default function ForumPostDisplayer() {
             justifyContent: 'center'
           }}
         >
+          {userRole === 3 && (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <TextField id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange}/>
             <IconButton onClick={handleAddComment} >
               <SendIcon/>
             </IconButton>
-          </div>
+          </div>)}
 
         </Box>
       </Box>
