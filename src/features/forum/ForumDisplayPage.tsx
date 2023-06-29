@@ -23,6 +23,7 @@ export default function ForumDisplayPage(){
     const [posts, setPosts] = useState<ForumPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
+    const [reloadPosts, setReloadPosts] = useState(false);
     
 
     const style = {
@@ -79,7 +80,7 @@ export default function ForumDisplayPage(){
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [reloadPosts]);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
 
@@ -93,6 +94,10 @@ export default function ForumDisplayPage(){
 
     const handlePageChange = (currentPage: React.SetStateAction<number>) => {
         setCurrentPage(currentPage);
+      };
+    const handlePostCreated = () => {
+        // Esta función se ejecuta cuando se crea un nuevo post en CreateForumPostPage
+        setReloadPosts(!reloadPosts);
       };
 
       return (
@@ -110,7 +115,7 @@ export default function ForumDisplayPage(){
             TotalPages={Math.ceil(posts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-          
+          <NavLink to="/forum/create" onClick={handlePostCreated} />
           
           
         </div>

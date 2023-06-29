@@ -26,12 +26,15 @@ import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { LoadingButton } from '@mui/lab';
 
+interface CreateForumPostPageProps {
+    handlePostCreated: () => void;
+  }
+
 export default function CreateForumPostPage() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<ForumPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const [loading, setLoading] = useState(false);
-    const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const [isFormError, setIsFormError] = useState(false);
     const navigate = useNavigate();
 
@@ -60,10 +63,8 @@ export default function CreateForumPostPage() {
     }, []);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
-    if (isSubmittingForm) return <LoadingComponent color='success' message='Agregando publicacion...' />
 
     const handleSubmitButton: SubmitHandler<ForumPost> = (data: ForumPost) => {
-        setIsSubmittingForm(true);
         setOpenConfirmation(false);
         agent.Forum.createPost(data)
             .then((response) => {
@@ -77,11 +78,8 @@ export default function CreateForumPostPage() {
                     progress: undefined,
                     theme: "light",
                 });
-                if (!isFormError) {
-                    setTimeout(() => {
-                        navigate('/home');
-                    }, 3000);
-                }
+                handlePostCreated(); // Llama a la función para recargar los posts
+                navigate('/forum');
             })
             .catch(err => {
                 setIsFormError(true);
@@ -111,7 +109,6 @@ export default function CreateForumPostPage() {
                 });
             })
             .finally(() => {
-                setIsSubmittingForm(false);
                 setIsFormError(false);
             });
         ;
@@ -246,12 +243,11 @@ export default function CreateForumPostPage() {
                             color="secondary"
                             variant="contained"
                             onClick={() => { setOpenConfirmation(true) }}
-                            loading={isSubmittingForm}
                         >
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Crear Post
+                            Agregar Noticia
                         </LoadingButton>
 
                         <Button
@@ -267,4 +263,8 @@ export default function CreateForumPostPage() {
             </Grid>
         </>
     )
+}
+
+function handlePostCreated() {
+    throw new Error('Function not implemented.');
 }
