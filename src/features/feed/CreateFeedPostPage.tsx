@@ -155,13 +155,7 @@ export default function CreateFeedPostPage() {
                                             error={!!errors.title}
                                             helperText={errors?.title?.message as string}
                                             {...field} />}
-                                    rules={{
-                                        required: 'Campo obligatorio',
-                                        maxLength: {
-                                            value: 200,
-                                            message: 'El largo del título no puede exceder los 200 caractéres'
-                                        }
-                                    }}
+                                    rules={{ required: 'Campo obligatorio' }}
                                 />
                                 <Box>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -185,8 +179,8 @@ export default function CreateFeedPostPage() {
                                         rules={{
                                             required: 'Campo obligatorio',
                                             maxLength: {
-                                                value: 2500,
-                                                message: 'El largo del contenido no puede exceder los 2500 caractéres'
+                                                value: 255,
+                                                message: 'El largo del contenido no puede exceder los 255 caractéres'
                                             }
                                         }}
                                     />
