@@ -14,6 +14,9 @@ import { Link, NavLink, Navigate } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import CommentIcon from '@mui/icons-material/Comment';
 import { useParams } from "react-router-dom";
+import Chip from '@mui/material/Chip';
+import {selectRole} from "../../features/account/accountSlice";
+import {useSelector}  from "react-redux";
 
 
 
@@ -23,7 +26,7 @@ export default function ForumDisplayPage(){
     const [posts, setPosts] = useState<ForumPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    
+    const userRole: Number | null = useSelector(selectRole);
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -43,9 +46,9 @@ export default function ForumDisplayPage(){
         
         let result: BentoItemProperties = {
             key: forumPost.id,
-            children: (<Badge badgeContent={forumPost.comments.length} color="primary"><CommentIcon color="action" /></Badge>),
+            children: (<Badge badgeContent={forumPost.comments.length} color="primary"><CommentIcon color="action" /></Badge> ),
             title: forumPost.title,
-            subtitle: forumPost.tagName,
+            subtitle: (<Chip label={forumPost.tagName} />),
             onClick: () => {
                 console.log(result.title);
                 
@@ -97,13 +100,14 @@ export default function ForumDisplayPage(){
 
       return (
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', top: -15, right: 100}}>
-          <NavLink to="/forum/create">
-            <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-              Agregar post
-            </Button>
+          {userRole != 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
+            <NavLink to="/forum/create">
+              <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
+                Agregar post
+              </Button>
             </NavLink>
-          </div>
+          </div>)}
+        
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}

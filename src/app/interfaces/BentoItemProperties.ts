@@ -4,6 +4,6 @@ export default interface BentoItemProperties{
     children: React.ReactNode;
     key?: any,
     title: string;
-    subtitle: string;
+    subtitle: React.ReactNode;
     onClick: () => void;
 }
