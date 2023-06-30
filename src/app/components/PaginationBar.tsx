@@ -1,12 +1,6 @@
 import * as React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import BentoGrid from './BentoGrid';
-
-import { useEffect, useState } from "react";
-import axios from 'axios';
-import { current } from '@reduxjs/toolkit';
-import BentoItem from './BentoItem';
 
 export default function PaginationBar({
   children,

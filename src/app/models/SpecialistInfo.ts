@@ -8,6 +8,6 @@ export default interface SpecialistInfo {
     userEmail?: string;
     userGender?: string;
     userIsEnabled: boolean;
-    userPhone?: number;
+    userPhone?: string;
     roleName?: string;
 }

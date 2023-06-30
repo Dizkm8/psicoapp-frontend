@@ -5,7 +5,7 @@ export default interface Specialist {
     id: string;
     email: string;
     gender: string;
-    phone: number;
+    phone: string;
     password?: string;
     specialityId: number;
 };
