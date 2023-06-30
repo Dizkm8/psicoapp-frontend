@@ -109,7 +109,7 @@ export default function Header({ children }: React.PropsWithChildren<{}>) {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton component={NavLink} to="/account/appointments">
+                    <ListItemButton component={NavLink} to={userRole === 3 ? "/account/schedule" : "/account/appointments"}>
                         <ListItemIcon>
                             <CalendarMonthIcon />
                         </ListItemIcon>
