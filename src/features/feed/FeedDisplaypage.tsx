@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import FeedPostDisplayer from "./FeedPostDisplayer";
 import Chip from '@mui/material/Chip';
+import {selectRole} from "../../features/account/accountSlice";
+import {useSelector}  from "react-redux";
+
 
 
 
@@ -25,6 +28,7 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
+    const userRole: Number | null = useSelector(selectRole);
     
     
 
@@ -49,7 +53,7 @@ export default function FeedDisplayPage(){
             children: (<Chip label={feedPost.tagName} />),
             title: feedPost.title,
             subtitle: feedPost.fullName,
-            onClick: ()=>{console.log(result.title); navigate(`post/${result.key}`);}
+            onClick: ()=>{console.log(result.title); navigate(`/feed/post/${result.key}`);}
         };
         return result;
     };
@@ -95,13 +99,13 @@ export default function FeedDisplayPage(){
 
       return (
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', top: -15, right: 100}}>
+          {userRole === 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
             <NavLink to="/feed/create">
-                <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                    Agregar post
-                </Button>
+              <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
+                Agregar post
+              </Button>
             </NavLink>
-          </div>
+          </div>)}
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
