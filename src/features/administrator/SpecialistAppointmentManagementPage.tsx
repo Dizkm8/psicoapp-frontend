@@ -97,6 +97,7 @@ export default function SpecialistAppointmentManagementPage(){
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.cancelAppointment',
                 });
             })
             .catch(err => {

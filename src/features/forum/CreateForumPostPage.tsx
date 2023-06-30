@@ -77,6 +77,7 @@ export default function CreateForumPostPage() {
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.createFeedPost',
                 });
                 handlePostCreated(); // Llama a la función para recargar los posts
                 navigate('/forum');
