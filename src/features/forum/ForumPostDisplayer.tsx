@@ -115,11 +115,6 @@ export default function ForumPostDisplayer() {
         },);
     };
 
-
-    
-
-    
-
     return (
       <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
         <div>
@@ -127,21 +122,31 @@ export default function ForumPostDisplayer() {
             {post.title}
           </Typography>
   
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             por: {post.userName}
           </Typography>
-  
+      
           <Typography variant="body1" gutterBottom>
             {post.content}
           </Typography>
         </div>
   
-        <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }} onAnimationEnd={handleCommentAdded}>
+        <Box sx={{ width: '100%', margin: '20px auto', marginLeft: '50px' }} onAnimationEnd={handleCommentAdded}>
           {comments.length === 0 ? (
-            <Typography variant="body1" gutterBottom>
-              No hay comentarios disponibles.
-            </Typography>
+            <Box
+              sx={{
+                border: '1px dashed grey',
+                marginBottom: '10px',
+                padding: '10px',
+              }}
+            >
+              <Typography variant="body1" gutterBottom>
+                No hay comentarios disponibles.
+              </Typography>
+
+            </Box>
           ) : (
+
             comments.map((comment, index) => (
               <Box
                 key={index}
@@ -164,24 +169,24 @@ export default function ForumPostDisplayer() {
           
         </Box>
         <Box
-          sx={{
-            width: '80%',
-            margin: '20px auto',
-            marginLeft: '50px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          {userRole === 3 && (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <TextField id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange}/>
-            <IconButton onClick={handleAddComment} >
-              <SendIcon/>
-            </IconButton>
-          </div>)}
-
-        </Box>
+            sx={{
+              width: '100%', // Modificar el ancho al 100%
+              margin: '20px auto',
+              marginLeft: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {userRole === 3 && (
+              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}> {/* Modificar el ancho al 100% */}
+                <TextField fullWidth id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange} />
+                <IconButton onClick={handleAddComment} >
+                  <SendIcon />
+                </IconButton>
+              </div>
+            )}
+          </Box>
       </Box>
     );
   }
