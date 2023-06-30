@@ -20,18 +20,21 @@ import { useNavigate } from "react-router-dom";
 import agent from '../../app/api/agent';
 import Grid from "@mui/material/Grid";
 
-import FeedPost from "../../app/models/FeedPost";
+import ForumPost from '../../app/models/ForumPost';
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { LoadingButton } from '@mui/lab';
 
-export default function FeedPostForm() {
-    const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<FeedPost>({ mode: 'onTouched' });
+interface CreateForumPostPageProps {
+    handlePostCreated: () => void;
+  }
+
+export default function CreateForumPostPage() {
+    const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<ForumPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const [loading, setLoading] = useState(false);
-    const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const [isFormError, setIsFormError] = useState(false);
     const navigate = useNavigate();
 
@@ -60,14 +63,12 @@ export default function FeedPostForm() {
     }, []);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
-    if (isSubmittingForm) return <LoadingComponent color='success' message='Agregando noticia...' />
 
-    const handleSubmitButton: SubmitHandler<FeedPost> = (data: FeedPost) => {
-        setIsSubmittingForm(true);
+    const handleSubmitButton: SubmitHandler<ForumPost> = (data: ForumPost) => {
         setOpenConfirmation(false);
-        agent.Feed.createPost(data)
+        agent.Forum.createPost(data)
             .then((response) => {
-                toast.success('Noticia creada correctamente', {
+                toast.success('Post creado correctamente', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -76,12 +77,10 @@ export default function FeedPostForm() {
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.createFeedPost',
                 });
-                if (!isFormError) {
-                    setTimeout(() => {
-                        navigate('/home');
-                    }, 3000);
-                }
+                handlePostCreated(); // Llama a la función para recargar los posts
+                navigate('/forum');
             })
             .catch(err => {
                 setIsFormError(true);
@@ -111,7 +110,6 @@ export default function FeedPostForm() {
                 });
             })
             .finally(() => {
-                setIsSubmittingForm(false);
                 setIsFormError(false);
             });
         ;
@@ -130,7 +128,7 @@ export default function FeedPostForm() {
                 <Card sx={{ width: '75%', backgroundColor: grey[50], }}>
                     <CardContent>
                         <Card sx={{ color: 'white', bgcolor: purple[400], my: 2 }}>
-                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nueva Noticia</Typography>
+                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nuevo Post</Typography>
                         </Card>
                         <Stack>
                             <Box component="form"
@@ -155,7 +153,13 @@ export default function FeedPostForm() {
                                             error={!!errors.title}
                                             helperText={errors?.title?.message as string}
                                             {...field} />}
-                                    rules={{ required: 'Campo obligatorio' }}
+                                    rules={{
+                                        required: 'Campo obligatorio',
+                                        maxLength: {
+                                            value: 200,
+                                            message: 'El largo del título no puede exceder los 200 caractéres'
+                                        }
+                                    }}
                                 />
                                 <Box>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -179,8 +183,8 @@ export default function FeedPostForm() {
                                         rules={{
                                             required: 'Campo obligatorio',
                                             maxLength: {
-                                                value: 255,
-                                                message: 'El largo del contenido no puede exceder los 255 caractéres'
+                                                value: 2500,
+                                                message: 'El largo del contenido no puede exceder los 2500 caractéres'
                                             }
                                         }}
                                     />
@@ -212,7 +216,7 @@ export default function FeedPostForm() {
                                 <Dialog open={openConfirmation}
                                     onClose={() => { setOpenConfirmation(false) }}>
                                     <DialogTitle id="alert-dialog-title">
-                                        {"¿Está seguro que quiere agregar la noticia?"}
+                                        {"¿Está seguro que quiere agregar el post?"}
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button
@@ -226,6 +230,7 @@ export default function FeedPostForm() {
                                             autoFocus
                                             variant='contained'
                                             color='success'
+                                            onClick={() => { setOpenConfirmation(false) }}
                                         >
                                             Aceptar
                                         </Button>
@@ -239,16 +244,28 @@ export default function FeedPostForm() {
                             color="secondary"
                             variant="contained"
                             onClick={() => { setOpenConfirmation(true) }}
-                            loading={isSubmittingForm}
                         >
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
                             Agregar Noticia
                         </LoadingButton>
+
+                        <Button
+                            color='error'
+                            variant="contained"
+                            onClick={() => { navigate('/forum');}}
+                            sx={{ marginRight: 'auto' }} // Agrega esta línea
+                        >
+                            Volver
+                        </Button>
                     </CardActions>
                 </Card>
             </Grid>
         </>
     )
+}
+
+function handlePostCreated() {
+    throw new Error('Function not implemented.');
 }

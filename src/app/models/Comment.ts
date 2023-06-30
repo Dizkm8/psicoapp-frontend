@@ -1,19 +1,13 @@
-
-export default interface FeedPost {
+export default interface Comment {
     id?: number,
-    title: string;
     content: string;
     publishedOn?: Date;
-    userId?: string;
-    tagId?: number;
-    userName: string,
+    userName: string;
+    postId: number;
     userFirstLastName: string,
     userSecondLastName: string,
     fullName: string,
-    tagName: string,
-
-
-    
     
 
+    
 };

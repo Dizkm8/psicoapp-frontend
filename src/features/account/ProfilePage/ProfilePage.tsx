@@ -4,12 +4,12 @@ import * as React from "react";
 import ChangePassword from "./ChangePassword";
 import UpdateProfile from "./UpdateProfile";
 import { useEffect, useState } from "react";
-import agent from "../../app/api/agent";
-import User from "../../app/models/User";
-import LoadingComponent from "../../app/layout/LoadingComponent";
+import agent from "../../../app/api/agent";
+import User from "../../../app/models/User";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { toast } from "react-toastify";
 
-export default function Profile() {
+export default function ProfilePage() {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<User>();
     const [value, setValue] = React.useState(0);

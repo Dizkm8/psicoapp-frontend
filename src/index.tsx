@@ -4,18 +4,29 @@ import './app/layout/styles.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 import { router } from './app/routes/Routes';
-import { store } from './app/store/store';
+import { store, persistor } from './app/store/store';
+import LoadingComponent from "./app/layout/LoadingComponent";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  
+    <React.StrictMode>
       <Provider store={store}>
-          <RouterProvider router={router} />
+          <PersistGate
+              loading={<LoadingComponent
+                  message="Cargando..."
+              />}
+              persistor={persistor}
+          >
+              <RouterProvider router={router} />
+          </PersistGate>
       </Provider>
-  </React.StrictMode>
+    </React.StrictMode>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

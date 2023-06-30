@@ -8,11 +8,11 @@ const dayHours = Array.from(Array(12).keys()).map((hour) => hour+8);
 interface Props
 {
     startDate: Date,
-    occupiedDates: string[],
+    isAble: (date: Date) => boolean;
     selectedDates: boolean[][],
     onClick: (day: number, hour: number, date: Date) => void
 }
-export default function WeekPicker({startDate, occupiedDates, selectedDates, onClick}: Props)
+export default function WeekPicker({startDate, isAble, selectedDates, onClick}: Props)
 {
     let endDate: Date = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
@@ -58,16 +58,12 @@ export default function WeekPicker({startDate, occupiedDates, selectedDates, onC
                 <TableBody>
                     {dayHours.map((hour) => {
                         return (
-                            <TableRow>
+                            <TableRow key={startDate.toISOString()+hour}>
                                 <TableCell align="center"> {`${hour}:00`} </TableCell>
                                 {weekDays.map((day) => {
                                     let cellDate: Date = new Date(startDate);
                                     cellDate.setDate(startDate.getDate() + day);
                                     cellDate.setHours(hour,0,0,0);
-
-                                    let dateOnTimeZone: Date = new Date(cellDate);
-                                    const dateTimeZone = getTimeZone(cellDate);
-                                    dateOnTimeZone.setHours(cellDate.getHours() + dateTimeZone);
 
                                     let isOnRange: boolean = (new Date(cellDate).setHours(0,0,0) <= Date.now()
                                         || maximumDate.getTime() <= new Date(cellDate).setHours(0,0,0));
@@ -75,7 +71,7 @@ export default function WeekPicker({startDate, occupiedDates, selectedDates, onC
                                         <TableCell align="center" key={cellDate.toISOString()}>
                                             <Button
                                                 onClick={() => onClick(day, hour, cellDate)}
-                                                disabled={occupiedDates.includes(dateOnTimeZone.toISOString().split('.')[0]) ||
+                                                disabled={isAble(cellDate) ||
                                                     isOnRange}
                                                 variant="contained"
                                                 color={selectedDates[hour][day]? 'success': 'primary'}

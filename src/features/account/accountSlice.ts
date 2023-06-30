@@ -48,6 +48,7 @@ export const accountSlice = createSlice({
 });
 
 export const selectToken = (state: RootState) => state.account.token;
+export const selectId = (state: RootState) => state.account.id;
 export const selectRole = (state: RootState) => state.account.role;
 export const selectName = (state: RootState) => state.account.name;
 

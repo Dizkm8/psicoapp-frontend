@@ -1,34 +1,37 @@
 import { useEffect, useState } from "react";
-import AvailabilityPicker from "../../app/components/AvailabilityPicker";
+import AvailabilityPicker from "./AvailabilityPicker";
 import { Box, Button, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as React from "react";
-import { getWeekStartDay } from "../../app/utils/dateHelper";
-import agent from "../../app/api/agent";
+import { getWeekStartDay } from "../../../app/utils/dateHelper";
+import agent from "../../../app/api/agent";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { PurpleButton } from "../../app/components/PurpleButton";
-import LoadingComponent from "../../app/layout/LoadingComponent";
+import { PurpleButton } from "../../../app/components/PurpleButton";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import {useSelector} from "react-redux";
+import {selectId} from "../../account/accountSlice";
 
 const getDefaultStartDate = () => {
     let date = new Date(Date.now());
     return getWeekStartDay(date);
 };
 
-export default function DefineAvailability() {
+export default function DefineAvailabilityPage() {
     const [selection, setSelection] = useState(new Array<string>());
     const [startDate, setStartDate] = useState(getDefaultStartDate());
     const [occupiedDates, setOccupiedDates] = useState(new Array<string>());
     const [openConfirmation, setOpenConfirmation] = React.useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const userIdValue: string | null = useSelector(selectId);
+    const userId: string = userIdValue ? userIdValue : '';
 
     useEffect(() => {
         setLoading(true);
-        agent.Specialists.getAvailability(startDate.toDateString()).then((response) => {
+        agent.Specialists.getAvailability(userId).then((response) => {
             const result = response.map((slot: { startTime: string; }) => slot.startTime);
             setOccupiedDates(result);
             setLoading(false)
@@ -36,7 +39,7 @@ export default function DefineAvailability() {
             .catch((err) => console.log(err))
             .finally(() => setLoading(false));
 
-    }, [startDate]);
+    }, [userId]);
 
     if (loading) return <LoadingComponent message='Cargando disponibilidad...' />
 
@@ -64,6 +67,8 @@ export default function DefineAvailability() {
 
     const handleSubmit = () => {
         setOpenConfirmation(false);
+        if(selection.length === 0)
+            return;
         console.log(selection);
         agent.Specialists.addAvailability(selection.map((element) => { return { startTime: element } }))
             .then(() => navigate("/home"))
@@ -91,15 +96,14 @@ export default function DefineAvailability() {
 
     return (
         <>
-
             <Dialog open={openConfirmation}
-                onClose={() => { setOpenConfirmation(false) }}>
+                onClose={() => {setOpenConfirmation(false)}}>
                 <DialogTitle id="alert-dialog-title">
                     {"¿Está seguro que quiere realizar los cambios?"}
                 </DialogTitle>
                 <DialogActions>
                     <Button
-                        onClick={() => { setOpenConfirmation(false) }}
+                        onClick={() => {setOpenConfirmation(false)}}
                         color='error'
                     >
                         Cancelar
@@ -120,7 +124,8 @@ export default function DefineAvailability() {
                     gridTemplateRows: 'repeat(1, 1fr)',
                     justifyItems: 'center',
                     m: 4
-                }}>
+                }}
+            >
                 <AvailabilityPicker
                     key={startDate.toISOString()}
                     startDate={startDate}
@@ -140,7 +145,7 @@ export default function DefineAvailability() {
                     variant="contained"
                     startIcon={<AddCircleIcon />}
                     sx={{ justifySelf: 'end' }}
-                    onClick={() => { setOpenConfirmation(true) }}
+                    onClick={() => {setOpenConfirmation(true)}}
                 >
                     Confirmar cambios
                 </PurpleButton>
