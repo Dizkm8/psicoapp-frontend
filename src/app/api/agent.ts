@@ -10,9 +10,10 @@ import ForumPost from "../models/ForumPost";
 import Comment from "../models/Comment";
 import AddComment from "../models/AddComment";
 
-const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
+const sleep = () => new Promise(resolve => setTimeout(resolve, 0));
 
-axios.defaults.baseURL = 'http://localhost:5000/api/';
+const serverAddress = '10.238.0.167';
+axios.defaults.baseURL = `http://${serverAddress}:5000/api/`;
 
 // I set this to true to send cookies with the request
 // Temporaly have no use, I guess, but It could be¿?
