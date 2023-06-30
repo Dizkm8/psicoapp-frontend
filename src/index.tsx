@@ -14,6 +14,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   
+    <React.StrictMode>
       <Provider store={store}>
           <PersistGate
               loading={<LoadingComponent
@@ -24,6 +25,7 @@ root.render(
               <RouterProvider router={router} />
           </PersistGate>
       </Provider>
+    </React.StrictMode>
   
 );
 

@@ -53,7 +53,7 @@ export default function FeedDisplayPage(){
             children: (<Chip label={feedPost.tagName} />),
             title: feedPost.title,
             subtitle: feedPost.fullName,
-            onClick: ()=>{console.log(result.title); navigate(`post/${result.key}`);}
+            onClick: ()=>{console.log(result.title); navigate(`/feed/post/${result.key}`);}
         };
         return result;
     };
