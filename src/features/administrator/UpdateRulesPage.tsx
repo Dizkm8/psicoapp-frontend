@@ -65,6 +65,7 @@ export default function UpdateRulesPage(){
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.updateRule',
                 });
                 navigate('/home');
             })

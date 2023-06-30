@@ -31,22 +31,8 @@ export default function SpecialistAppointmentManagementPage(){
 
     useEffect(() => {
         setLoading(true);
-        agent.Users.getSpecialist(specialistId).then((response) => {
-            if(!response.userIsEnabled){
-                toast.error('El especialista no está disponible', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "light",
-                });
-                navigate('/home');
-            }
-            setSpecialistName(response.userFullName);
-        })
+        agent.Users.getSpecialist(specialistId)
+            .then((response) => setSpecialistName(response.userFullName))
             .catch((err) =>{
                 toast.error('Ha ocurrido un problema cargando la información', {
                     position: "top-center",
@@ -97,6 +83,7 @@ export default function SpecialistAppointmentManagementPage(){
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.cancelAppointment',
                 });
             })
             .catch(err => {
