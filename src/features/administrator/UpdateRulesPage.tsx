@@ -73,7 +73,7 @@ export default function UpdateRulesPage(){
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
-                        setError('rules', { type: 'maxLength', message: 'El largo máximo es de 800 caracteres.' });
+                        setError('rules', { type: 'maxLength', message: 'El largo máximo es de 1200 caracteres.' });
                         return;
                     case 500:
                         error = 'Ha ocurrido un problema interno. Intente nuevamente.'
