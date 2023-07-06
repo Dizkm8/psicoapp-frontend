@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import {selectName, selectRole} from "../../features/account/accountSlice";
+import {selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
 import { Button } from "@mui/material";
 
@@ -27,7 +27,7 @@ export default function ForumPostDisplayer() {
     const [newComment, setNewComment] = useState('');
     const [commentAdded, setCommentAdded] = useState(false);
     const userRole: Number | null = useSelector(selectRole);
-    const userName: string | null  = useSelector(selectName);
+    
     
    
 
@@ -120,7 +120,7 @@ export default function ForumPostDisplayer() {
     const eliminarPost = () => {
       setLoading(true);
     
-      
+
       agent.Forum.deletePost(postId)
         .then(() => {
           toast.success('El post ha sido eliminado', {

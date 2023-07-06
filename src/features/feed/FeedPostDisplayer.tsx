@@ -7,6 +7,11 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useParams } from "react-router-dom";
+import {selectRole} from "../../features/account/accountSlice";
+import {useSelector}  from "react-redux";
+import { Button } from "@mui/material";
+
+
 
 
 
@@ -17,6 +22,7 @@ export default function FeedPostDisplayer() {
     const postId: number = id ? parseInt(id) : 1;
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState<FeedPost>();
+    const userRole: Number | null = useSelector(selectRole);
 
 
     
@@ -48,23 +54,68 @@ export default function FeedPostDisplayer() {
 
 
     if (!post) return null; // Añade un caso para cuando el estado post sea null
+
+    const eliminarPost = () => {
+      setLoading(true);
+    
+      
+      agent.Forum.deletePost(postId)
+        .then(() => {
+          toast.success('El post ha sido eliminado', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate('/forum');
+        })
+        .catch((error) => {
+          toast.error('Ha ocurrido un problema al eliminar el post', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
     
 
     return (
       <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
-        <div>
-          <Typography variant="h3" gutterBottom>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h3" gutterBottom style={{ flexGrow: 1 }}>
             {post.title}
           </Typography>
-  
-          <Typography variant="subtitle1" gutterBottom>
-            por: {post.fullName}
-          </Typography>
-  
-          <Typography variant="body1" gutterBottom>
-            {post.content}
-          </Typography>
+          {userRole === 1 && (<Button
+            color='error'
+            variant="contained"
+            onClick={eliminarPost}
+            sx={{ marginLeft: 'auto' }}
+          >
+            Eliminar post
+          </Button>)}
+        
         </div>
+    
+        <Typography variant="h5" gutterBottom>
+          por: {post.userName}
+        </Typography>
+    
+        <Typography variant="body1" gutterBottom>
+          {post.content}
+        </Typography>
+        
   
 
       </Box>

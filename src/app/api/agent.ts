@@ -87,6 +87,8 @@ const Feed = {
         requests.get('FeedPosts/'),
     getPost: (postId: number) =>
         requests.get(`FeedPosts/get-post/${postId}`),
+    deletePost: (postId: number) =>
+        requests.delete(`FeedPosts/delete-post/${postId}`),
 };
 
 const Forum = {
