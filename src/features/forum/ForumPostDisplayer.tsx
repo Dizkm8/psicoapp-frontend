@@ -15,6 +15,8 @@ import SendIcon from '@mui/icons-material/Send';
 import {selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
 import { Button } from "@mui/material";
+import {Dialog, DialogTitle, DialogActions} from '@mui/material';
+
 
 
 export default function ForumPostDisplayer() {
@@ -27,6 +29,7 @@ export default function ForumPostDisplayer() {
     const [newComment, setNewComment] = useState('');
     const [commentAdded, setCommentAdded] = useState(false);
     const userRole: Number | null = useSelector(selectRole);
+    const [openConfirmation, setOpenConfirmation] = useState(false);
     
     
    
@@ -162,7 +165,7 @@ export default function ForumPostDisplayer() {
           {userRole === 1 && (<Button
             color='error'
             variant="contained"
-            onClick={eliminarPost}
+            onClick={() => setOpenConfirmation(true)}
             sx={{ marginLeft: 'auto' }}
           >
             Eliminar post
@@ -177,6 +180,28 @@ export default function ForumPostDisplayer() {
         <Typography variant="body1" gutterBottom>
           {post.content}
         </Typography>
+
+        <Dialog
+          open={openConfirmation}
+          onClose={() => setOpenConfirmation(false)}
+        >
+          <DialogTitle>¿Está seguro que quiere eliminar el post?</DialogTitle>
+          <DialogActions>
+            <Button
+              onClick={() => setOpenConfirmation(false)}
+              color="primary"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={eliminarPost}
+              color="error"
+              variant="contained"
+            >
+              Eliminar
+            </Button>
+          </DialogActions>
+        </Dialog>
     
         <Box sx={{ width: '100%', margin: '20px auto', marginLeft: '50px' }} onAnimationEnd={handleCommentAdded}>
           {comments.length === 0 ? (
