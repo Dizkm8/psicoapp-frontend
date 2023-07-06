@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Comment from "../../app/models/Comment";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 

@@ -12,8 +12,9 @@ import { useParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import {selectRole} from "../../features/account/accountSlice";
+import {selectName, selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
+import { Button } from "@mui/material";
 
 
 export default function ForumPostDisplayer() {
@@ -26,6 +27,8 @@ export default function ForumPostDisplayer() {
     const [newComment, setNewComment] = useState('');
     const [commentAdded, setCommentAdded] = useState(false);
     const userRole: Number | null = useSelector(selectRole);
+    const userName: string | null  = useSelector(selectName);
+    
    
 
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,20 +120,29 @@ export default function ForumPostDisplayer() {
 
     return (
       <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
-        <div>
-          <Typography variant="h3" gutterBottom>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h3" gutterBottom style={{ flexGrow: 1 }}>
             {post.title}
           </Typography>
-  
-          <Typography variant="h5" gutterBottom>
-            por: {post.userName}
-          </Typography>
-      
-          <Typography variant="body1" gutterBottom>
-            {post.content}
-          </Typography>
+          {userName === post.fullName&& (<Button
+            color='error'
+            variant="contained"
+            onClick={() => { navigate('/forum');}}
+            sx={{ marginLeft: 'auto' }}
+          >
+            Eliminar post
+          </Button>)}
+        
         </div>
-  
+    
+        <Typography variant="h5" gutterBottom>
+          por: {post.userName}
+        </Typography>
+    
+        <Typography variant="body1" gutterBottom>
+          {post.content}
+        </Typography>
+    
         <Box sx={{ width: '100%', margin: '20px auto', marginLeft: '50px' }} onAnimationEnd={handleCommentAdded}>
           {comments.length === 0 ? (
             <Box
@@ -143,10 +155,8 @@ export default function ForumPostDisplayer() {
               <Typography variant="body1" gutterBottom>
                 No hay comentarios disponibles.
               </Typography>
-
             </Box>
           ) : (
-
             comments.map((comment, index) => (
               <Box
                 key={index}
@@ -165,28 +175,27 @@ export default function ForumPostDisplayer() {
               </Box>
             ))
           )}
-  
-          
         </Box>
+    
         <Box
-            sx={{
-              width: '100%', // Modificar el ancho al 100%
-              margin: '20px auto',
-              marginLeft: '50px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            {userRole === 3 && (
-              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}> {/* Modificar el ancho al 100% */}
-                <TextField fullWidth id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange} />
-                <IconButton onClick={handleAddComment} >
-                  <SendIcon />
-                </IconButton>
-              </div>
-            )}
-          </Box>
+          sx={{
+            width: '100%',
+            margin: '20px auto',
+            marginLeft: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          {userRole === 3 && (
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <TextField fullWidth id="outlined-basic" label="Ingrese su comentario" variant="outlined" value={newComment} onChange={handleCommentChange} />
+              <IconButton onClick={handleAddComment}>
+                <SendIcon />
+              </IconButton>
+            </div>
+          )}
+        </Box>
       </Box>
     );
   }
