@@ -102,6 +102,9 @@ const Forum = {
     getPost: (postId: number) =>
         requests.get(`ForumPosts/get-post/${postId}`),
 
+    deletePost: (postId: number) =>
+    requests.delete(`ForumPosts/delete-post/${postId}`),
+
     
 
 };

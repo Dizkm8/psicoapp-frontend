@@ -73,6 +73,8 @@ export default function ForumPostDisplayer() {
       setCommentAdded(false);
     };
 
+    
+
     const handleAddComment = () => {
       if (newComment.trim() === '') {
         // Verifica si el nuevo comentario está vacío
@@ -88,9 +90,6 @@ export default function ForumPostDisplayer() {
         });
         return;
       }
-
-      
-      
       setLoading(true);
       
       agent.Forum.addComment({content:newComment}, postId)
@@ -118,16 +117,52 @@ export default function ForumPostDisplayer() {
         },);
     };
 
+    const eliminarPost = () => {
+      setLoading(true);
+    
+      
+      agent.Forum.deletePost(postId)
+        .then(() => {
+          toast.success('El post ha sido eliminado', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate('/forum');
+        })
+        .catch((error) => {
+          toast.error('Ha ocurrido un problema al eliminar el post', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+
     return (
       <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="h3" gutterBottom style={{ flexGrow: 1 }}>
             {post.title}
           </Typography>
-          {userName === post.fullName&& (<Button
+          {userRole === 1 && (<Button
             color='error'
             variant="contained"
-            onClick={() => { navigate('/forum');}}
+            onClick={eliminarPost}
             sx={{ marginLeft: 'auto' }}
           >
             Eliminar post
