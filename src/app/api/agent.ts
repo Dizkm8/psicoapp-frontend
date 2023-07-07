@@ -1,13 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { idText } from "typescript";
 import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
-import Appointment from "../models/Appointment";
-import SpecialistInfo from "../models/SpecialistInfo";
 import Specialist from "../models/Specialist";
 import ForumPost from "../models/ForumPost";
-import Comment from "../models/Comment";
 import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -105,7 +101,10 @@ const Forum = {
         requests.get(`ForumPosts/get-post/${postId}`),
 
     deletePost: (postId: number) =>
-    requests.delete(`ForumPosts/delete-post/${postId}`),
+        requests.delete(`ForumPosts/delete-post/${postId}`),
+
+    deleteComment: (postId: number, CommentId: number) =>
+        requests.delete(`ForumPosts/delete-comment/${postId}/${CommentId}`),
 
     
 

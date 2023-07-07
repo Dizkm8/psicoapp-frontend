@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
 import { Button } from "@mui/material";
@@ -30,7 +31,7 @@ export default function ForumPostDisplayer() {
     const [commentAdded, setCommentAdded] = useState(false);
     const userRole: Number | null = useSelector(selectRole);
     const [openConfirmation, setOpenConfirmation] = useState(false);
-    
+
     
    
 
@@ -155,6 +156,49 @@ export default function ForumPostDisplayer() {
         });
     };
 
+    const eliminarComentario = (commentId: number | undefined) => {
+      console.log(commentId)
+      if (!commentId) {
+        return; // Retorna si commentId es undefined
+      }
+    
+      setLoading(true);
+    
+      agent.Forum.deleteComment(postId, commentId )
+        .then(() => {
+          toast.success("El comentario ha sido eliminado", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+    
+          const updatedComments = comments.filter(
+            (comment) => comment.id !== commentId
+          );
+          setComments(updatedComments);
+        })
+        .catch((error) => {
+          toast.error("Ha ocurrido un problema al eliminar el comentario", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
 
     return (
       <Box sx={{ width: '80%', margin: '20px auto', marginLeft: '50px' }}>
@@ -219,20 +263,34 @@ export default function ForumPostDisplayer() {
           ) : (
             comments.map((comment, index) => (
               <Box
-                key={index}
-                sx={{
-                  border: '1px dashed grey',
-                  marginBottom: '10px',
-                  padding: '10px',
-                }}
+            key={index}
+            sx={{
+              border: '1px dashed grey',
+              marginBottom: '10px',
+              padding: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <Typography variant="body1" gutterBottom>
+                {comment.content}
+              </Typography>
+              <Typography variant="subtitle2" gutterBottom>
+                Por: {comment.fullName}
+              </Typography>
+            </div>
+            {userRole === 1 && (
+              <IconButton
+                
+                onClick={() => eliminarComentario(comment.id)}
+                color="error"
               >
-                <Typography variant="body1" gutterBottom>
-                  {comment.content}
-                </Typography>
-                <Typography variant="subtitle2" gutterBottom>
-                  Por: {comment.fullName}
-                </Typography>
-              </Box>
+                <DeleteIcon />
+              </IconButton>
+            )}
+          </Box>
             ))
           )}
         </Box>
