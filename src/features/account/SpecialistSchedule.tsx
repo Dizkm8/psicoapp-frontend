@@ -14,9 +14,6 @@ export default function Appointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(false);
   const userId = getGlobalUserId();
-
-  let limitDate = new Date(Date.now());
-    limitDate.setHours(+24);
   
   const fetchAppointments = async () => {
     setLoading(true);

@@ -9,6 +9,8 @@ import agent from '../../app/api/agent';
 import moment from 'moment';
 import Skeleton from '@mui/material/Skeleton';
 import Appointment from '../../app/models/Appointment';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -18,8 +20,8 @@ export default function Appointments() {
   const userId = getGlobalUserId();
 
   let limitDate = new Date(Date.now());
-    limitDate.setHours(+24);
-  
+  limitDate.setHours(+24);
+
   const fetchAppointments = async () => {
     setLoading(true);
     try {
@@ -52,6 +54,17 @@ export default function Appointments() {
         await agent.Appointments.cancelAppointment(selectedAppointmentId);
         // Actualizar el estado de appointments después de cancelar la cita
         await fetchAppointments();
+        toast.success('La cita se ha cancelado exitosamente', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          toastId: 'success.cancelAppointment',
+      });
       } catch (error) {
         console.error(error);
       }
@@ -74,35 +87,35 @@ export default function Appointments() {
                 </TableRow>
               </TableHead>
               <TableBody>
-              {[...Array(5)].map((_, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Skeleton animation="wave" height={20} width="80%" />
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Skeleton animation="wave" height={20} width="60%" />
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Skeleton animation="wave" height={20} width="40%" />
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Skeleton animation="wave" height={20} width="60%" />
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Skeleton animation="wave" height={20} width="40%" />
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
+                {[...Array(5)].map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Skeleton animation="wave" height={20} width="80%" />
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Skeleton animation="wave" height={20} width="60%" />
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Skeleton animation="wave" height={20} width="40%" />
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Skeleton animation="wave" height={20} width="60%" />
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Skeleton animation="wave" height={20} width="40%" />
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -122,7 +135,7 @@ export default function Appointments() {
                 <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Especialista</TableCell>
                 <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Hora</TableCell>
                 <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Fecha</TableCell>
-                <TableCell sx={{ backgroundColor: purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Estado</TableCell>
+                <TableCell sx={{ backgroundColor:purple[400], color: 'white', fontSize: '1.05rem', fontWeight: 'bold', border: '1px solid lightgrey', textAlign: 'center', width: '20%' }}>Estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -149,10 +162,9 @@ export default function Appointments() {
                           backgroundColor: '#681b80',
                           color: 'white',
                         }}
-                        onClick={() =>
-                          appointment.appointmentStatusId === 2 && limitDate < appointmentDate && handleCancelAppointment(appointment.id!)
-                        }
-                        disabled={appointment.appointmentStatusId !== 2 || limitDate >= appointmentDate}
+                        disabled={!(appointment.appointmentStatusId === 2
+                          && limitDate < appointmentDate)}
+                        onClick={() => handleCancelAppointment(appointment.id!)}
                       >
                         {appointment.appointmentStatusName}
                       </Button>
@@ -183,6 +195,8 @@ export default function Appointments() {
           </DialogActions>
         </Box>
       </Dialog>
+
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </Grid>
   );
 }

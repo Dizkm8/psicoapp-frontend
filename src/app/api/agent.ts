@@ -12,7 +12,7 @@ import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 0));
 
-const serverAddress = '10.238.0.167';
+const serverAddress = 'localhost';
 axios.defaults.baseURL = `http://${serverAddress}:5000/api/`;
 
 // I set this to true to send cookies with the request
