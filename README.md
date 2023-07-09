@@ -5,6 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 1. Clone this repository.
 2. Make sure to have Node.js installed. Version 18 will work.
 3. Install dependencies, with the `npm install` command.
-4. Run the project, with `npm start`.
+4. Update the backend server address or domain name in [agent.ts](src/app/api/agent.ts).
+5. Run the project, with `npm start`.
 
 It will be hosted on [http://localhost:3000](http://localhost:3000).

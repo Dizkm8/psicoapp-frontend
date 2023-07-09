@@ -76,6 +76,7 @@ export default function CreateFeedPostPage() {
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.createForumPost',
                 });
                 if (!isFormError) {
                     setTimeout(() => {

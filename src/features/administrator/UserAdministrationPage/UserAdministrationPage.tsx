@@ -53,6 +53,7 @@ export default function UserAdministrationPage(){
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.updateUserAvailability',
                 });
             })
             .catch(err => {

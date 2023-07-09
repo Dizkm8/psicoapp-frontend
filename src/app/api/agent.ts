@@ -1,18 +1,15 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { idText } from "typescript";
 import User from "../models/User";
 import {store} from "../store/store";
 import FeedPost from "../models/FeedPost";
-import Appointment from "../models/Appointment";
-import SpecialistInfo from "../models/SpecialistInfo";
 import Specialist from "../models/Specialist";
 import ForumPost from "../models/ForumPost";
-import Comment from "../models/Comment";
 import AddComment from "../models/AddComment";
 
-const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
+const sleep = () => new Promise(resolve => setTimeout(resolve, 0));
 
-axios.defaults.baseURL = 'http://localhost:5000/api/';
+const serverAddress = 'localhost';
+axios.defaults.baseURL = `http://${serverAddress}:5000/api/`;
 
 // I set this to true to send cookies with the request
 // Temporaly have no use, I guess, but It could be¿?
@@ -86,6 +83,8 @@ const Feed = {
         requests.get('FeedPosts/'),
     getPost: (postId: number) =>
         requests.get(`FeedPosts/get-post/${postId}`),
+    deletePost: (postId: number) =>
+        requests.delete(`FeedPosts/delete-post/${postId}`),
 };
 
 const Forum = {
@@ -100,6 +99,12 @@ const Forum = {
 
     getPost: (postId: number) =>
         requests.get(`ForumPosts/get-post/${postId}`),
+
+    deletePost: (postId: number) =>
+        requests.delete(`ForumPosts/delete-post/${postId}`),
+
+    deleteComment: (postId: number, CommentId: number) =>
+        requests.delete(`ForumPosts/delete-comment/${postId}/${CommentId}`),
 
     
 
@@ -128,6 +133,8 @@ const Appointments = {
         requests.get(`Appointments/user/${userId}`),
     getAppointmentsByClient: () =>
         requests.get(`Appointments/get-appointments-client`),
+    getAppointmentsBySpecialist: () =>
+        requests.get(`Appointments/get-appointments-specialist`),
     getSpecialistAppointments: (specialistId: string) =>
         requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>

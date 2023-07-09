@@ -77,6 +77,7 @@ export default function CreateForumPostPage() {
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'success.createFeedPost',
                 });
                 handlePostCreated(); // Llama a la función para recargar los posts
                 navigate('/forum');
@@ -247,7 +248,7 @@ export default function CreateForumPostPage() {
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Agregar Noticia
+                            Agregar Post
                         </LoadingButton>
 
                         <Button
