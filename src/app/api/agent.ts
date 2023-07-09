@@ -133,6 +133,8 @@ const Appointments = {
         requests.get(`Appointments/user/${userId}`),
     getAppointmentsByClient: () =>
         requests.get(`Appointments/get-appointments-client`),
+    getAppointmentsBySpecialist: () =>
+        requests.get(`Appointments/get-appointments-specialist`),
     getSpecialistAppointments: (specialistId: string) =>
         requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>
