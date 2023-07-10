@@ -108,7 +108,7 @@ export default function ForumDisplayPage(){
           {userRole != 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
             <NavLink to="/forum/create">
               <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                Agregar post
+                Agregar publicacion
               </Button>
             </NavLink>
           </div>)}

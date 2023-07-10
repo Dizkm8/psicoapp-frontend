@@ -102,7 +102,7 @@ export default function FeedDisplayPage(){
           {userRole === 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
             <NavLink to="/feed/create">
               <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                Agregar post
+                Agregar Noticia
               </Button>
             </NavLink>
           </div>)}
