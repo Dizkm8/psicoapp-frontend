@@ -8,7 +8,7 @@ import AddComment from "../models/AddComment";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 0));
 
-const serverAddress = '172.30.208.1';
+const serverAddress = 'localhost';
 axios.defaults.baseURL = `http://${serverAddress}:5000/api/`;
 
 // I set this to true to send cookies with the request
@@ -133,6 +133,8 @@ const Appointments = {
         requests.get(`Appointments/user/${userId}`),
     getAppointmentsByClient: () =>
         requests.get(`Appointments/get-appointments-client`),
+    getAppointmentsBySpecialist: () =>
+        requests.get(`Appointments/get-appointments-specialist`),
     getSpecialistAppointments: (specialistId: string) =>
         requests.get(`Appointments/get-appointments-specialist/${specialistId}`),
     cancelAppointment: (appointmentId: number) =>
