@@ -17,6 +17,10 @@ import { useParams } from "react-router-dom";
 import Chip from '@mui/material/Chip';
 import {selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
+import SearchIcon from '@mui/icons-material/Search';
+import { TextField } from "@mui/material";
+import Box from '@mui/material/Box';
+
 
 
 
@@ -26,8 +30,9 @@ export default function ForumDisplayPage(){
     const [posts, setPosts] = useState<ForumPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
-    const [reloadPosts, setReloadPosts] = useState(false);
     const userRole: Number | null = useSelector(selectRole);
+    const [filteredPosts, setFilteredPosts] = useState<ForumPost[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -62,66 +67,80 @@ export default function ForumDisplayPage(){
     
 
     useEffect(() => {
-        setLoading(true);
-        agent.Forum.getPosts()
-            .then((response) => {
-                setPosts([...response]);
-                console.log(response); // Verifica la estructura de los datos recibidos
-            })
-            .catch((error) => {
-                toast.error('Ha ocurrido un problema cargando la información', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "light",
-                });
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [reloadPosts]);
+      setLoading(true);
+      agent.Forum.getPosts()
+        .then((response) => {
+          setPosts([...response]);
+        })
+        .catch((error) => {
+          toast.error('Ha ocurrido un problema cargando la información', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, []);
+    
+    useEffect(() => {
+      const filteredPosts = posts.filter((post) =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPosts(filteredPosts);
+    }, [searchTerm, posts]);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    };
 
 
     const lastItemIndex = currentPage * itemsPerPage;
     const firstItemIndex = lastItemIndex - itemsPerPage;
-    const slicedData = posts.slice(firstItemIndex,lastItemIndex)
-    
-    //convert the raw data into the correct format
-    const data = slicedData.map(entry => convertData(entry));
+    const slicedData = filteredPosts.slice(firstItemIndex, lastItemIndex);
+    const data = slicedData.map((entry) => convertData(entry));
 
     const handlePageChange = (currentPage: React.SetStateAction<number>) => {
         setCurrentPage(currentPage);
       };
-    const handlePostCreated = () => {
-        // Esta función se ejecuta cuando se crea un nuevo post en CreateForumPostPage
-        setReloadPosts(!reloadPosts);
-      };
 
       return (
-        <div style={{ position: 'relative' }}>
-          {userRole != 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
-            <NavLink to="/forum/create">
-              <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                Agregar publicacion
-              </Button>
-            </NavLink>
-          </div>)}
-        
+        <div>
+          <Box sx={{ position: 'relative', display: 'flex', top: '30px', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <div style={{ marginRight: '20px', marginLeft: '20px' }}>
+              <SearchIcon sx={{ color: 'action.active', mr: 1, my: 1 }} />
+              <TextField
+                id="input-with-sx"
+                label="With sx"
+                variant="outlined"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+            {userRole === 3 && (
+              <NavLink to="/forum/create">
+                <Box sx={{ marginLeft: 'auto' }}>
+                  <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
+                    Agregar Publicacion
+                  </Button>
+                </Box>
+              </NavLink>
+            )}
+          </Box>
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
-            TotalPages={Math.ceil(posts.length / itemsPerPage)}
+            TotalPages={Math.ceil(filteredPosts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-          <NavLink to="/forum/create" onClick={handlePostCreated} />
-          
-          
         </div>
       );
-}
+    }
