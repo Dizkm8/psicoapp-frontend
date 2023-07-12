@@ -119,7 +119,7 @@ export default function ForumDisplayPage(){
               <SearchIcon sx={{ color: 'action.active', mr: 1, my: 1 }} />
               <TextField
                 id="input-with-sx"
-                label="With sx"
+                label="Buscar publicación"
                 variant="outlined"
                 value={searchTerm}
                 onChange={handleSearchChange}
@@ -129,7 +129,7 @@ export default function ForumDisplayPage(){
               <NavLink to="/forum/create">
                 <Box sx={{ marginLeft: 'auto' }}>
                   <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                    Agregar Publicacion
+                    Agregar Publicación
                   </Button>
                 </Box>
               </NavLink>

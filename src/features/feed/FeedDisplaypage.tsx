@@ -118,7 +118,7 @@ export default function FeedDisplayPage(){
               <SearchIcon sx={{ color: 'action.active', mr: 1, my: 1 }} />
               <TextField
                 id="input-with-sx"
-                label="With sx"
+                label="Buscar noticia"
                 variant="outlined"
                 value={searchTerm}
                 onChange={handleSearchChange}
