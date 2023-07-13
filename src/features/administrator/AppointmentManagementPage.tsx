@@ -284,6 +284,9 @@ export default function AppointmentManagementPage(){
                                     onPageChange={handleChangePage}
                                     onRowsPerPageChange={handleChangeRowsPerPage}
                                     ActionsComponent={TablePaginationActions}
+                                    labelRowsPerPage={"Especialistas por página"}
+                                    labelDisplayedRows={({ from, to, count }) =>
+                                        `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`}
                                 />
                             </TableRow>
                         </TableFooter>
