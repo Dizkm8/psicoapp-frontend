@@ -26,10 +26,6 @@ import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { LoadingButton } from '@mui/lab';
 
-interface CreateForumPostPageProps {
-    handlePostCreated: () => void;
-  }
-
 export default function CreateForumPostPage() {
     const { control, handleSubmit, setError, formState: { isSubmitting, errors, isValid }, reset } = useForm<ForumPost>({ mode: 'onTouched' });
     const [tags, setTags] = useState([]);
@@ -60,14 +56,29 @@ export default function CreateForumPostPage() {
             .finally(() => {
                 setLoading(false);
             });
+        return () => {
+            toast.dismiss();
+        };
     }, []);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
 
     const handleSubmitButton: SubmitHandler<ForumPost> = (data: ForumPost) => {
         setOpenConfirmation(false);
+        toast.info('El post se está analizando...', {
+            position: "top-center",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+            toastId: 'info.createFeedPost',
+        });
         agent.Forum.createPost(data)
             .then((response) => {
+                toast.dismiss();
                 toast.success('Post creado correctamente', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 3000,
@@ -79,11 +90,10 @@ export default function CreateForumPostPage() {
                     theme: "light",
                     toastId: 'success.createFeedPost',
                 });
-                handlePostCreated(); // Llama a la función para recargar los posts
-                navigate('/forum');
             })
             .catch(err => {
                 setIsFormError(true);
+                toast.dismiss();
                 let error: string = "Ha habido un error. Intente nuevamente.";
                 switch (err.status) {
                     case 400:
@@ -107,6 +117,7 @@ export default function CreateForumPostPage() {
                     draggable: false,
                     progress: undefined,
                     theme: "light",
+                    toastId: 'error.createFeedPost',
                 });
             })
             .finally(() => {
@@ -128,7 +139,7 @@ export default function CreateForumPostPage() {
                 <Card sx={{ width: '75%', backgroundColor: grey[50], }}>
                     <CardContent>
                         <Card sx={{ color: 'white', bgcolor: purple[400], my: 2 }}>
-                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nuevo Post</Typography>
+                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nueva Publicación</Typography>
                         </Card>
                         <Stack>
                             <Box component="form"
@@ -216,7 +227,7 @@ export default function CreateForumPostPage() {
                                 <Dialog open={openConfirmation}
                                     onClose={() => { setOpenConfirmation(false) }}>
                                     <DialogTitle id="alert-dialog-title">
-                                        {"¿Está seguro que quiere agregar el post?"}
+                                        {"¿Está seguro que quiere agregar la Publicación?"}
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button
@@ -248,7 +259,7 @@ export default function CreateForumPostPage() {
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Agregar Noticia
+                            Agregar Publicación
                         </LoadingButton>
 
                         <Button
@@ -264,8 +275,4 @@ export default function CreateForumPostPage() {
             </Grid>
         </>
     )
-}
-
-function handlePostCreated() {
-    throw new Error('Function not implemented.');
 }
