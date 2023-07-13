@@ -1,7 +1,26 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableHead, TableRow, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+    Box,
+    Grid,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableFooter,
+    TablePagination,
+    TableHead,
+    TableRow,
+    Typography,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { purple } from '@mui/material/colors';
@@ -16,6 +35,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import SearchIcon from "@mui/icons-material/Search";
 
 function TablePaginationActions(props: any) {
   const theme = useTheme();
@@ -85,9 +105,11 @@ export default function Appointments() {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredClients, setFilteredClients] = useState<Appointment[]>([]);
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - appointments.length) : 0;
+    const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredClients.length) : 0;
 
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
@@ -114,7 +136,20 @@ export default function Appointments() {
     fetchAppointments();
   }, []);
 
-  if (loading) {
+    useEffect(() => {
+        const filteredClients = appointments.filter((appointment) => {
+                const clientName: string = appointment.requestingUserFullName ? appointment.requestingUserFullName : '';
+                return clientName.toLowerCase().includes(searchTerm.toLowerCase());
+            }
+        );
+        setFilteredClients(filteredClients);
+    }, [searchTerm, appointments]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    if (loading) {
     return (
       <Grid container spacing={2} sx={{width: 'auto', m: 3}}>
         <Grid item xs={12}>
@@ -173,8 +208,20 @@ export default function Appointments() {
             Ver citas
           </Typography>
       </Grid>
+        <Grid item xs={12}>
+            <Box mt={2} sx={{justifyContent: 'flex-start'}}>
+                <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+                <TextField
+                    sx={{maxWidth: '50%'}}
+                    label="Buscar cliente"
+                    variant="outlined"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                />
+            </Box>
+        </Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
+        <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: 1 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -186,8 +233,8 @@ export default function Appointments() {
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                  ? appointments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : appointments
+                  ? filteredClients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : filteredClients
                 ).map((appointment) => {
                 const appointmentDate = new Date(appointment.bookedDate);
                 return (
@@ -213,7 +260,7 @@ export default function Appointments() {
                 <TablePagination
                   rowsPerPageOptions={[5, 25, 100, { label: 'All', value: -1 }]}
                   colSpan={3}
-                  count={appointments.length}
+                  count={filteredClients.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{

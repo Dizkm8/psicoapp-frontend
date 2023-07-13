@@ -14,7 +14,7 @@ import {
     TableBody,
     TableCell, TableContainer, TableFooter,
     TableHead, TablePagination,
-    TableRow, Typography
+    TableRow, TextField, Typography
 } from "@mui/material";
 import {useEffect, useState} from "react";
 import User from "../../../app/models/User";
@@ -30,6 +30,8 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import PropTypes from "prop-types";
 import {purple} from "@mui/material/colors";
 import Skeleton from "@mui/material/Skeleton";
+import Appointment from "../../../app/models/Appointment";
+import SearchIcon from "@mui/icons-material/Search";
 
 function TablePaginationActions(props: any) {
     const theme = useTheme();
@@ -105,9 +107,11 @@ export default function UserAdministrationPage(){
         useState<DialogState>({id: '', isEnabled: false, isDialogOpen: false});
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredUsers.length) : 0;
 
     const handleChangePage = (event: any, newPage: any) => {
         setPage(newPage);
@@ -116,6 +120,19 @@ export default function UserAdministrationPage(){
     const handleChangeRowsPerPage = (event: any) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+    };
+
+    useEffect(() => {
+        const filteredUsers = users.filter((user) => {
+                const userName: string = user.fullName ? user.fullName  : '';
+                return userName.toLowerCase().includes(searchTerm.toLowerCase());
+            }
+        );
+        setFilteredUsers(filteredUsers);
+    }, [searchTerm, users]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
     };
 
     const handleUpdate = () => {
@@ -201,7 +218,19 @@ export default function UserAdministrationPage(){
                     Administración de Usuarios
                 </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
+                <Box mt={2} sx={{justifyContent: 'flex-start'}}>
+                    <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+                    <TextField
+                        sx={{maxWidth: '50%'}}
+                        label="Buscar cliente"
+                        variant="outlined"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                </Box>
+            </Grid>
+            <Grid item xs={6}>
                 <Box sx={{display: 'flex', justifyContent: 'end'}}>
                     <Link to={'/administrator/manage-users/add-specialist'}>
                         <PurpleButton
@@ -277,8 +306,8 @@ export default function UserAdministrationPage(){
                             </TableHead>
                             <TableBody>
                                 {(rowsPerPage > 0
-                                        ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        : users
+                                        ? filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        : filteredUsers
                                 ).map((user)=>{
                                     let id = user.id? user.id : '';
                                     let isEnabled = user.isEnabled? user.isEnabled : false;
@@ -324,7 +353,7 @@ export default function UserAdministrationPage(){
                                     <TablePagination
                                         rowsPerPageOptions={[5, 25, 100, { label: 'All', value: -1 }]}
                                         colSpan={3}
-                                        count={users.length}
+                                        count={filteredUsers.length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}
                                         SelectProps={{

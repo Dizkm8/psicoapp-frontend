@@ -98,7 +98,7 @@ export default function AppointmentManagementPage(){
     const [filteredSpecialists, setFilteredSpecialists] = useState<SpecialistInfo[]>([]);
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - specialists.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredSpecialists.length) : 0;
 
     const handleChangePage = (event: any, newPage: any) => {
         setPage(newPage);

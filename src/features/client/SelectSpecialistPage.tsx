@@ -8,6 +8,8 @@ import agent from "../../app/api/agent";
 import { toast } from "react-toastify";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import Typography from "@mui/material/Typography";
+import {Box, TextField} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function SelectSpecialistPage(){
     const navigate = useNavigate();
@@ -15,6 +17,8 @@ export default function SelectSpecialistPage(){
     const [specialists, setSpecialists] = useState<SpecialistInfo[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredSpecialists, setFilteredSpecialists] = useState<SpecialistInfo[]>([]);
 
     function convertSpecialistData(specialist: SpecialistInfo){
 
@@ -52,11 +56,22 @@ export default function SelectSpecialistPage(){
             });
     }, []);
 
+    useEffect(() => {
+        const filteredSpecialists = specialists.filter((specialist) =>
+            specialist.userFullName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredSpecialists(filteredSpecialists);
+    }, [searchTerm, specialists]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
     if (loading) return <LoadingComponent message='Cargando información...' />
 
     const lastItemIndex = currentPage * itemsPerPage;
     const firstItemIndex = lastItemIndex - itemsPerPage;
-    const slicedData = specialists.slice(firstItemIndex, lastItemIndex);
+    const slicedData = filteredSpecialists.slice(firstItemIndex, lastItemIndex);
 
     //convert the raw data into the correct format
     const data = slicedData.map(entry => convertSpecialistData(entry));
@@ -68,16 +83,30 @@ export default function SelectSpecialistPage(){
 
 
     return(
-        data.length === 0?
-            <Typography align="center" mt={3} variant="h3">No hay psicólogos para mostrar</Typography>
-        :
         <div>
-            <BentoGrid bentoItems={data} />
-            <PaginationBar
-              itemsPerPage={itemsPerPage}
-              TotalPages={Math.ceil(specialists.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-            />
+            <Box ml={4} mt={3} sx={{justifyContent: 'flex-start'}}>
+                <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+                <TextField
+                    sx={{maxWidth: '50%'}}
+                    label="Buscar especialista"
+                    variant="outlined"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                />
+            </Box>{
+                data.length === 0?
+                <Typography align="center" mt={3} variant="h3">No hay psicólogos para mostrar</Typography>
+                :
+                (
+                    <>
+                        <BentoGrid bentoItems={data} />
+                        <PaginationBar
+                            itemsPerPage={itemsPerPage}
+                            TotalPages={Math.ceil(filteredSpecialists.length / itemsPerPage)}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                )}
       </div>
     );
 }
