@@ -116,7 +116,12 @@ export default function Appointments() {
 
   if (loading) {
     return (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{width: 'auto', m: 3}}>
+        <Grid item xs={12}>
+            <Typography variant="h2" align="center" gutterBottom>
+              Ver citas
+            </Typography>
+        </Grid>
         <Grid item xs={12}>
           <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
             <Table>
@@ -162,7 +167,12 @@ export default function Appointments() {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{width: 'auto', m: 3}}>
+      <Grid item xs={12}>
+          <Typography variant="h2" align="center" gutterBottom>
+            Ver citas
+          </Typography>
+      </Grid>
       <Grid item xs={12}>
         <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
           <Table>
@@ -215,6 +225,9 @@ export default function Appointments() {
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   ActionsComponent={TablePaginationActions}
+                  labelRowsPerPage={"Citas por página"}
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`}
                 />
               </TableRow>
             </TableFooter>

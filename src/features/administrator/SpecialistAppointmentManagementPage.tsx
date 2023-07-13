@@ -342,6 +342,9 @@ export default function SpecialistAppointmentManagementPage(){
                                     onPageChange={handleChangePage}
                                     onRowsPerPageChange={handleChangeRowsPerPage}
                                     ActionsComponent={TablePaginationActions}
+                                    labelRowsPerPage={"Citas por página"}
+                                    labelDisplayedRows={({ from, to, count }) =>
+                                        `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`}
                                 />
                             </TableRow>
                         </TableFooter>
