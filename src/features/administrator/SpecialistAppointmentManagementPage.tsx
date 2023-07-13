@@ -13,7 +13,7 @@ import {
     TableCell,
     TableContainer, TableFooter,
     TableHead, TablePagination,
-    TableRow,
+    TableRow, TextField,
     Typography
 } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -27,6 +27,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import PropTypes from "prop-types";
 import {purple} from "@mui/material/colors";
 import Skeleton from "@mui/material/Skeleton";
+import SearchIcon from "@mui/icons-material/Search";
 
 function TablePaginationActions(props: any) {
     const theme = useTheme();
@@ -95,6 +96,8 @@ export default function SpecialistAppointmentManagementPage(){
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredClients, setFilteredClients] = useState<Appointment[]>([]);
     const {id} = useParams();
     const specialistId: string = id ? id : '';
     const [specialistName, setSpecialistName] = useState('');
@@ -151,6 +154,19 @@ export default function SpecialistAppointmentManagementPage(){
                 setLoading(false);
             });
     }, [specialistId]);
+
+    useEffect(() => {
+        const filteredClients = appointments.filter((appointment) => {
+            const clientName: string = appointment.requestingUserFullName ? appointment.requestingUserFullName : '';
+            return clientName.toLowerCase().includes(searchTerm.toLowerCase());
+            }
+        );
+        setFilteredClients(filteredClients);
+    }, [searchTerm, appointments]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
 
     const handleCancelAppointment = (appointmentId: number) => {
         setSelectedAppointmentId(appointmentId);
@@ -271,6 +287,18 @@ export default function SpecialistAppointmentManagementPage(){
                 </Typography>
             </Grid>
             <Grid item xs={12}>
+                <Box mt={2} sx={{justifyContent: 'flex-start'}}>
+                    <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+                    <TextField
+                        sx={{maxWidth: '50%'}}
+                        label="Buscar cliente"
+                        variant="outlined"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                </Box>
+            </Grid>
+            <Grid item xs={12}>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -284,8 +312,8 @@ export default function SpecialistAppointmentManagementPage(){
                         </TableHead>
                         <TableBody>
                             {(rowsPerPage > 0
-                                    ? appointments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : appointments
+                                    ? filteredClients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : filteredClients
                             ).map((appointment) => {
                                 const appointmentDate = new Date(appointment.bookedDate);
                                 return (
