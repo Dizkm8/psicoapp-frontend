@@ -145,7 +145,12 @@ export default function AppointmentManagementPage(){
 
     if (loading) {
         return (
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{width: 'auto', m: 3}}>
+                <Grid item xs={12}>
+                    <Typography variant="h2" align="center" gutterBottom>
+                        Administración de Citas
+                    </Typography>
+                </Grid>
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
                         <Table>
@@ -197,7 +202,12 @@ export default function AppointmentManagementPage(){
     }
 
     return (
-        <Grid container spacing={2} sx={{width: 'auto', mx: 3}}>
+        <Grid container spacing={2} sx={{width: 'auto', m: 3}}>
+            <Grid item xs={12}>
+                <Typography variant="h2" align="center" gutterBottom>
+                    Administración de Citas
+                </Typography>
+            </Grid>
             <Grid item xs={12}>
                 <Box mt={2} sx={{justifyContent: 'flex-start'}}>
                     <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
