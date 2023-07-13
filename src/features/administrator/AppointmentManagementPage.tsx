@@ -13,7 +13,7 @@ import {
     TableCell,
     TableContainer, TableFooter,
     TableHead, TablePagination,
-    TableRow,
+    TableRow, TextField,
     Typography
 } from "@mui/material";
 import {useTheme} from "@mui/material/styles";
@@ -25,6 +25,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import PropTypes from "prop-types";
 import {purple} from "@mui/material/colors";
 import Skeleton from "@mui/material/Skeleton";
+import SearchIcon from "@mui/icons-material/Search";
 
 function TablePaginationActions(props: any) {
     const theme = useTheme();
@@ -93,6 +94,8 @@ export default function AppointmentManagementPage(){
     const [specialists, setSpecialists] = useState<SpecialistInfo[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredSpecialists, setFilteredSpecialists] = useState<SpecialistInfo[]>([]);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - specialists.length) : 0;
@@ -128,6 +131,17 @@ export default function AppointmentManagementPage(){
                 setLoading(false);
             });
     }, []);
+
+    useEffect(() => {
+        const filteredSpecialists = specialists.filter((specialist) =>
+            specialist.userFullName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredSpecialists(filteredSpecialists);
+    }, [searchTerm, specialists]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
 
     if (loading) {
         return (
@@ -185,7 +199,19 @@ export default function AppointmentManagementPage(){
     return (
         <Grid container spacing={2} sx={{width: 'auto', mx: 3}}>
             <Grid item xs={12}>
-                <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
+                <Box mt={2} sx={{justifyContent: 'flex-start'}}>
+                    <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+                    <TextField
+                        sx={{maxWidth: '50%'}}
+                        label="Buscar especialista"
+                        variant="outlined"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                </Box>
+            </Grid>
+            <Grid item xs={12}>
+                <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: 1 }}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -198,8 +224,8 @@ export default function AppointmentManagementPage(){
                         </TableHead>
                         <TableBody>
                             {(rowsPerPage > 0
-                                    ? specialists.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : specialists
+                                    ? filteredSpecialists.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : filteredSpecialists
                             ).map((specialist)=>{
                                 return (
                                     <TableRow
@@ -236,7 +262,7 @@ export default function AppointmentManagementPage(){
                                 <TablePagination
                                     rowsPerPageOptions={[5, 25, 100, { label: 'All', value: -1 }]}
                                     colSpan={3}
-                                    count={specialists.length}
+                                    count={filteredSpecialists.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{
