@@ -108,7 +108,7 @@ export default function SpecialistAppointmentManagementPage(){
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - appointments.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredClients.length) : 0;
 
     const handleChangePage = (event: any, newPage: any) => {
         setPage(newPage);
@@ -358,7 +358,7 @@ export default function SpecialistAppointmentManagementPage(){
                                 <TablePagination
                                     rowsPerPageOptions={[5, 25, 100, { label: 'All', value: -1 }]}
                                     colSpan={3}
-                                    count={appointments.length}
+                                    count={filteredClients.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{

@@ -1,7 +1,26 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableHead, TableRow, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableHead,
+  TableRow,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { purple } from '@mui/material/colors';
@@ -18,6 +37,8 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import SpecialistInfo from "../../app/models/SpecialistInfo";
+import SearchIcon from "@mui/icons-material/Search";
 
 function TablePaginationActions(props: any) {
   const theme = useTheme();
@@ -85,13 +106,15 @@ export default function Appointments() {
   const [loading, setLoading] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredSpecialists, setFilteredSpecialists] = useState<Appointment[]>([]);
   const userId = getGlobalUserId();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - appointments.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredSpecialists.length) : 0;
 
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
@@ -120,6 +143,19 @@ export default function Appointments() {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  useEffect(() => {
+    const filteredSpecialists = appointments.filter((appointment) => {
+          const specialistName: string = appointment.requestedUserFullName ? appointment.requestedUserFullName : '';
+          return specialistName.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+    );
+    setFilteredSpecialists(filteredSpecialists);
+  }, [searchTerm, appointments]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleCancelAppointment = (appointmentId: number) => {
     setSelectedAppointmentId(appointmentId);
@@ -220,7 +256,19 @@ export default function Appointments() {
           </Typography>
       </Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: '50px' }}>
+        <Box mt={2} sx={{justifyContent: 'flex-start'}}>
+          <SearchIcon sx={{color: 'action.active', mr: 1, mt: 2}} />
+          <TextField
+              sx={{maxWidth: '50%'}}
+              label="Buscar especialista"
+              variant="outlined"
+              value={searchTerm}
+              onChange={handleSearchChange}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        <TableContainer component={Paper} sx={{ maxWidth: '1500px', margin: '0 auto', marginTop: 1 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -233,8 +281,8 @@ export default function Appointments() {
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                  ? appointments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : appointments
+                  ? filteredSpecialists.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : filteredSpecialists
                 ).map((appointment) => {
                 const appointmentDate = new Date(appointment.bookedDate);
                 return (
@@ -279,7 +327,7 @@ export default function Appointments() {
                 <TablePagination
                   rowsPerPageOptions={[5, 25, 100, { label: 'All', value: -1 }]}
                   colSpan={3}
-                  count={appointments.length}
+                  count={filteredSpecialists.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{
