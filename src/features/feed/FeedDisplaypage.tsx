@@ -18,6 +18,9 @@ import FeedPostDisplayer from "./FeedPostDisplayer";
 import Chip from '@mui/material/Chip';
 import {selectRole} from "../../features/account/accountSlice";
 import {useSelector}  from "react-redux";
+import SearchIcon from '@mui/icons-material/Search';
+import { TextField } from "@mui/material";
+import Grid from '@mui/material/Grid';
 
 
 
@@ -28,7 +31,9 @@ export default function FeedDisplayPage(){
     const [posts, setPosts] = useState<FeedPost[]>([]);
     const [itemsPerPage] = useState(9)
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState("");
     const userRole: Number | null = useSelector(selectRole);
+    const [filteredPosts, setFilteredPosts] = useState<FeedPost[]>([]);
     
     
 
@@ -58,63 +63,83 @@ export default function FeedDisplayPage(){
         return result;
     };
     
-
     useEffect(() => {
-        setLoading(true);
-        agent.Feed.getPosts()
-            .then((response) => {
-                setPosts([...response]);
-                console.log(response); // Verifica la estructura de los datos recibidos
-            })
-            .catch((error) => {
-                toast.error('Ha ocurrido un problema cargando la información', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "light",
-                });
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+      setLoading(true);
+      agent.Feed.getPosts()
+        .then((response) => {
+          setPosts([...response]);
+        })
+        .catch((error) => {
+          toast.error('Ha ocurrido un problema cargando la información', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }, []);
+    
+    useEffect(() => {
+      const filteredPosts = posts.filter((post) =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPosts(filteredPosts);
+    }, [searchTerm, posts]);
 
     if (loading) return <LoadingComponent message='Cargando información...' />
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    };
 
 
     const lastItemIndex = currentPage * itemsPerPage;
     const firstItemIndex = lastItemIndex - itemsPerPage;
-    const slicedData = posts.slice(firstItemIndex,lastItemIndex)
-    
-    //convert the raw data into the correct format
-    const data = slicedData.map(entry => convertData(entry));
+    const slicedData = filteredPosts.slice(firstItemIndex, lastItemIndex);
+    const data = slicedData.map((entry) => convertData(entry));
 
     const handlePageChange = (currentPage: React.SetStateAction<number>) => {
         setCurrentPage(currentPage);
       };
 
+    
+
       return (
-        <div style={{ position: 'relative' }}>
-          {userRole === 3 && (<div style={{ position: 'absolute', top: -15, right: 100}}>
-            <NavLink to="/feed/create">
-              <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
-                Agregar post
-              </Button>
-            </NavLink>
-          </div>)}
+        <div>
+          <Box sx={{ position: 'relative', display: 'flex', top: '30px', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <div style={{ marginRight: '20px', marginLeft: '20px' }}>
+              <SearchIcon sx={{ color: 'action.active', mr: 1, my: 1 }} />
+              <TextField
+                id="input-with-sx"
+                label="Buscar noticia"
+                variant="outlined"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+            {userRole === 3 && (
+              <NavLink to="/feed/create">
+                <Box sx={{ marginLeft: 'auto' }}>
+                  <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} >
+                    Agregar Noticia
+                  </Button>
+                </Box>
+              </NavLink>
+            )}
+          </Box>
           <BentoGrid bentoItems={data} />
           <PaginationBar
             itemsPerPage={itemsPerPage}
-            TotalPages={Math.ceil(posts.length / itemsPerPage)}
+            TotalPages={Math.ceil(filteredPosts.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-          
         </div>
-        
-        
       );
 }

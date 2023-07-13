@@ -128,7 +128,7 @@ export default function CreateForumPostPage() {
                 <Card sx={{ width: '75%', backgroundColor: grey[50], }}>
                     <CardContent>
                         <Card sx={{ color: 'white', bgcolor: purple[400], my: 2 }}>
-                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nuevo Post</Typography>
+                            <Typography align="center" sx={{ my: 2, fontWeight: 'bold' }} variant="h4">Nueva Publicación</Typography>
                         </Card>
                         <Stack>
                             <Box component="form"
@@ -216,7 +216,7 @@ export default function CreateForumPostPage() {
                                 <Dialog open={openConfirmation}
                                     onClose={() => { setOpenConfirmation(false) }}>
                                     <DialogTitle id="alert-dialog-title">
-                                        {"¿Está seguro que quiere agregar el post?"}
+                                        {"¿Está seguro que quiere agregar la Publicación?"}
                                     </DialogTitle>
                                     <DialogActions>
                                         <Button
@@ -248,7 +248,7 @@ export default function CreateForumPostPage() {
                             <AddToPhotosIcon
                                 sx={{ mr: 1, my: 0.5 }}
                             />
-                            Agregar Post
+                            Agregar Publicación
                         </LoadingButton>
 
                         <Button
